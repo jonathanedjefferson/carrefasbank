@@ -1,0 +1,197 @@
+button{
+    background-color: transparent;
+}
+.container{
+    background-color: #FAFAF9;
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.header-principal{
+    display: flex;
+    padding: 10px 20px;
+}
+.header-filtros{
+    justify-content: flex-end;
+    display: flex;
+    flex-grow: 1;
+}
+.titulo-parcelados{
+    font-size: 18px;
+    color: #000000;
+    font-weight: 700;
+} 
+.btn-limparfiltros{
+    display: flex;
+    align-items: end;
+    margin-bottom: 5px;
+    margin-left: 10px;
+}
+.tipo-parcela-input{
+    width: 220px;
+}
+.data-input{
+    width: 131px;
+}
+.ocultar-texto {
+    display: none;
+}
+.btn-buscarcompras{
+    display: flex;
+    align-items: end;
+}
+.header-atualizacao-status{
+    background-color: #FAFAF9;
+    padding: 10px 20px;
+    line-height: 16px;
+    border-top: 1px solid #DDDBDA;
+    border-bottom: 1px solid #DDDBDA;
+}
+.alerta-desfazer-antecipacao{
+    display: flex;
+    background-color: #FFB75D;
+    padding: 20px;
+    --slds-c-icon-color-foreground-default: #3E3E3C;
+    margin: 10px 20px;
+    font-size: 14px;
+    line-height: 21px;
+    font-weight: 400px;
+}
+.erro-tentar-novamente{
+    display: flex;
+    background-color: #C23934;
+    padding: 20px;
+    --slds-c-icon-color-foreground-default: #FFFFFF;
+    color: #FFFFFF;
+    margin: 10px 20px;
+    font-size: 14px;
+    line-height: 21px;
+    font-weight: 400px;
+    --slds-c-button-color-link: #FFFFFF;
+} 
+.erro-tentar-novamente button{
+    color: #FFFFFF;
+    text-decoration: underline;
+    &:focus{
+        outline: none !important;
+        box-shadow: none !important;
+        border: none;
+    }
+    &:active{
+        color: #0176D3;
+    }
+}
+.titulo-selecionar-parcelas{
+    margin: 20px 20px;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+    color: #181818;
+}
+.container-tabela{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+.tabela-parcelamentos{
+    width: 100%;
+    overflow-x: auto;
+    max-width: 100%;
+}
+.tabela-parcelamentos th{
+    border-bottom: 1px solid #DDDBDA;
+    background-color: #FAFAF9;
+    height: 32px;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 20px;
+}
+.tabela-parcelamentos th, .tabela-parcelamentos td {
+    border-right: 1px solid #DDDBDA; 
+    height: 32px;
+    padding: 0px 8px;
+}
+.input-selecionar{
+    margin-left: 20px;
+    padding: 0 !important;
+}
+.coluna-selecionar{
+    width: 40px !important;
+    padding: 0 !important;
+    border-right: none !important;
+}
+.tabela-rodape{
+    padding: 20px;
+    margin-bottom: 0;
+    margin-top: auto;
+}
+.tabela-rodape ul{
+    display: flex;
+    justify-content: space-between;
+}
+.botao_fechar{
+    --slds-c-icon-color-foreground-default: #FFFFFF;
+}
+.modal-selecao-parcelas{
+    background-color: #FFFFFF;
+    margin: 0;
+    padding: 0;
+}
+.header-modal-selecao-parcelas{
+    padding: 12px 14px;
+    border-bottom: 1px solid #DDDBDA;
+} 
+.header-modal-selecao-titulo {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 27px;
+    letter-spacing: 0px;
+    text-align: center;
+}
+.conteudo-modal-selecao-parcelas{
+    padding: 24px;
+} 
+.conteudo-modal-selecao-subtitulo {
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+    letter-spacing: 0px;
+} 
+.conteudo-modal-selecao-descricao {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 27px;
+    letter-spacing: 0px;
+    margin: 24px 0px;
+}
+.tabela-selecao-parcelas{
+    max-height: 362px;
+    margin-bottom: 31px;
+    overflow: auto;
+    border: 1px solid #DDDBDA;
+}
+.tabela-selecao-parcelas .selecionar{
+    width: 60px;
+    padding-right: 10px;
+}
+.tabela-selecao-parcelas > table {
+    border: 1px solid #DDDBDA;
+}
+.tabela-selecao-parcelas th{
+    border-bottom: 1px solid #DDDBDA;
+}
+.tabela-selecao-parcelas td{
+    border-bottom: 1px solid #DDDBDA;
+}
+.footer-modal-selecao-parcelas{
+    background-color: #F3F2F2;
+    font-size: 13px;
+    padding: 12px;
+}
+.footer-modal-selecao-parcelas ul{
+    justify-content: space-between;
+    display: flex;
+}

@@ -1,0 +1,318 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <template lwc:if={showCardPrincipal}>
+        <div class="title">Calculadora de dívidas</div>
+        <div class="c-container">
+            <div class="boxCardPrincipal">
+                <div lwc:if={stepOne}>
+                    <div class="subTitle">Dados do titular</div>
+                    <div class="slds-m-bottom_xx-large">
+                        <ul class="listInformacoes slds-m-top_x-small">
+                            <li>
+                                <div class="cmpLabel">Titular</div>
+                                <div class="cmpValue">{nome}</div>
+                            </li>
+                            <li class="tipoConta">
+                                <div class= "logo slds-m-right_x-small"><img src={logoTipo}></div>
+                                <div>
+                                    <div>Tipo de conta</div>
+                                    <div class="cmpValue">{unidadeDescricao}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="cmpLabel">Status geral</div>
+                                <div class="cmpValue">{statusConta}</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="separator-top slds-p-top_small slds-p-bottom_large">
+                            <div class="subTitle">Escolha o que deseja calcular</div>
+                            <lightning-radio-group name="radioGroupCalculos"
+                                options={optionsCalcular}
+                                value={escolhaCalculo}
+                                onchange={handleChangeEscolhaCalculo}
+                                class="radio-options"
+                                type="radio"></lightning-radio-group>
+                        </div>
+                        <div lwc:if={isFluxoJurosEncargos} class="separator-top slds-p-top_small slds-p-bottom_large">
+                            <div class="subTitle">Deseja escolher o valor e data de pagamento?</div>
+                            <lightning-radio-group name="radioGroupDados"
+                                options={optionsEscolherDados}
+                                value={escolhaDados}
+                                onchange={handleChangeEscolhaDadosPagamento}
+                                class="radio-options"
+                                type="radio">
+                            </lightning-radio-group>
+                        </div>
+                        <div lwc:if={showBoxDadosPagamento} class="separator slds-p-top_small slds-p-bottom_large">
+                            <ul class="listDadosPagamento">
+                                <li lwc:if={isFluxoJurosEncargos} >
+                                    <div class="cmpValue">Valor de pagamento</div>
+                                    <lightning-input type="number" name="valorPagamentoInput" class="slds-m-right_large cmpLabel"
+                                        placeholder={valorMinLabel} formatter="currency" value={valorPagamentoSelecionado}
+                                        step="0.01" onchange={handleValorPagamento} variant="label-hidden">
+                                    </lightning-input>
+                                    <div lwc:if={isErrorValor} class="helper-text-erro">
+                                        <label>Valor mínimo <span class="helper-text-value">{valorMinLabel}</span></label>
+                                        <label>{mensagem}</label>
+                                    </div>
+                                    <div lwc:else>
+                                        <label  class="helper-text">Valor mínimo <span class="helper-text-value">{valorMinLabel}</span></label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="cmpValue">Data de pagamento</div>
+                                    <lightning-input type="date" date-style="short" name="dataPagamentoInput" placeholder={dataMinimaFormatted}
+                                        onchange={handleDataPagamento} class="date-format-hide cmpLabel" variant="label-hidden" value={dataPagamentoSelecionada}>
+                                    </lightning-input>
+                                    
+                                    <div lwc:if={isErrorData} class="helper-text-erro">
+                                        <label>
+                                            Data mínima <span class="helper-text-value">{dataMinimaFormatted}</span> 
+                                            | Data máxima <span class="helper-text-value">{dataMaximaFormatted}</span></label>
+                                        <label>{mensagem}</label>
+                                    </div>
+                                    <div lwc:else>
+                                        <label class="helper-text">
+                                            Data mínima <span class="helper-text-value">{dataMinimaFormatted}</span> 
+                                            | Data máxima <span class="helper-text-value">{dataMaximaFormatted}</span></label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div lwc:if={showBoxCase} class="separator slds-p-top_small slds-p-bottom_large">
+                            <label class="label-caso">Preenchimento de caso</label>
+                            <div class="slds-m-top_x-small boxCaso">
+                                <lightning-record-edit-form object-api-name="Case">
+                                    <ul>
+                                        <li>
+                                            <label class="label-text">Origem</label>
+                                            <lightning-input-field 
+                                                language=""
+                                                value={origemValue}
+                                                field-name="Origin" 
+                                                class="lightningInput mt-5" 
+                                                placeholder="--Nenhuma--"
+                                                onchange={handleChangeOrigem} 
+                                                variant="label-hidden"> 
+                                            </lightning-input-field>
+                                        </li>
+                                        <li>
+                                            <label class="label-text">Canal</label>
+                                            <lightning-input-field
+                                                value={canalValue}
+                                                field-name="CanalEntrada__c" 
+                                                class="lightningInput mt-5" 
+                                                placeholder="--Nenhuma--"
+                                                onchange={handleChangeCanal} 
+                                                variant="label-hidden"> 
+                                            </lightning-input-field>
+                                        </li>
+                                    </ul>    
+                                </lightning-record-edit-form>   
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div lwc:if={stepTwo}>
+                    <div class="listInformacoes">
+                        <lightning-icon icon-name="utility:success" class="slds-m-right_medium" alternative-text="Success!" variant="success" title="success variant" size="small"></lightning-icon>
+                        <h1 class="subTitle-2">Consulta de calculadora de juros realizada!</h1>
+                    </div>
+                    <div class="slds-m-top_medium slds-m-right_small separator slds-p-bottom_small">
+                        <p class="subTitle-4 slds-m-left_large">Protocolo: <strong>{numeroCaso}</strong></p>
+                        <p class="cmpLabel slds-m-top_x-small slds-m-left_large">{dateToday}</p>
+                    </div>
+                    <div>
+                        <div lwc:if={isFluxoJurosEncargos} class="alert slds-m-top_large">
+                            <lightning-icon size="small" icon-name="utility:warning" alternative-text="Warning!" title="Warning" class="slds-p-horizontal_small color-icon"></lightning-icon>
+                            <div>
+                                <p class="dado-tabela">Essa simulação apresenta os valores de juros e encargos que serão aplicados na próxima fatura do cliente, caso ele efetue o pagamento em atraso ou não quite o total da sua fatura</p>
+                            </div>
+                        </div>
+                        <div lwc:if={isFluxoSaldo} class="alert slds-m-top_large">
+                            <lightning-icon size="small" icon-name="utility:warning" alternative-text="Warning!" title="Warning" class="slds-p-horizontal_small color-icon"></lightning-icon>
+                            <div>
+                                <p class="dado-tabela">Essa simulação detalha os valores devidos pelo cliente para a quitação de sua dívida com o Banco. As informações incluem a <strong>fatura fechada, os valores futuros e os juros e encargos</strong>  aplicáveis, se houver.</p>
+                            </div>
+                        </div>
+                        <div class="dadosSimulacao slds-m-vertical_large">
+                            <div class="subTitle-3">Simulação de cálculo de juros e encargos</div>
+                            <ul class="slds-m-top_x-small">
+                                <li lwc:if={isDadosSelecionados} class="separator-2">
+                                    <div class="label-tabela">Valor do saldo total</div>
+                                    <div class="dado-tabela font-weight-600">{saldoTotal}</div>
+                                </li>
+                                <li lwc:if={isFluxoJurosEncargos} class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela">Valor do pagamento</div>
+                                    <div class="dado-tabela">{valorPagamento}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela">Data de pagamento</div>
+                                    <div class="dado-tabela">{dataPagamento}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela">Data de vencimento da última fatura</div>
+                                    <div class="dado-tabela">{dataVencimentoUltimaFatura}</div>
+                                </li>
+                                <li class="slds-p-top_x-small">
+                                    <div class="label-tabela">Data de vencimento fatura em aberto</div>
+                                    <div class="dado-tabela">{dataVencimentoProximaFatura}</div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="separator dadosSimulacao slds-m-top_small slds-p-bottom_xx-large">
+                            <div class="subTitle-3">Saldo total</div>
+                            <ul lwc:if={isFluxoJurosEncargos} class="slds-m-top_small">
+                                <li class="separator-2" lwc:if={showSaldoTotal}> 
+                                    <div class="label-tabela">Valor do saldo total</div>
+                                    <div class="dado-tabela font-weight-600">{saldoTotal}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela">Valor da fatura</div>
+                                    <div class="dado-tabela">{valorFatura}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela">Valor juros e encargos no ciclo</div>
+                                    <div class="dado-tabela  font-weight-700 ">{valorJurosEncargosCiclo}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela slds-m-left_medium">Multa</div>
+                                    <div class="dado-tabela">{valorMulta}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela slds-m-left_medium">Juros mora</div>
+                                    <div class="dado-tabela">{valorJurosMora}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela slds-m-left_medium">IOF adicional</div>
+                                    <div class="dado-tabela">{valorIOFAdicional}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela slds-m-left_medium">IOF diário</div>
+                                    <div class="dado-tabela">{valorIOFDiario}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela slds-m-left_medium">Juros rotativo</div>
+                                    <div class="dado-tabela">{valorJurosRotativo}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela slds-m-left_medium">Juros remuneratórios</div>
+                                    <div class="dado-tabela">{valorJurosRemuneratorios}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela slds-m-left_medium">Juros remuneratórios Parcele Fácil</div>
+                                    <div class="dado-tabela">{valorJurosRemuneratoriosParceleFacil}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela slds-m-left_medium">Juros remuneratórios Parcela Pronta</div>
+                                    <div class="dado-tabela">{valorJurosRemuneratoriosParcelaPronta}</div>
+                                </li>
+                            </ul>
+                            <ul lwc:if={isFluxoSaldo} class="slds-m-top_small">
+                                <li class="separator-2"> 
+                                    <div class="label-tabela">Valor do saldo total</div>
+                                    <div class="dado-tabela font-weight-600">{saldoTotal}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small"> 
+                                    <div class="label-tabela">Valor saldo postado
+                                        <lightning-helptext class="tooltip" content="O valor do saldo postado é o valor da última fatura somado ao valor da fatura em aberto."></lightning-helptext> 
+                                    </div>
+                                    <div class="dado-tabela">{saldoPostado}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small"> 
+                                    <div class="label-tabela">Valor parcelados futuros</div>
+                                    <div class="dado-tabela">{valorParceladosFuturos}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small"> 
+                                    <div class="label-tabela">Valor desconto antecipação</div>
+                                    <div class="dado-tabela color-font-green font-weight-700">{valorDescontoAntecipacao}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela">Valor multa</div>
+                                    <div class="dado-tabela">{valorMulta}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela">Valor juros mora</div>
+                                    <div class="dado-tabela">{valorJurosMora}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela">Juros rotativo</div>
+                                    <div class="dado-tabela">{valorJurosRotativo}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela">IOF adicional</div>
+                                    <div class="dado-tabela">{valorIOFAdicional}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela">IOF diário</div>
+                                    <div class="dado-tabela">{valorIOFDiario}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela">Valor encargo rotativo em atraso</div>
+                                    <div class="dado-tabela">{valorEncargoRotativoEmAtraso}</div>
+                                </li>
+                                <li class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela">Juros remuneratórios Parcele Fácil</div>
+                                    <div class="dado-tabela">{valorJurosRemuneratoriosParceleFacil}</div>
+                                </li> 
+                                <li class="separator-2 slds-p-top_x-small">
+                                    <div class="label-tabela">Juros remuneratórios Parcela Pronta</div>
+                                    <div class="dado-tabela">{valorJurosRemuneratoriosParcelaPronta}</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="slds-p-bottom_large">
+                        <h2 class="slds-text-heading_small slds-m-vertical_medium subTitle">Informações do caso:</h2>
+                        <ul class="listDadosHorizontal">
+                            <li>
+                                <div class="dado-tabela">Origem</div>
+                                <div class="cmpValue">{origemValue}</div>
+                            </li>
+                            <li>
+                                <div class="dado-tabela">Canal</div>
+                                <div class="cmpValue">{canalValue}</div>
+                            </li>
+                            <li>
+                                <div class="dado-tabela">Assunto</div>
+                                <div class="cmpValue">Calculadora de juros</span></div>
+                            </li>
+                            <li>
+                                <div class="dado-tabela">Evento</div>
+                                <div class="cmpValue">{evento}</span></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="boxFooter">
+                <div lwc:if={stepOne}>
+                    <ul>
+                        <li>
+                            <lightning-button label="Voltar" onclick={handleButtonVoltar}></lightning-button>
+                        </li>
+                        <li>
+                            <lightning-button label="Simular" variant="brand" onclick={handleButtonSimular} disabled={disableButtonSimular}></lightning-button>
+                        </li>
+                    </ul>
+                </div>
+                <div lwc:if={stepTwo}>
+                    <ul>
+                        <li>
+                            <lightning-button label="Voltar" onclick={handleButtonVoltar}></lightning-button>
+                        </li>
+                        <li>
+                            <lightning-button label="Ver caso" variant="brand" onclick={handleButtonIrCaso}></lightning-button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </template>
+</template>

@@ -1,0 +1,272 @@
+.lwc-header {
+  border: 0;
+  box-shadow: none;
+  border-radius: var(--lwc-borderRadiusMedium, 0.25rem);
+  background-color: rgb(243, 243, 243);
+  padding: var(--lwc-spacingMedium, 0.75rem) 0;
+  border-bottom: 1px solid rgb(201, 201, 201);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.top-header {
+  display: inline-flex;
+  width: 100%;
+}
+
+.top-headerRetorno {
+ display: inline-flex;
+ width: 100%;
+ box-shadow: 0px -1px 0px #DDDBDA;
+}
+
+.header-name {
+  width: 20%;
+}
+
+.boxMenu {
+  width: 85%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.alignCenter {
+  display: flex;
+  align-items: center;
+}
+
+.alignDados {
+  display: flex;
+  width: 50%;
+}
+
+.alignVerticalEnd {
+  display: flex;
+  align-items: end;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 27px;
+  text-align: left;
+  color:#080707;
+}
+
+.titleModal {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 30px;
+}
+
+.subTitle {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 27px;
+  text-align: left;
+}
+
+.subTitle-2 {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 27px;
+  text-align: left;
+}
+
+.subTitle-3 {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.subTitle-4 {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.logo > img {
+  max-width: 100%;
+  height: 45px;
+}
+
+.boxGray {
+  background: #F8F9FA;
+}
+
+.cmpName {
+   font-size: 13px;
+   line-height: 20px;
+}
+
+.cmpLabel {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+}
+
+.cmpValue {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.color-icon {
+  --sds-c-icon-color-foreground-default: #181818;
+}
+
+.iconAtualizar{
+  --slds-c-icon-color-foreground: #777777;
+}
+
+.iconErro {
+  --slds-c-icon-color-foreground-default: #BA0517;
+}
+
+.justify-space-between {
+  justify-content: space-between;
+}
+
+.separator {
+  box-shadow: 0px 1px 0px #DDDBDA;
+}
+
+.table-assets th, .table-assets td {
+  padding: 0.25rem 0.5rem;
+}
+
+.table-confirmar th, .table-confirmar td {
+  padding: 0.3rem 0.75rem;
+}
+
+.iconDuplicadaColor {
+  --slds-c-icon-color-foreground-default: #e4a201;
+}
+
+.listInformacoes {
+  display: flex;
+}
+
+.listInformacoes li {
+  width: 50%;
+}
+
+.listInformacoes li.tipoConta {
+  display: inline-flex;
+}
+
+.listDadosHorizontal {
+  display: flex;
+  justify-content: space-between;
+}
+
+footer {
+  box-shadow: 0px -1px 0px #DDDBDA;
+  background-color: #F3F2F2;
+}
+
+.pageFooter, .boxFooter {
+  padding: 20px 20px 0 20px;
+}
+
+.pageFooter ul {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.boxFooter ul {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.boxFooter ul li {
+  width: 76%;
+}
+
+.boxFooter ul li:first-child {
+  width: auto;
+  text-align: center;
+}
+
+.boxFooter ul li:last-child {
+  width: auto;
+  text-align: center;
+}
+
+.texto-label {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 27px;
+}
+
+.alert{
+  background-color: #FFB75D;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.alert p {
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.font-weight-600 strong {
+  font-weight: 600;
+}
+
+.label-caso {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.alignEnd {
+  display: flex;
+  justify-content: end;
+}
+
+.boxCaso ul {
+  display: flex;
+  justify-content: space-between;
+}
+
+.boxCaso ul li {
+  width: 22%;
+}
+
+.boxCaso ul li.nomeCartao {
+  width: 45%;
+}
+
+.boxCaso ul li.infoCartao {
+  width: 25%;
+}
+
+.cmpPagina {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.cmpPaginaCenter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cmpPaginaQuant {
+  margin: 0 10px;
+  width: 60px;
+}
+
+.cmpPaginaDireita {
+  padding: 5px 10px;
+  position: absolute;
+  right: 0;
+}

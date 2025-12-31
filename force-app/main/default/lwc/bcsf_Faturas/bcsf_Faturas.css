@@ -1,0 +1,173 @@
+.spins::after {
+    position: absolute;
+    content: 'Carregando faturas do cliente...';
+    width: 100%;
+    text-align: center;
+    top: calc(50% + 3em);
+    font-weight: bold;
+}
+
+.resumo-faturas table {
+    border:1px solid #dddbda;
+    border-spacing: 5px;
+    border-radius: 0.25rem;
+    border-collapse: separate;
+}
+
+.resumo-faturas table > tr {
+    color: #3e3e3c;
+    font-size: 0.75rem;
+}
+
+.resumo-faturas table > td {
+    color: #080707;
+    font-size: 0.875rem;
+    font-weight: 400;
+}
+
+.resumo-faturas table.mt-3 {
+    margin-top: 0.75rem
+}
+
+/* div{
+    font-weight: var(--lwc-fontWeightRegular)
+} */
+
+h1{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+h2{
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.tdValues{
+    font-weight: bold;
+}
+
+.infoName{
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.infoValue{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.containerLimites{
+    display: flex;
+    flex-direction: row;
+    padding-left: 5px;
+}
+.containerLimites div{
+    margin-right: 48px;
+}
+
+.spacingContainer{
+    margin-bottom: 32px;
+}
+
+.spacingContainerTop{
+    margin-top: 24px;
+}
+
+.subTitleAlternative{
+    font-size: 18px;
+    font-weight: 600;
+}
+.modalboleto{
+    padding: 0;
+}
+
+
+
+.tabela_detalhes {
+    margin-top:5px; 
+    border:0.5px #E8E8E8 solid; 
+    border-spacing: 5px;
+    border-radius: 5px;
+    border-collapse: separate;
+}
+
+h1{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+h2{
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.tdValues{
+    font-weight: bold;
+}
+
+
+
+
+
+.accordion_faturas {
+    font-weight: 600;
+    --slds-c-accordion-summary-color-background: #F3F2F2;
+    --slds-c-accordion-heading-font-size: 16px;
+    --slds-c-accordion-heading-line-height: 24px;
+    --slds-c-accordion-section-spacing-block-start: 4px;
+    --slds-c-accordion-section-spacing-block-end: 4px;
+    --slds-c-accordion-section-spacing-inline-start: 8px;
+    --slds-c-accordion-color-border: #DDDBDA;
+}
+
+.tagTipoFatura{
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 18px;
+    border-radius: 23px;
+    width: fit-content;
+    padding: 2px 8px;
+    margin: 16px;
+}
+
+.tipoFatura_0 {
+    color: #181818;
+    background-color: #FFFFFF;
+    border: 1px solid #DDDBDA;
+}
+
+.tipoFatura_1 {
+    color: #181818;
+    background-color: #FF9A3C;
+}
+
+.tipoFatura_2 {
+    color: #FFFFFF;
+    background-color: purple;
+}
+
+.tipoFatura_3 {
+    color: #FFFFFF;
+    background-color: #04844B;
+}
+
+.tipoFatura_4 {
+    color: #181818;
+    background-color: #F9E3B6;
+}
+
+.tipoFatura_5 {
+    color: #FFFFFF;
+    background-color: #C23934;
+} 
+
+.tabela_infos{
+    margin: 0 16px 24px 16px;
+    font-weight: normal;
+}
+
+.carregarMais {
+    text-align: center;
+    display: flex;
+}

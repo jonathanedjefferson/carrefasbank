@@ -1,0 +1,62 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Carregando..." size="large" variant="brand"></lightning-spinner>
+    </div>
+    <div class="header">
+        <h1>Remover blindagem</h1>
+    </div>
+    <div class="container">
+        <div class="box-resumo-conta">
+            <div class="slds-grid slds-wrap slds-gutters">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <div class="informacao">
+                        <div class="info-label">Titular da conta</div>
+                        <div class="info-valor">{dadosCliente.titularConta}</div>
+                    </div>
+                </div>
+            
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <div class="informacao">
+                        <div class="info-label">CPF do titular</div>
+                        <div class="info-valor">{dadosCliente.cpf}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-detalhes-blindagem">
+            <div class="alerta">
+                <lightning-icon class="slds-m-right_small" icon-name="utility:info" size="small" alternative-text="Atenção"></lightning-icon>
+                <p>A remoção da blindagem será refletida em todos os produtos do cliente.</p>
+            </div>
+
+            <div class="box-inputs">
+                <div class="slds-grid slds-wrap slds-gutters inputs">
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <div class="informacao">
+                            <div class="info-label">Tipo de blindagem</div>
+                            <div class="info-valor">{dadosBlindagem.tipo}</div>
+                        </div>
+                    </div>
+                            
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <div class="informacao">
+                            <div class="info-label">Motivo</div>
+                            <div class="info-valor">{dadosBlindagem.motivo}</div>
+                        </div>
+                    </div>   
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <ul>
+            <li>
+                <lightning-button variant="Neutral" label={lblBtnVoltar} onclick={closeQuickAction} class="slds-m-left_x-small"></lightning-button>
+            </li>
+            <li>
+                <lightning-button variant="brand" label={lblBtnAvancar}  onclick={RemoverCliente} class="slds-m-left_x-small"></lightning-button>
+            </li>
+        </ul>
+    </div>
+</template>

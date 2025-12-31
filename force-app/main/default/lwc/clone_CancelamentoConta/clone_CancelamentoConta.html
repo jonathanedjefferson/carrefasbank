@@ -1,0 +1,244 @@
+<template>
+    <lightning-card  variant="Narrow">
+        <div if:true={spinner}>
+            <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+        </div>
+        <div class="title">Cancelar Cartão de Crédito</div>
+        <div class="c-container">
+            <template if:true={showCardPrincipal}>
+                <div class="boxCardPrincipal">
+                    <h1>Dados do cliente titular</h1>
+                    <div class="cmpName">Nome</div>
+                    <div class="cmpValue">{nome}</div>
+                    <ul class="firstUl">
+                        <li>
+                            <div class= "logo"><img src={logoTipo}></div>
+                            <div class="texts">
+                                <div class="cmpName">Tipo de conta</div>
+                                <div class="cmpValue">{tipoConta}</div>
+                            </div>
+                            
+                        </li>
+                        <li>
+                            <div class="cmpName">Conta</div>
+                            <div class="cmpValue">{numeroConta}</div>
+                        </li>
+                        <li>
+                            <div class="cmpName">Status da conta</div>
+                            <div class="cmpValue">{statusConta}<span style="position:relative; top:-3px;"><lightning-helptext content={statusContaInfo} class="slds-m-left_xx-small"></lightning-helptext></span></div>
+                        </li>
+                        <li>
+                            <div class="cmpName">Data de nascimento</div>
+                            <div class="cmpValue">{dataNascimento}</div>
+                        </li>
+                        <li>
+                            <div class="cmpName">CPF</div>
+                            <div class="cmpValue">{cpf}</div>
+                        </li>
+                    </ul>
+                    
+                </div>
+
+            </template>
+            
+                
+            <div class="boxSteps">
+                <!-- Primeiro bloco -->
+                <template if:true={stepOne}>
+                
+                    <h1>Preenchimento do caso</h1>
+                    <div class="txtInfos txtInfosBoxTwo">Selecione a seguir o motivo de cancelamento do cliente, a origem e o canal do caso a ser criado</div>
+                
+                    
+                        <lightning-record-edit-form object-api-name="Case">
+                            <div class="boxInputs">
+                            <ul>
+                                <li class="alturaLi">
+                                    <label>Status do Cancelamento</label>
+                                    <lightning-combobox
+                                        name="progress"
+                                        value={valueStatus}
+                                        options={optionsStatus}
+                                        placeholder="--Nenhuma--"
+                                        class="lightningInput" 
+                                        variant="label-hidden"
+                                        onchange={handleChangeStatusCancelamento} >
+                                    </lightning-combobox>
+                                </li>
+                                <li>
+                                    <label>Evento</label>
+                                    <lightning-input-field 
+                                        id="fieldEvento"
+                                        field-name="Evento__c"
+                                        value={valueEvento}
+                                        onchange={handleChangeEvento} 
+                                        variant="label-hidden">
+                                    </lightning-input-field>
+                                </li>
+                                <li>
+                                    <label>Motivo do Cancelamento</label>
+                                    <lightning-input-field 
+                                        id="fieldMotivo"
+                                        field-name="Requisito__c"
+                                        value={valueMotivo}
+                                        class="lightningInput" 
+                                        onchange={handleChangeMotivoCancelamento} 
+                                        variant="label-hidden">
+                                    </lightning-input-field>
+                                </li>
+                                <li>
+                                    <label>Origem</label>
+                                    <lightning-input-field 
+                                        id="fieldOrigem"
+                                        field-name="Origin"
+                                        value={valueOrigem}
+                                        class="lightningInput" 
+                                        onchange={handleChangeOrigem} 
+                                        variant="label-hidden">
+                                    </lightning-input-field>
+                                </li>
+                                <li>
+                                    <label>Canal</label>
+                                    <lightning-input-field
+                                        id="fieldCanal"
+                                        field-name="CanalEntrada__c"
+                                        value={valueCanal}
+                                        class="lightningInput" 
+                                        onchange={handleChangeCanal} 
+                                        variant="label-hidden"> 
+                                    </lightning-input-field>
+                                </li>
+                                <li>
+                                    <lightning-input-field 
+                                        id="fieldAssunto"
+                                        field-name="Assunto__c"
+                                        value={valueAssunto}
+                                        class="slds-hidden"
+                                        variant="label-hidden"> 
+                                    </lightning-input-field>
+                                </li>
+                            </ul>
+                            </div>
+                        </lightning-record-edit-form>   
+                </template>
+                <!-- Final do Primeiro bloco -->
+
+                <!-- Inicio do Segundo bloco -->
+                <template if:true={stepTwo}>
+                    <div class="boxCardPrincipal boxPrincipalCardThree">
+                        <h1>Confirmação de cancelamento de Cartão de Crédito</h1>
+                        <h1>Dados do cliente titular</h1>
+                        <div class="cmpName">Nome</div>
+                        <div class="cmpValue">{nome}</div>
+                        <ul class="firstUl">
+                            <li>
+                                <div class= "logo"><img src={logoTipo}></div>
+                                <div class="texts">
+                                    <div class="cmpName">Tipo de conta</div>
+                                    <div class="cmpValue">{tipoConta}</div>
+                                </div>
+                                
+                            </li>
+                            <li>
+                                <div class="cmpName">Conta</div>
+                                <div class="cmpValue">{numeroConta}</div>
+                            </li>
+                            <li>
+                                <div class="cmpName">Status da conta</div>
+                                <div class="cmpValue">{statusConta}<span style="position:relative; top:-3px;"><lightning-helptext content={statusContaInfo} class="slds-m-left_xx-small"></lightning-helptext></span></div>
+                            </li>
+                            <li>
+                                <div class="cmpName">Data de nascimento</div>
+                                <div class="cmpValue">{dataNascimento}</div>
+                            </li>
+                            <li>
+                                <div class="cmpName">CPF</div>
+                                <div class="cmpValue">{cpf}</div>
+                            </li>
+                        </ul>
+                            
+                    </div>
+            
+                    
+                    
+                <div class="boxPrincipalCardThree boxMargin boxInfoCase">
+                    <h1>Informações do caso</h1>
+                    <ul>
+                        <li>
+                            <div class="cmpName">Status do Cancelamento</div>
+                            <div class="cmpValue">{valueStatus}</div>
+                        </li>
+                        <li>
+                            <div class="cmpName">Motivo do Cancelamento</div>
+                            <div class="cmpValue">{valueMotivo}</div>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <div class="cmpName">Origem</div>
+                            <div class="cmpValue">{valueOrigem}</div>
+                        </li>
+                        <li>
+                            <div class="cmpName">Canal</div>
+                            <div class="cmpValue">{valueCanal}</div>
+                        </li>
+                    </ul>
+                </div>
+                
+                
+                </template>
+                <!-- Final do Segundo bloco -->
+                
+                <!-- Inicio do Terceiro bloco -->
+                <template if:true={stepThree}>
+                    
+                    <h1>Cancelamento de cartão de crédito realizado com sucesso!</h1>
+                    <div class="txtInfos">Protocolo: {numProtocolo}</div>
+                    
+                    
+                    
+                </template>
+                <!-- Final do Terceiro bloco -->
+
+            </div>
+            
+            
+        </div>
+
+        <footer>
+            
+            <div class="boxFooter">
+                <ul>
+                    <li>
+                        <lightning-button variant="base" label="Voltar" onclick={handleButtonVoltar} disabled={disableButton} class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                    <li>
+                        <lightning-progress-indicator current-step={currentStep} class="customProgress" type="base" has-error={hasErrorSteps} variant="base">
+                            <lightning-progress-step label="Preenchimento do Caso" value="1"></lightning-progress-step>
+                            <lightning-progress-step label="Confirmação de Cancelamento" value="2"></lightning-progress-step>
+                            <lightning-progress-step label="Informações do Caso" value="3"></lightning-progress-step>
+                            <template if:true={stepThree}>
+                                <lightning-progress-step label="Sucesso" value="4" class="slds-hide"></lightning-progress-step>
+                            </template>
+                        </lightning-progress-indicator>
+                    </li>
+                    <template if:true={showCardPrincipal}>
+                        <li>
+                            <lightning-button variant="brand" label="Prosseguir"  onclick={handleProsseguir} disabled={buttonPross} class="slds-m-left_x-small"></lightning-button>
+                        </li>
+                    </template>
+                    <template if:true={stepTwo}>
+                        <li class="liBtnConfirmar">
+                            <lightning-button variant="destructive" label="Confirmar Cancelamento"  onclick={handleConfirmaCancelamento} class="slds-m-left_x-small"></lightning-button>
+                        </li>
+                    </template>
+                    <template if:true={stepThree}>
+                        <li class="liBtnCaso">
+                            <lightning-button variant="brand" label="Ir para o caso"  onclick={irCase} class="slds-m-left_x-small"></lightning-button>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </footer>
+    </lightning-card>
+</template>

@@ -1,0 +1,242 @@
+<template>
+    <template if:true={showModalDadosConta}>
+        <div if:true={spinner}>
+            <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+        </div>
+
+        <header class="slds-modal__header">
+            <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate"> Avaliação emergencial de crédito</h1>
+        </header>
+        
+        <!-- PRIMEIRO MODAL-->
+        <div class="first-screen">
+            <!--Dados da conta-->
+            <div class="dados-conta">
+
+                <h1 class="titles">Dados da conta</h1>
+
+                <div class="slds-grid slds-wrap slds-gutters slds-p-around-20 slds-grid_align-space">
+
+                        <div class="slds-col slds-size_1-of-3 slds-m-bottom_large">
+                            <h4 class="titles2">Titular</h4>
+                            <h2 class="conta-values">{nomeCliente}</h2>
+                        </div>
+                        
+                        <div class="slds-col slds-size_1-of-3 slds-m-bottom_large">
+                            
+                            <div class="logo-conta">
+                                <div class= "logo"><img class="logo" src={logoTipo}></div>
+                                <div class="conta-tipo">
+                                    <h4 class="titles2">Tipo de conta</h4>
+                                    <h2 class="conta-values">{tipoConta}</h2>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="slds-col slds-size_1-of-3 slds-m-bottom_large">
+                            <h4 class="titles2">CPF</h4>
+                            <h2 class="conta-values">{cpf}</h2>
+                        </div>
+
+                        <div class="slds-col slds-size_1-of-3 slds-m-bottom_large">
+
+                            <h4 class="titles2">Produto</h4>
+                            <h2 class="conta-values">{nomeProduto}</h2>
+                        </div>
+            
+                        
+
+                        <div class="slds-col slds-size_1-of-3 slds-m-bottom_large">   
+                            <h4 class="titles2">Conta</h4>
+                            <h2 class="conta-values">{numeroConta}</h2>
+                        </div>
+
+                        
+                        <div class="slds-col slds-size_1-of-3 slds-m-bottom_large">
+                            <h4 class="titles2">Status Geral</h4>
+                            <h2 style="color:#f00;">{statusConta}</h2>
+                        </div>
+                </div>
+
+                <!-- Ativar/ Desativar-->
+                <div class="AtivarDesativar">
+                    <h1 class="titles">Ativar/Desativar</h1>
+
+                    <div class="slds-grid slds-gutters slds-p-around-20">
+
+                        <div class="slds-col">
+                        <!-- Button toogle-->
+                            <lightning-input data-id="toggle1" type="toggle" label="Cliente optou pela avaliação emergencial?" onchange={changeToggle} checked={AceiteAvaliacao} message-toggle-active="Sim" message-toggle-inactive="Não"></lightning-input>
+                        <!-- Toogle-->
+                        </div>
+
+                        <div class="slds-col">
+                            <h4 class="titles2">Data da última alteração</h4>
+                            <h2 class="conta-values">{DataUltimaModificacao}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Informações sobre valores, taxas e limites 
+            <div class="taxas-valores-limites">
+                <h2 class="titles">Informações sobre taxas, valores e limites</h2>
+                <div class="mensagem">
+                    <lightning-icon style="color:yellow;" icon-name="utility:warning" alternative-text="Warning!" title="Warning" size="x-small"></lightning-icon>
+                    <h4 class="mensagem-texto">É importante salientar que, ao informar ao cliente que os limites, valores e/ou percentuais aqui apresentados podem mudar de acordo com o perfil.</h4>
+                </div>
+
+                <h3 class="titles">Taxa de rotativo</h3>
+
+                <div class="taxa-rotativo back-values"> 
+                    <div class="slds-grid slds-gutters slds-p-around-20">
+                        <div class="slds-col slds-1-of-3 slds-p-left_medium">
+                            <h4 class="titles2">Taxa em dia</h4>
+                            <h2 class="conta-values">{taxaEmDia}</h2>
+                        </div>
+
+                        <div class="slds-col  slds-1-of-3 slds-p-left_medium">
+                            <h4 class="titles2">Taxa em atraso</h4>
+                            <h2 class="conta-values">{taxaEmAtraso}</h2>
+                        </div>
+
+                        <div class="slds-col  slds-1-of-3 slds-p-left_medium">
+                            <h4 class="titles2">Taxa utilizada na última fatura fechada</h4>
+                            <h2 class="conta-values">{taxaUltimaFaturaFechada}</h2>
+                        </div>
+
+                    </div>
+                </div>
+                
+                </div>
+
+                -->
+                
+                <!-- Preenchimento de caso -->
+                <div class="preenchimento-caso">
+                    <h1 class="titles">Preenchimento de caso</h1>
+                    <div class="preenchimento-caso-values">
+                        <div class="slds-grid slds-gutters" >
+                            <div class="slds-col">
+                                <lightning-combobox
+                                    name="Origem" 
+                                    label="Origem"
+                                    value={valueOrigin}
+                                    placeholder="Selecione a origem"
+                                    options={comboboxOptionsOrigin}
+                                    onchange={handleChangeOrigem}
+                                    >
+                                </lightning-combobox>
+                            </div>
+
+                            <div class="slds-col">
+                                <lightning-combobox
+                                name="Canal" 
+                                label="Canal"
+                                value={valueCanal}
+                                placeholder="Selecione o canal"
+                                options={comboboxOptionsCanal}
+                                onchange={handleChangeCanal}
+                                >
+                            </lightning-combobox>
+                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            <footer class="slds-modal__footer slds-grid slds-grid_align-spread">
+                <button class="slds-button slds-button_neutral" aria-label="Cancel and close" onclick={closeQuickAction}>Voltar</button>
+                <button class="slds-button slds-button_brand" onclick={prosseguirTermos} disabled={disabledProsseguir}>Prosseguir</button>
+            </footer>
+    </template>
+
+
+    <!--SEGUNDO MODAL-->
+    <template if:true={showModalTermos}>
+        <div if:true={spinner}>
+            <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+        </div>
+        <header class="slds-modal__header">
+            <h1 id="modal-heading-02" class="slds-modal__title slds-hyphenate"> Avaliação emergencial de crédito</h1>
+        </header>
+        <div class="div-termo">
+            <lightning-formatted-rich-text value={templateTermos}></lightning-formatted-rich-text>
+        </div>
+
+        <footer class="slds-modal__footer slds-grid slds-grid_align-spread">
+            <button class="slds-button slds-button_neutral" aria-label="Cancel and close" onclick={handleVoltarDadosConta}>Voltar</button>
+            <button class="slds-button slds-button_brand" onclick={prosseguirAlteracao}>Prosseguir</button>
+        </footer>
+
+    </template>
+
+
+    <!--TERCEIRO MODAL-->
+    <template if:true={showModalAlteracao}>
+        <header class="slds-modal__header">
+            <h1 id="modal-heading-03" class="slds-modal__title slds-hyphenate"> Avaliação emergencial de crédito</h1>
+        </header>
+        <div class="body-alteracao">
+            <div class="retorno-api" if:false={AceiteAvaliacao}>
+                <lightning-icon style="color:yellow;" icon-name="action:approval" alternative-text="Approved" title="Approved" size="small"></lightning-icon>
+                <h1 class="texto-retorno">Ativação de Avaliação emergencial realizada!</h1>
+            </div>
+
+            <div class="retorno-api" if:true={AceiteAvaliacao}>
+                <lightning-icon style="color:yellow;" icon-name="action:approval" alternative-text="Approved" title="Approved" size="small"></lightning-icon>
+                <h1 class="texto-retorno">Desativação de Avaliação emergencial realizada com sucesso!</h1>
+            </div>
+
+            <div class="alteracao-info">
+                <div class="protocolo-info">
+                    <h3 style="font-size: 16px;font-weight:400;font-family:'Segoe UI';">Protocolo:</h3>
+                    <h3 style="font-size:16px;font-weight:700;font-family:'Segoe UI';margin-bottom:20px;">{numeroProtocolo}</h3>
+
+                    <h4 style="font-size:13px;font-weight:400;font-family:'Segoe UI';">17/10/2023</h4>
+                    
+                    
+                </div>
+
+                <div class="caso-info">
+                    <h1 style="font-size:16px;font-weight:600;font-family:'Segoe UI; margin-top:20px;">Informações do caso:</h1>
+
+                    <div class="slds-grid slds-gutters slds-p-around-20">
+                        <div class="slds-col">
+                            <h4 class="titles2">Origem</h4>
+                            <h2 class="conta-values">{valueOrigin}</h2>
+                        </div>
+
+                        <div class="slds-col">
+                            <h4 class="titles2">Canal</h4>
+                            <h2 class="conta-values">{valueCanal}</h2>
+                        </div>
+
+                        <div class="slds-col">
+                            <h4 class="titles2">Assunto</h4>
+                            <h2 class="conta-values">Cartão</h2>
+                        </div>
+
+                        <div class="slds-col" if:false={AceiteAvaliacao}>
+                            <h4 class="titles2">Evento</h4>
+                            <h2 class="conta-values">Ativação de avaliação emergencial de crédito</h2>
+                        </div>
+
+                        <div class="slds-col" if:true={AceiteAvaliacao}>
+                            <h4 class="titles2">Evento</h4>
+                            <h2 class="conta-values">Desativação de avaliação emergencial de crédito</h2>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+        <footer class="slds-modal__footer slds-grid slds-grid_align-spread">
+            <button class="slds-button slds-button_neutral" aria-label="Cancel and close" onclick={navegateToIncluir}>Incluir mais um adicional</button>
+            <button class="slds-button slds-button_brand" onclick={viewToCase}>Ir para o caso</button>
+        </footer>
+    </template>
+</template>

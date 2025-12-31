@@ -1,0 +1,250 @@
+.title {
+    font-size: 20px;
+    color: #080707;
+    text-align: center;
+    padding: 20px 0;
+    box-shadow: 0px 1px 0px #DDDBDA;
+}
+
+.title p {
+    font-size: 16px;
+}
+
+.cmpName {
+    font-size: 14px;
+}
+
+.cmpValue {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.iconInfo {
+    background-color: aliceblue;
+    border-radius: 50%;
+}
+
+.boxCartao {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    height: 70px;
+    margin-bottom: 5px;
+}
+
+.boxCartao div {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.infoCartao {
+    width: 28%;
+}
+
+.textAlert {
+    font-weight: 500;
+}
+
+
+.alertMessageAlteracao{
+    background: #F9B765;
+    height: 58px;
+    padding-top: 16px;
+    padding-left: 16px;
+    padding-bottom: 16px;
+    margin-right: 3px;
+    margin-left: 2px;
+    display: flex;
+    align-items: center;
+}
+
+.textContainerAlteracao{
+    display: flex;
+    flex-direction: column;
+}
+
+.textAlertAlteracao{
+    color: #080707;
+    font-family: 'Segoe UI';
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/*Endereço*/
+.boxCardEndereco {
+    box-shadow: 0px 1px 0px #DDDBDA;
+    padding-bottom: 20px;
+    margin-top: 10px;
+}
+
+.firstUlEnd {
+    width: 500px;
+}
+
+.secondListEnd {
+    justify-content: start;
+    width: 500px;
+}
+
+.thirdListEnd {
+    justify-content: start;
+    width: 600px;
+}
+
+.boxCardEndereco ul li {
+    margin-right: 5px;
+}
+
+.boxCardEndereco ul {
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* FIM ENDEREÇO*/
+
+/*Nome Cartão*/
+.boxCardNomeCartao {
+    margin-top: 2px;
+}
+
+.firstUlNmCartao {
+    width: 600px;
+}
+
+.secondListNmCartao {
+    justify-content: start;
+    width: 300px;
+}
+
+.thirdListNmCartao {
+    justify-content: start;
+    width: 600px;
+}
+
+.boxCardNomeCartao ul li {
+    margin-right: 5px;
+}
+
+.boxCardNomeCartao ul {
+    margin: 20px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+/*Nome Cartão*/
+
+.boxInputs ul {
+    display: flex;
+    justify-content: start;
+    max-width: 90%;
+    flex-wrap: wrap;
+}
+
+.boxInputs ul li {
+    width: 48%;
+    margin-bottom: 10px;
+}
+
+.lightningInput {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
+footer {
+    box-shadow: 0px -1px 0px #DDDBDA;
+    /* margin-top: 30px; */
+    background-color: #F3F2F2;
+}
+
+.boxFooter {
+    padding: 20px;
+}
+
+.boxFooter ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.boxFooter ul li:first-child {
+    text-align: center;
+}
+
+.boxFooter ul li:last-child {
+    text-align: center;
+}
+
+.customProgress {
+    --lwc-progressBarColorBackgroundFill: green !important;
+}
+
+.customProgress .slds-progress {
+    max-width: 85% !important;
+}
+
+.txtInfosBoxTwo {
+    margin-bottom: 10px;
+}
+
+.listTwo {
+    margin-bottom: 20px;
+    padding-left: 17px;
+}
+
+.listTwo li {
+    list-style-type: circle;
+}
+
+.alerta {
+    font-size: 14px;
+    color: #1b1b1b;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 15px;
+    margin: 5px 2px;
+    background-color: #fcb45c;
+    word-wrap: break-word;
+    vertical-align: middle;
+
+}
+
+.alertaLeft {
+    text-align: left;
+    --sds-c-icon-color-foreground-default: #252525;
+}
+
+.alertaRight {
+    text-align: right;
+    padding-top: 5px;
+}
+
+.liCenter {
+    padding-top: 10px;
+}
+
+.cmpCopy {
+    font-size: 12px;
+    margin-top: -10px;
+    margin-bottom: -10px;
+}
+
+.helpIcon {
+    position: absolute;
+    top: 1.3rem;
+    left: 0.5rem;
+}
+
+.slds-m-right_x-small {
+    margin-right: 0.25rem;
+}
+
+.fundoNomeReduzido {
+    padding: 0px 30px;
+    background-color: #FFFFFF;
+}

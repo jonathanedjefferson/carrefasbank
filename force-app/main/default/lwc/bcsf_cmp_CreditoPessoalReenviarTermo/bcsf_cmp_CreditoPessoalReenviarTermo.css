@@ -1,0 +1,156 @@
+.botao_fechar{
+    background-color: transparent;
+}
+.icon_botao_fechar{
+    --slds-c-icon-color-foreground-default: #FFFFFF;
+}
+.container-modal{
+    padding: 0;
+    margin: 0;
+}
+.header-modal{
+    padding: 16px;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 30px;
+    letter-spacing: 0px;
+    text-align: center;
+    border-bottom: 1px solid #C9C9C9;
+}
+.conteudo-modal{
+    padding: 0px 24px;
+}
+.footer-modal{
+    width: 100%;
+    display: flex;
+    background-color: #F3F2F2;
+    padding: 16px 24px;
+    border-top: 1px solid #C9C9C9;
+}
+.btnVoltar{
+    margin-right: auto;
+}
+.btnAvancar{
+    margin-left: auto;
+}
+.subtitulo-modal{
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 27px;
+}
+.box-modalidade-envio {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; 
+    border-bottom: 1px solid #C9C9C9;
+}
+.input-email{
+    max-width: 300px;
+}
+
+.subtitle {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+}
+
+.label-dados{
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.value-dados{
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+}
+
+.label-detalhe{
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.valor-detalhe{
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 21px;
+}
+
+.separator {
+    box-shadow: 0px 1px 0px #DDDBDA;
+}
+
+.logo > img {
+    max-width: 100%;
+    height: 45px;
+}
+
+.flex-item {
+    display: flex;
+}
+
+.justify-content-between {
+    justify-content: space-between;
+}
+
+.text-bold {
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 600;
+}
+
+.alert{
+    background-color: #FFB75D;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.alert p {
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.background-color-grey {
+    background-color: #F8F9FA;
+}
+
+.background-color-none {
+    background-color: none;
+}
+
+.color-icon {
+     --sds-c-icon-color-foreground-default: #3E3E3C;
+}
+
+.box-resumo-solicitacao{
+    border-bottom: 1px solid #ECEBEA;
+}
+
+
+.finalizado-sucesso{
+    display: flex;
+    --slds-c-icon-color-foreground-default: #027E46;
+}
+.resumo-operacao{
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.box-resumo-caso{
+    display: flex;
+    flex-direction: column;
+}
+
+.resumo-caso{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.resumo-caso li{
+    width: fit-content;
+}

@@ -1,0 +1,268 @@
+<template>
+    <div if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <div class="title">Ativar/Inativar cartão</div>
+    <div class="c-container">
+
+        <div class="boxSteps">
+            <!-- Primeiro bloco -->
+            <template if:true={stepOne}>
+                <template if:true={showCardPrincipal}>
+                    <div class="boxCardPrincipal">
+                        <ul class="firstUl">
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Titular da conta</div>
+                                    <div class="cmpValue">{nome}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="logo"><img src={logoTipo}></div>
+                                <div class="texts">
+                                    <div class="cmpName">Tipo de conta</div>
+                                    <div class="cmpValue">{tipoConta}</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </template>
+                <!-- <label>Selecione o cartão desejado</label>  -->
+                <div class="boxCartao">
+                    <lightning-combobox label="Selecione o cartão desejado" name="progress" value={value}
+                        placeholder={selectedCardLabel} options={optionsCartoes}
+                        onchange={handleChangeCartao}></lightning-combobox>
+                </div>
+            </template>
+
+        </div>
+    </div>
+    <div>
+        <template if:true={stepTwo}>
+            <div class="central">
+                <div class="alerta">
+                    <h2><lightning-icon icon-name="utility:warning" alternative-text="Warning!"
+                            title="Warning"></lightning-icon>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Lembre-se de confirmar a
+                        validade do cartão</h2>
+                </div>
+                <div class="boxCardCentral">
+                    <ul class="firstUl">
+                        <li>
+                            <div class="texts">
+                                <div class="cmpName">Número do cartão</div>
+                                <div class="cmpValue">{numeroCartao}</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="texts">
+                                <div class="cmpName">Data de validade</div>
+                                <div class="cmpValue">{dataVencimento}</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="texts">
+                                <div class="cmpName">Status</div>
+                                <div class="cmpValue">{statusCartao}</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="slds-form-element">
+                                <label class="slds-checkbox_toggle slds-grid">
+                                    <lightning-input type="toggle" message-toggle-active="Ativo"
+                                        message-toggle-inactive="Inativo" onchange={changeToggle} checked={cartaoAtivo}
+                                        name="input1" variant="label-hidden"></lightning-input>
+                                </label>
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </template>
+    </div>
+    <div class="c-container">
+        <template if:true={stepTwo}>
+            <div class="h2">Preenchimento de caso</div>
+            <div class="boxInputs">
+                <lightning-record-edit-form object-api-name="Case">
+                    <ul>
+                        <li>
+                            <label>Origem</label>
+                            <lightning-input-field language="" value={valueOrigem} field-name="Origin"
+                                class="lightningInput" placeholder="--Nenhuma--" onchange={handleChangeOrigem}
+                                variant="label-hidden">
+                            </lightning-input-field>
+                        </li>
+                        <li>
+                            <label>Canal</label>
+                            <lightning-input-field value={valueCanal} field-name="CanalEntrada__c"
+                                class="lightningInput" placeholder="--Nenhuma--" onchange={handleChangeCanal}
+                                variant="label-hidden">
+                            </lightning-input-field>
+                        </li>
+                    </ul>
+                </lightning-record-edit-form>
+            </div>
+        </template>
+        <template if:true={stepThree}>
+            <div class="h1">
+                <lightning-icon icon-name="utility:success" alternative-text="Success!" variant="success"
+                    title="success variant" size="small"></lightning-icon>
+                <label class="texto-label ml-10">&nbsp;&nbsp;&nbsp;Cartão {novoStatusCartao}!</label>
+            </div>
+            <div class="boxCardCentral">
+                <div class="boxCardPrincipal">
+                    <div class="boxSaida">
+                        <lightning-record-edit-form object-api-name="Case">
+                            <p style="font-size: 16px">Protocolo: <strong>{numProtocolo}</strong></p>
+                            <p>{dataAtual}</p><br>
+                            <div class="h3">Detalhes da alteração:</div>
+                            <ul>
+                                <li>
+                                    <div class="texts">
+                                        <div class="cmpName">Situação</div>
+                                        <div class="cmpValue">{situacaoCartao}</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="texts">
+                                        <div class="cmpName">Número do cartão</div>
+                                        <div class="cmpValue">{numeroCartao}</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="texts">
+                                        <div class="cmpName">Data de validade</div>
+                                        <div class="cmpValue">{dataVencimento}</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="texts">
+                                        <div class="cmpName">Status</div>
+                                        <div class="cmpValue">{statusCartao}</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </lightning-record-edit-form>
+                    </div>
+                    <template if:true={stepFour}>
+                        <div class="boxSaida">
+                            <lightning-record-edit-form object-api-name="Case">
+                                <div class="h4">Repasse as informações abaixo ao cliente</div>
+                                <ul>
+                                    <!-- <li>
+                                <div class="texts">
+                                    <div class="cmpName">Dia de vencimento</div>
+                                    <div class="cmpValue">{numeroCartao}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Melhor dia de compra</div>
+                                    <div class="cmpValue">{dataVencimento}</div>
+                                </div>
+                            </li> -->
+                                    <li>
+                                        <div class="texts">
+                                            <div class="cmpName">Limite total</div>
+                                            <div class="cmpValue">
+                                                <lightning-formatted-number value={valorLimiteTotal}
+                                                    format-style="currency" currency-code="BRL">
+                                                </lightning-formatted-number>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="texts">
+                                            <div class="cmpName">Limite disponível</div>
+                                            <div class="cmpValue" format-style="currency" currency-code="BRL">
+                                                <lightning-formatted-number value={valorLimiteDisponivel}
+                                                    format-style="currency" currency-code="BRL">
+                                                </lightning-formatted-number>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="texts">
+                                            <div class="cmpName"></div>
+                                            <div class="cmpValue"></div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="texts">
+                                            <div class="cmpName"></div>
+                                            <div class="cmpValue"></div>
+                                        </div>
+                                    </li>
+
+                                </ul>
+                            </lightning-record-edit-form>
+                        </div>
+                    </template>
+                </div>
+                <div class="boxSaida">
+                    <lightning-record-edit-form object-api-name="Case">
+                        <div class="h3">Informações do caso:</div>
+                        <ul>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Origem</div>
+                                    <div class="cmpValue">{valueOrigem}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Canal</div>
+                                    <div class="cmpValue">{valueCanal}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Assunto</div>
+                                    <div class="cmpValue">{valueAssunto}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Evento</div>
+                                    <div class="cmpValue">{valueEvento}</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </lightning-record-edit-form>
+                </div>
+            </div>
+        </template>
+    </div>
+    <footer>
+        <div class="boxFooter">
+            <ul>
+                <template if:true={stepOne}>
+                    <li class="liBtnBotao">
+                        <lightning-button label="Cancelar" onclick={closeQuickAction}
+                            class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                </template>
+                <template if:true={stepOne}>
+                    <li class="liBtnBotao">
+                        <lightning-button style='text-align:right' variant="brand" label="Salvar alterações"
+                            onclick={handleAtivarInativarCartao} disabled={buttonPross}
+                            class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                </template>
+                <template if:true={stepThree}>
+                    <li class="liBtVoltar">
+                        <lightning-button label="Ativar/Inativar outro cartão" onclick={handleButtonVoltar}
+                            class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                </template>
+                <template if:true={stepThree}>
+                    <li class="liBtnCaso">
+                        <lightning-button variant="brand" label="Ir para o caso" onclick={irCase}
+                            class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </footer>
+</template>

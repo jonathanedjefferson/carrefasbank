@@ -1,0 +1,260 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+    </div>
+    <h1 lwc:if={perfilFraude} class="title-header">Cadastro de celular seguro</h1>
+    <h1 lwc:else class="title-header">Solicitar cadastro de celular seguro</h1>
+
+    <div lwc:if={pageCenarios} class="container-cenarios padding-telas">
+        <div class="avisoAlert">
+            <lightning-icon class="slds-m-horizontal_medium" icon-name="utility:warning" size="x-small" alternative-text="Atenção"></lightning-icon>
+            <p>Orientar o cliente que existe a opção de cadastrar o celular seguro nos terminais de auto serviço disponíveis nas lojas.</p>
+        </div>
+        <h2>Após a orientação, preencha qual cenário o cliente se encaixa:</h2>
+        <div>
+            <lightning-input 
+                type="radio"  
+                name="option" 
+                label="Cliente aceitou realizar o cadastro do celular seguro na loja mais próxima" 
+                value="cenario1"
+                class="cenarios-itens"
+                onchange={handleCenarioChange}>
+            </lightning-input>
+            <lightning-input 
+                type="radio" 
+                name="option" 
+                label="Cliente não aceitou ir até a loja mais próxima" 
+                value="cenario2"
+                class="cenarios-itens slds-m-vertical_small"
+                onchange={handleCenarioChange}>
+            </lightning-input>
+            <lightning-input 
+                type="radio" 
+                name="option" 
+                label="Cliente não possui loja próxima" 
+                value="cenario3"
+                class="cenarios-itens"
+                onchange={handleCenarioChange}>
+            </lightning-input>
+        </div>
+    </div>
+
+    <div lwc:if={pageSolicitarCaso} class="container-solicitar padding-telas">
+        <h2>Dados da conta</h2>
+        <ul class="dados-conta separador">
+            <li>
+                <p class="nameText">Titular</p>
+                <p class="valueText">{nomeCliente}</p>
+            </li>
+            <li class="container-logo">
+                <div class= "logo"><img src={logoTipo}></div>
+                <div>
+                    <p class="nameText">Tipo de conta</p>
+                    <p class="valueText">{tipoConta}</p>
+                </div>
+            </li>
+            <li>
+                <p class="nameText">CPF</p>
+                <p class="valueText">{cpfFormatado}</p>
+            </li>
+            <li>
+                <p class="nameText">Conta</p>
+                <p class="valueText">{numeroConta}</p>
+            </li>
+            <li>
+                <p class="nameText">Status Geral</p>
+                <p class="valueText">{statusConta}</p>
+            </li>
+        </ul>
+        <h2>Dados do celular seguro</h2>
+        <ul class="dados-itens">
+            <li class="slds-m-right_x-large">
+                <p class="nameText">Celular atual</p>
+                <p class="valueText">{telefoneAntigo}</p>
+            </li>
+            <li>
+                <p class="nameText">Atual é celular seguro?</p>
+                <p class="valueText">{celularSeguro}</p>
+            </li>
+        </ul>
+        <h3>Preencha o telefone celular</h3>
+        <ul class="dados-itens separador margin-separador">
+            <li class="slds-m-right_x-small">
+                <lightning-input 
+                    name="ddd" 
+                    data-name="ddd" 
+                    type="tel"
+                    label="DDD" 
+                    max-length="2"
+                    class="field-ddd date-format-hide" 
+                    value={ddd}
+                    onchange={handleField} 
+                    required>
+                </lightning-input>
+            </li>
+            <li>
+                <lightning-input 
+                    name="telefone" 
+                    data-name="telefone"
+                    type="tel" 
+                    label="Telefone"
+                    max-length="9"
+                    placeholder="Escreva aqui o número" 
+                    class="date-format-hide" 
+                    value={telefone}
+                    onchange={handleField} 
+                    required>
+                </lightning-input>
+            </li>
+        </ul>
+        <h2>Preenchimento de caso</h2>
+        <ul class="dados-itens">
+            <li class="slds-m-right_xx-large">
+                <p class="nameText">Assunto</p>
+                <p class="valueText">Cartão</p>
+            </li>
+            <li class="slds-m-right_xx-large">
+                <p class="nameText">Evento</p>
+                <p class="valueText">{evento}</p>
+            </li>
+            <li lwc:if={showMotivo}>
+                <p class="nameText">Motivo</p>
+                <p class="valueText">{motivo}</p>
+            </li>
+        </ul>
+        <lightning-record-edit-form object-api-name="Case">
+            <ul class="fields-caso">
+                <li class="field-caso" >
+                    <label class="field-label">Origem</label>
+                    <lightning-input-field 
+                        language=""
+                        name="origemCaso" 
+                        value={origemCaso}
+                        field-name="Origin" 
+                        placeholder="--Nenhuma--"
+                        onchange={handleField} 
+                        variant="label-hidden"> 
+                    </lightning-input-field>
+                </li>
+                <li class="field-caso">
+                    <label class="field-label">Canal</label>
+                    <lightning-input-field
+                        value={canalCaso}
+                        name="canalCaso" 
+                        field-name="CanalEntrada__c" 
+                        placeholder="--Nenhuma--"
+                        onchange={handleField} 
+                        variant="label-hidden"> 
+                    </lightning-input-field>
+                </li>
+            </ul>    
+        </lightning-record-edit-form> 
+    </div>
+
+    <div lwc:if={pageConfirmarDados} class="container-info padding-telas">
+        <div class="avisoAlert">
+            <lightning-icon class="slds-m-horizontal_medium" icon-name="utility:warning" size="x-small" alternative-text="Atenção"></lightning-icon>
+            <p>Este protocolo será direcionado ao setor responsável.</p>
+        </div>
+        <h2>Confirme os dados</h2>
+        <p class="info-text">Antes de finalizar, confirme com o cliente se os dados estão corretos</p>
+        <div class="infomacoes">
+            <ul class="dados-conta separador">
+                <li>
+                    <p class="nameText">Titular</p>
+                    <p class="valueText">{nomeCliente}</p>
+                </li>
+                <li class="container-logo">
+                    <div class= "logo"><img src={logoTipo}></div>
+                    <div>
+                        <p class="nameText">Tipo de conta</p>
+                        <p class="valueText">{tipoConta}</p>
+                    </div>
+                </li>
+                <li>
+                    <p class="nameText">CPF</p>
+                    <p class="valueText">{cpfFormatado}</p>
+                </li>
+                <li>
+                    <p class="nameText">Conta</p>
+                    <p class="valueText">{numeroConta}</p>
+                </li>
+                <li>
+                    <p class="nameText">Status Geral</p>
+                    <p class="valueText">{statusConta}</p>
+                </li>
+            </ul>
+            <h2>Dados do celular seguro</h2>
+            <ul class="dados-itens">
+            <li class="slds-m-right_xx-large">
+                <p class="nameText">Celular atual</p>
+                <p class="valueText">{telefoneAntigo}</p>
+            </li>
+            <li>
+                <p class="nameText">Novo celular seguro</p>
+                <p class="valueText">{telefoneCompleto}</p>
+            </li>
+            </ul>
+            <h2>Preenchimento de caso</h2>
+            <ul class="dados-itens">
+                <li class="margin-info">
+                    <p class="nameText">Assunto</p>
+                    <p class="valueText">Cartão</p>
+                </li>
+                <li class="margin-info">
+                    <p class="nameText">Evento</p>
+                    <p class="valueText">{evento}</p>
+                </li>
+                <li>
+                    <p class="nameText">Motivo</p>
+                    <p class="valueText">{motivo}</p>
+                </li>
+            </ul>
+            <ul class="dados-itens">
+                <li class="slds-m-right_xx-large">
+                    <p class="nameText">Origem</p>
+                    <p class="valueText">{origemCaso}</p>
+                </li>
+                <li>
+                    <p class="nameText">Canal</p>
+                    <p class="valueText">{canalCaso}</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div lwc:elseif={pageCasoGerado} class="container-casoGerado">
+        <lightning-icon icon-name="action:approval" size="xx-small" alternative-text="Sucesso" title="Sucesso" class="success-icon"></lightning-icon>
+        <div class="casoGerado">
+            <h1>{textCasoGerado}</h1>
+            <div class="dados-casoGerado">
+                <h2>Caso: <span>{numProtocolo}</span></h2>
+                <p>{dataAtualFormatada}</p>
+            </div>
+            <h2 class="slds-border_top">Informações do caso:</h2>
+            <ul >
+                <li>
+                    <p class="casoGeradoName text-cinza-1">Origem</p>
+                    <p class="casoGeradoValue">{origemCaso}</p>
+                </li>
+                <li>
+                    <p class="casoGeradoName text-cinza-1">Canal</p>
+                    <p class="casoGeradoValue">{canalCaso}</p>
+                </li>
+                <li>
+                    <p class="casoGeradoName text-cinza-1">Assunto</p>
+                    <p class="casoGeradoValue">Cartão</p>
+                </li>
+                <li>
+                    <p class="casoGeradoName text-cinza-1">Evento</p>
+                    <p class="casoGeradoValue">{evento}</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>
+        <lightning-button label={labelBtnVoltar} title="Voltar" onclick={handleBtnVoltar}></lightning-button>
+        <lightning-button variant="brand" label={labelBtnPross} title="Prosseguir" onclick={handleBtnPross} disabled={disabledBtnPross}></lightning-button>
+    </footer>
+</template>

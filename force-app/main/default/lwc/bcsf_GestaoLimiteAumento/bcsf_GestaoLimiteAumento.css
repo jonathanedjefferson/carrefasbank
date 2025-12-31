@@ -1,0 +1,167 @@
+.c-container {
+  padding: 24px;
+}
+
+.title {
+  font-size: 20px;
+   color:#080707;
+   text-align:center;
+   padding: 14px 0;
+   font-weight: 400;
+   line-height: 30px;
+   box-shadow: 0px 1px 0px #DDDBDA;
+}
+
+.subtitle {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 27px;
+  color: #181818
+}
+
+.subtitle-2 {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 27px;
+  text-align: left;
+}
+
+.listDados, .listInformacoes {
+  display: flex;
+}
+
+.listDadosCaso {
+  display: flex;
+  justify-content: space-between;
+}
+
+.listDados li {
+  width: 22%;
+}
+
+.listInformacoes li {
+  width: 50%;
+}
+
+.listInformacoes li.tipoConta {
+  display: inline-flex;
+}
+
+.cmpLabel {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 20px;
+  color: #444444;
+}
+
+.cmpValue {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: #181818;
+}
+
+.logo > img {
+  max-width: 100%;
+  height: 48px;
+}
+
+.boxCaso ul {
+  display: flex;
+   justify-content: space-between;
+   max-width: 65%;
+   flex-wrap: wrap-reverse;
+}
+
+.boxCaso ul li {
+  width: 47%;
+}
+
+
+.boxCaso ul li label, .msgErro {
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
+}
+
+.cmpLabel-input {
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 700;
+  padding-left: 8px;
+  display: flex;
+}
+
+.alert{
+  background-color: #FFB75D;
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+}
+
+.color-icon {
+  --slds-c-icon-color-foreground-default: #181818;
+}
+
+.alert p {
+  font-size: 13px;
+  line-height: 20px;
+  color: #080707;
+}
+
+.alert a {
+  font-size: 13px;
+  line-height: 20px;
+  color: #080707;
+}
+
+.alert .link {
+  text-decoration: underline;
+}
+
+.separator {
+  box-shadow: 0px 1px 0px #DDDBDA;
+}
+
+footer {
+  box-shadow: 0px -1px 0px #DDDBDA;
+  background-color: #F3F2F2;
+}
+
+.boxFooter {
+  padding: 12px;
+}
+
+.boxFooter ul {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.boxFooter ul li {
+  width: 76%;
+}
+
+.boxFooter ul li:first-child {
+  width: auto;
+  text-align: center;
+}
+
+.boxFooter ul li:last-child {
+  width: auto;
+  text-align: center;
+}
+
+.color-red {
+  color: #A61A14;
+}
+
+.bkg-dados {
+  background-color: #F8F9FA;
+}
+
+.msg {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+}

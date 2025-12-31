@@ -1,0 +1,289 @@
+:host {
+    --font-size-small: 10px;
+    --font-size-medium: 12px;
+    --font-size-large: 14px;
+    --font-size-xlarge: 16px;
+    --font-size-xxlarge: 18px;
+    margin: 0;
+    padding: 0;
+}
+hr{
+    margin: 0;
+    padding: 0;
+}
+.container {
+    padding: 0px 24px;
+}
+.title{
+    font-weight: 400;
+    font-size: 20px;
+    color:#080707;
+    text-align:center;
+    padding: 15px 0px;
+    box-shadow: 0px 1px 0px #DDDBDA;
+}
+/* titular e tipo conta */
+.boxcardHeader{
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+.boxcardHeader ul{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.boxcardHeader ul li{
+    width: 50%;
+}
+.tipoConta {
+    display: inline-flex;
+}
+.logo {
+    margin-right: 5px;
+}
+.logo > img {
+    max-width: 100%;
+    height: 45px;
+}
+/* input de dados */
+.infoName{
+    font-size: var(--font-size-medium);
+    font-weight: 400;
+    padding:0;
+    margin:0;
+}
+.infoValue{
+    font-size: var(--font-size-xlarge);
+    font-weight: 600;
+    padding:0;
+    margin: 1px 0px;
+}
+.toggleBoxCardStatus{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.accordionstyle {
+    --slds-c-accordion-summary-color-background: #F3F2F2;
+    --slds-c-accordion-heading-font-size: var(--font-size-xlarge);;
+    --slds-c-accordion-heading-line-height: 24px;
+    --slds-c-accordion-section-spacing-block-start: 4px;
+    --slds-c-accordion-section-spacing-block-end: 4px;
+    --slds-c-accordion-section-spacing-inline-start: 8px;
+    --slds-c-accordion-color-border: #DDDBDA;
+    margin-bottom: 20px;
+}
+.accordionstyle lightning-accordion-section{
+    background-color:  #F3F2F2;
+    border-color: #DDDBDA;
+}
+.accordionstyle lightning-accordion-section p {
+    padding: 12px;
+    font-size: var(--font-size-large);
+    text-align: justify;
+}
+.toggleStatus{
+    margin-top: 5px;
+}
+.inputDeDados{
+    background-color: #F8F9FA;
+    padding: 24px;
+    padding-top: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.inputDeDados ul{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.inputDeDados ul li{
+    width: 48%;
+    margin-bottom: 16px;
+}
+.inputDeDados h1{
+    font-size: var(--font-size-xxlarge);
+}
+.aviso{
+    display: flex;
+    line-height: 24px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 24px;
+}
+.labelPersonalizada{
+    display: flex; 
+    line-height: 26px;
+}
+.labelPersonalizada lightning-helptext{
+    margin-left: 5px;
+}
+.radioGrupo{
+    margin-top: -8px;
+}
+.confimarSolicitacao{
+    font-size: var(--font-size-xxlarge);
+    font-weight: 600;
+}
+.resumoSolicitacao .toggle{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.resumoSolicitacao ul{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.resumoSolicitacao ul li{
+    width: 48%;
+    margin-bottom: 20px;
+}
+.formaPagamento {
+    margin-bottom: 15px;
+}
+.formaPagamento h1{
+    font-size: var(--font-size-xxlarge);
+}
+.alertaAtivacao{
+    background-color: #FFB75D;
+    display: flex;
+    align-items: center;
+    padding: 12px 12px;
+    margin: 20px 0px;
+    --slds-c-icon-color-foreground-default: #3e3e3c;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+}
+.preenchimentoCaso ul{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 95%;
+}
+.preenchimentoCaso ul li{
+    width: 48%;
+    margin-bottom: 20px;
+}
+.preenchimentoCaso h1{
+    font-size: var(--font-size-xxlarge);
+    padding: 10px 0px 10px;
+}
+.avisoSite{
+    display: flex;  
+    align-items: center;
+    --slds-c-icon-color-foreground-default: #ffb75d;
+    margin-left: 12px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+}
+.IconeSuccess{
+    --slds-c-icon-color-foreground-default: #2e844a;
+}
+.IconeClock{
+    --slds-c-icon-color-foreground-default: #e4a201;
+}
+.dadosDaSolicitacao .dadosSolicitacaoTitulo{
+    display: flex;
+    margin: 20px 0px;
+}
+.dadosDaSolicitacao .avisoTempoAlteracao{
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background-color: #f3f2f2;
+    margin: 20px 0px;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+}
+.dadosSolicitacaoTitulo h1{
+    font-size: var(--font-size-xxlarge);
+} 
+.dadosDaSolicitacao ul{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.dadosDaSolicitacao ul li{
+    width: 30%;
+    margin-bottom: 20px;
+}
+.InformacoesDoCaso{
+    padding-top: 20px;
+}
+.InformacoesDoCaso h2{
+    padding-bottom: 20px;
+    font-size: var(--font-size-large);
+}
+.InformacoesDoCaso ul{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.InformacoesDoCaso ul li{
+    width: fit-content;
+    margin-bottom: 20px;
+}
+.detalheDoDebito{
+    margin-bottom: 20px;
+    font-size: var(--font-size-xlarge);
+    font-weight: 600;
+}
+.avisoCenarioDesativacao{
+    display: flex;
+    background-color: #ffb75d;
+    padding: 12px;
+    --slds-c-icon-color-foreground-default: #3e3e3c;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+}
+.avisoCenarioDesativacao .item{
+    display: flex;
+    margin-right: 5px;
+    line-height: 1.5;
+}
+.avisoCenarioDesativacao .item p{
+    margin-right: 5px;
+}
+.protocoloHeader{
+    margin-bottom: 20px;
+}
+.protocoloHeader h2{
+    font-size: var(--font-size-xlarge);
+}
+.protocoloHeader p{
+    margin-top: 5px;
+    font-size: 13px;
+}
+.avisoFuncionario{
+    --slds-c-icon-color-foreground-default: #706e6b;
+    display: flex;
+    padding: 12px;
+    margin: 20px 0px;
+    background-color: #f3f2f2;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+}
+.formaDePagamento{
+    margin-bottom: 15px;
+}
+footer{
+    box-shadow:  0px -1px 0px #DDDBDA;
+    background-color: #F3F2F2;
+}
+.boxFooter{
+    padding: 12px;
+}
+.boxFooter ul{
+    display: flex;
+    justify-content: space-between;
+}

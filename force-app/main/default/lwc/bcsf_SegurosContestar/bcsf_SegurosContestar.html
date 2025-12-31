@@ -1,0 +1,164 @@
+<template>
+    <div class="slds-grid slds-grid_align-end">
+        <lightning-button class="slds-col" label="Limpar seleção" title="Limpar seleção" onclick={handleBtnLimpar} disabled={disabledBtnLimpar}></lightning-button>
+        <lightning-button class="slds-col slds-m-left_small" variant="destructive-text" label="Contestar selecionados" title="Contestar selecionados" disabled={disabledBtnContestar} onclick={handleBtnContestarSeguros}></lightning-button>
+    </div>
+
+    <div class="custom-table-container">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th onclick={handleOrdenarNome}>
+                        Nome do Seguro
+                        <lightning-icon icon-name={iconeNome} size="x-small"></lightning-icon>
+                    </th>
+                    <th onclick={handleOrdenarMotivo}>
+                        Motivo
+                        <lightning-icon icon-name={iconeMotivo} size="x-small"></lightning-icon>
+                    </th>
+                    <th onclick={handleOrdenarData}>
+                        Data de Cance...
+                        <lightning-icon icon-name={iconeData} size="x-small"></lightning-icon>
+                    </th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={segurosFormatados} for:item="item">
+                <tr key={item.idAdesao}>
+                    <td class="smallColumn">
+                        <lightning-input type="checkbox" checked={item.checked} onchange={handleCheckSeguro} data-id={item.idAdesao}></lightning-input>
+                    </td>
+                    <td class="custom-table-itemRight" title={item.nomeProduto}><span class="item-nomeProduto">{item.nomeProduto}</span></td>
+                    <td class="custom-table-item" title={item.motivoCancelamento}><span class="item-motivo">{item.motivoCancelamento}</span></td>
+                    <td class="custom-table-item">{item.dataCancelamentoLabel}</td>
+                    <td class="custom-table-itemLeft"><a class="constestarBtn" data-id={item.idAdesao} onclick={handleBtnContestarSeguro}>Contestar</a></td>
+                </tr>
+            </template>
+            </tbody>
+        </table>
+    </div>
+
+    <template if:true={modalContestar}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open  slds-modal_medium">
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={handleFecharModalContestar}>
+                    <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close" title="Close"></lightning-icon>
+                    <span class="slds-assistive-text">Cancelar e fechar</span>
+                </button>
+                <div class="slds-modal__header">
+                    <h1 id="modal-heading-04" class="slds-modal__title slds-hyphenate" tabindex="-1">Solicitar contestação de seguro</h1>
+                    <h2 lwc:if={pageOneContestar} class="slds-m-top_small">Abertura de Protocolo</h2>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-4">
+                    <div if:true={spinner}>
+                        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+                    </div>
+                    <div lwc:if={pageOneContestar}>
+                        <div class="resumo-CasoContestar">
+                            <h1>Resumo da solicitação</h1>
+                            <div class="custom-table-container">
+                                <table class="custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Nome do Seguro</th>
+                                            <th>Contrato</th>
+                                            <th>Motivo de cancelamento / contestação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={segurosSelected} for:item="item">
+                                            <tr key={item.idAdesao}>
+                                                <td class="custom-table-itemRight"><span>{item.nomeProduto}</span></td>
+                                                <td class="custom-table-item"><span>{item.idAdesao}</span></td>
+                                                <td class="custom-table-item">{item.motivoCancelamento}</td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        
+                            <div class="container-casoContestar slds-border_top">
+                                <h1>Preenchimento de caso</h1>
+                                <ul>
+                                    <li>
+                                        <p class="nameCasoContestar">Assunto</p>
+                                        <span class="valueCasoContestar">Seguros</span>
+                                    </li>
+                                    <li>
+                                        <p class="nameCasoContestar">Evento</p>
+                                        <span class="valueCasoContestar">Contestação</span>
+                                    </li>
+                                </ul>
+                                <lightning-record-edit-form object-api-name="Case">
+                                    <ul>
+                                        <li class="field-caso" >
+                                            <label>Origem</label>
+                                            <lightning-input-field 
+                                                language=""
+                                                value={origemCasoContestar}
+                                                field-name="Origin" 
+                                                placeholder="--Nenhuma--"
+                                                onchange={handleFieldOrigemCaso} 
+                                                variant="label-hidden"> 
+                                            </lightning-input-field>
+                                        </li>
+                                        <li class="field-caso">
+                                            <label>Canal</label>
+                                            <lightning-input-field
+                                                value={canalCasoContestar}
+                                                field-name="CanalEntrada__c" 
+                                                class="field-caso" 
+                                                placeholder="--Nenhuma--"
+                                                onchange={handleFieldCanalCaso} 
+                                                variant="label-hidden"> 
+                                            </lightning-input-field>
+                                        </li>
+                                    </ul>    
+                                </lightning-record-edit-form> 
+                            </div>
+                        </div>
+                    </div>
+                    <div lwc:else class="container-casoGerado">
+                        <lightning-icon icon-name="action:approval" size="xx-small" alternative-text="Sucesso" title="Sucesso" class="success-icon"></lightning-icon>
+                        <div class="casoGerado">
+                            <h1>Contestação solicitada!</h1>
+                            <div class="dados-casoGerado">
+                                <h2>Protocolo: <span>{numProtocoloContestar}</span></h2>
+                                <p>{dataAtualFormatada}</p>
+                            </div>
+                            <h2 class="slds-border_top">Informações do caso:</h2>
+                            <ul >
+                                <li>
+                                    <p class="casoGeradoName">Origem</p>
+                                    <p class="casoGeradoValue">{origemCasoContestar}</p>
+                                </li>
+                                <li>
+                                    <p class="casoGeradoName">Canal</p>
+                                    <p class="casoGeradoValue">{canalCasoContestar}</p>
+                                </li>
+                                <li>
+                                    <p class="casoGeradoName">Assunto</p>
+                                    <p class="casoGeradoValue">Seguros</p>
+                                </li>
+                                <li>
+                                    <p class="casoGeradoName">Evento</p>
+                                    <p class="casoGeradoValue">Contestação</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div lwc:if={pageOneContestar} class="slds-modal__footer slds-modal__footer_directional">
+                    <lightning-button class="slds-button" variant="neutral" label="Voltar" title="Voltar" onclick={handleFecharModalContestar}></lightning-button>
+                    <lightning-button class="slds-button" variant="brand" label="Finalizar" title="Finalizar" disabled={disableBtnNextContestar} onclick={handleBtnNext}></lightning-button>
+                </div>
+                <div lwc:else class="slds-modal__footer">
+                    <lightning-button class="slds-button" variant="brand" label="Ir para o caso" title="Ir para o caso" onclick={handleBtnNext}></lightning-button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template> 
+</template>

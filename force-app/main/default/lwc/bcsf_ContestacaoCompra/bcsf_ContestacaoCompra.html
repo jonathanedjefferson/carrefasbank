@@ -1,0 +1,585 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <div class="lwc-header">
+        <div class="top-header separator slds-p-bottom_small slds-p-horizontal_medium">
+            <div class="slds-m-right_small">
+                <lightning-icon icon-name="standard:cancel_checkout" alternative-text="Contestação de compras" title="Contestação de compras"
+                    class="slds-avatar_large"></lightning-icon>
+            </div>
+            <div class="header-name">
+                <lightning-breadcrumbs>
+                    <lightning-breadcrumb label="Conta Financeira" onclick={voltarTabContaFinanceiraHandler}></lightning-breadcrumb>
+                    <lightning-breadcrumb label={nomeContaFinanceira} onclick={voltarTabContaFinanceiraHandler}></lightning-breadcrumb>
+                </lightning-breadcrumbs>
+                <label class="title">Contestação de compras</label>
+            </div>
+            <div class="boxMenu">
+                <lightning-combobox label="Selecione o cartão" options={optionsCartoes} onchange={handleChangeCartaoSelecionado}
+                    value={valueCartaoSelecionado} class="slds-m-right_large">
+                </lightning-combobox>
+                <lightning-input type="date" date-style="short" name="input1" label="Período inicial" placeholder="Selecionar"
+                    onchange={handleDataInicial} value={dataInicial}
+                    class="date-format-hide slds-m-right_medium"></lightning-input>
+                <lightning-input type="date" date-style="short" name="input1" label="Período final" placeholder="Selecionar"
+                    onchange={handleDataFinal} value={dataFinal} 
+                    class="date-format-hide slds-m-right_medium"></lightning-input>
+                <lightning-button variant="brand" label="Buscar compras" onclick={handleRecarregarTransacoes}
+                    class="alignVerticalEnd slds-p-bottom_xx-small"></lightning-button>
+            </div>
+        </div>
+        <template lwc:if={comRetorno}>
+            <div class="table-assets slds-p-top_large" style="height: 500px">
+                <lightning-datatable key-field="index" 
+                    data={listaTransacoes} 
+                    columns={columns}
+                    onrowselection={updateSelectedList}
+                    onrowaction={abrirDetalhesTransacao}
+                    selected-rows={selectedIdListaTransacoes}
+                    wrap-text-max-lines="1"
+                    class="slds-table_header-fixed_container slds-scrollable slds-border_top iconDuplicadaColor">
+                </lightning-datatable>
+            </div>
+            <div class="lwc-footer">
+                <div class="cmpPagina slds-p-vertical_medium" lwc:if={mostrarPaginacao}> 
+                    <div class="cmpPaginaCenter">
+                        <lightning-button-icon icon-name="utility:chevronleft" size="small" alternative-text="Voltar página" onclick={pagVoltar} disabled={disablePagVoltar}></lightning-button-icon>
+                            <span class="slds-p-horizontal_small">{pagina}</span>
+                        <lightning-button-icon icon-name="utility:chevronright" size="small" alternative-text="Ivançar página" onclick={pagIr} disabled={disablePagIr}></lightning-button-icon>
+                        <lightning-combobox 
+                            variant="label-hidden" 
+                            class = "cmpPaginaQuant"
+                            name="paginacao"
+                            value={value}
+                            placeholder="10"
+                            options={quantidadePag}
+                            onchange={handleChangePagina} >
+                        </lightning-combobox>
+                    </div>
+                    <div class="cmpPaginaDireita">
+                        Ver {pagina} - {totalPagina} de {totalItens}
+                    </div>
+                </div>
+            </div>  
+        </template>
+        <template lwc:if={semRetorno}>
+            <c-bcsf_cmp_illustration
+                illustration-type='NO_DATA'
+                heading-message='Não existem transações listadas'
+                body-message='Quando houverem transações disponíveis para contestação, elas aparecerão aqui.'>
+            ></c-bcsf_cmp_illustration>   
+        </template>
+        <template lwc:if={erroRetorno}>
+            <c-bcsf_cmp_illustration
+                illustration-type='ERROR'
+                heading-message='Falha ao realizar a busca'
+                body-message='Houve um comportamento inesperado do sistema, tente novamente.'
+                button-label="Tentar novamente"
+                oneventotentarnovamente={handleRecarregarTransacoes}
+                >
+            ></c-bcsf_cmp_illustration>
+        </template>
+        <footer>
+            <div class="pageFooter">
+                <ul class="slds-grid slds-grid_align-spread">
+                    <li class="slds-p-right_large" lwc:if={transacaoDiferentesCartoes}>
+                        <p>O cliente possui compras selecionadas em outro cartão. Caso prossiga, elas serão incluídas na solicitação de contestação.</p>
+                    </li>
+                    <li>
+                        <lightning-button variant="brand" label={labelContestarButton} onclick={handleContestarCompra} disabled={disableButtonContestar}></lightning-button>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+    </div>
+    <!-- modal start contestação-->      
+    <template lwc:if={showModal}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+            <div lwc:if={spinner} role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+                <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+            </div>
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse slds-float_right" title="Close" onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close"
+                    alternative-text="close"
+                    variant="inverse"
+                    size="small" ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <template lwc:if={showDetalheTransacao}></template>
+                <template lwc:else>
+                    <lightning-modal-header label="Contestação de compras"></lightning-modal-header>
+                </template>
+
+                <div class="slds-modal__content slds-p-around_large body" id="modal-content-id-1">
+                    <template lwc:if={showDetalheTransacao}>
+                        <div class="slds-text-align_center slds-p-bottom_small separator">
+                            <div class="titleModal">Detalhes da Compra</div>
+                            <div class="cmpName">{transacaoDetalhada.estabelecimento}</div>
+                        </div>
+                        <div class="slds-m-bottom_large slds-p-vertical_large separator">
+                            <div class="listDadosHorizontal slds-m-bottom_large"> 
+                                <div class="subTitle">Cartão</div>
+                                <div class="cmpName">
+                                    <lightning-button variant="base" name="dadosCartao" icon-name="utility:copy" label="Copiar dados do cartão"
+                                        onclick={handleCopy}></lightning-button>
+                                </div>
+                            </div>
+                            <ul class="listInformacoes">
+                                <li>
+                                    <div class="cmpName">Cartão</div>
+                                    <div class="cmpValue">{transacaoDetalhada.numeroCartaoOfuscado}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">Nome Reduzido</div>
+                                    <div class="cmpValue">{nomeReduzidoCartaoSelecionado}</div>
+                                    <div lwc:if={titularCartaoSelecionado}>
+                                        <p>Titular</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">Status cartão</div>
+                                    <div class="cmpValue">{transacaoDetalhada.status}</div>
+                                </li>
+                                <li class="tipoConta">
+                                    <div class="logo slds-m-right_xx-small"><img src={logoTipo}></div>
+                                    <div>
+                                        <div class="cmpName">Tipo de conta</div>
+                                        <div class="cmpValue">{tipoConta}</div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="slds-p-bottom_large separator">
+                            <div class="listDadosHorizontal slds-m-bottom_large"> 
+                                <div class="subTitle">Pagamento</div>
+                                <div class="cmpName">
+                                    <lightning-button variant="base" name="dadosTransacao" icon-name="utility:copy" label="Copiar dados de pagamento" onclick={handleCopy}></lightning-button>
+                                </div>
+                            </div>
+                            <ul class="listInformacoes slds-m-bottom_large">
+                                <li>
+                                    <div class="cmpName">Data/Hora</div>
+                                    <div class="cmpValue">{transacaoDetalhada.dataTransacao}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">Estabelecimento</div>
+                                    <div class="cmpValue">{transacaoDetalhada.estabelecimento}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">Valor total</div>
+                                    <div class="cmpValue">{transacaoDetalhada.valorFormatado}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">Cód. Autorização</div>
+                                    <div class="cmpValue">
+                                        <span>{transacaoDetalhada.codigoTransacao}</span>
+                                        <template lwc:if={transacaoDetalhada.isTransacaoDuplicada}>
+                                            <lightning-icon class="iconDuplicadaColor slds-m-left_small" size="x-small" icon-name="utility:warning" title="Compra duplicada"></lightning-icon>
+                                        </template>
+                                    </div>
+                                    <div class="cmpCopy">
+                                        <lightning-button variant="base" label="Copiar" name="codigoTransacao" onclick={handleCopy}></lightning-button>
+                                    </div>
+                                </li>
+                            </ul>
+                            <ul class="listInformacoes slds-m-bottom_large">
+                                <li>
+                                    <div class="cmpName">Status Transação</div>
+                                    <div lwc:if={transacaoNegada} class="cmpValue slds-text-color_error">{transacaoDetalhada.statusTransacao}</div>
+                                    <div lwc:else class="cmpValue">{transacaoDetalhada.statusTransacao}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">Detalhe de recusa</div>
+                                    <div class="cmpValue">{transacaoDetalhada.traducaoRecusa}</div>
+                                    <div class="cmpCopy" lwc:if={transacaoNegada}>
+                                        <lightning-button variant="base" label="Ver lista de recusas" onclick={redirecionarTabelaRecusa}></lightning-button>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="cmpName"></div>
+                                    <div class="cmpValue"></div>
+                                </li>
+                                <li>
+                                    <div class="cmpName"></div>
+                                    <div class="cmpValue"></div>
+                                </li>
+                            </ul>
+                            <div class="cmpLabel slds-m-bottom_x-small">Mais detalhes do pagamento</div>
+                            <ul class="listInformacoes slds-m-bottom_large">
+                                <li>
+                                    <div class="cmpName">Ramo de atividade</div>
+                                    <div class="cmpValue">{transacaoDetalhada.ramoAtividade}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">Cidade</div>
+                                    <div class="cmpValue">{transacaoDetalhada.cidade}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">País</div>
+                                    <div class="cmpValue">{transacaoDetalhada.pais}</div>
+
+                                </li>
+                                <li>
+                                    <div class="cmpName">Meio de pagamento</div>
+                                    <div class="cmpValue">{transacaoDetalhada.meioPagamento}</div>
+                                </li>
+                            </ul>
+                            <ul class="listInformacoes">
+                                <li>
+                                    <div class="cmpName">Entrada</div>
+                                    <div class="cmpValue">{transacaoDetalhada.detalheEntrada}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">Tipo</div>
+                                    <div class="cmpValue">{transacaoDetalhada.tipoPagamento}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">Parcelas</div>
+                                    <div class="cmpValue">{transacaoDetalhada.quantidadeParcelas}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">Tipo de transação</div>
+                                    <div class="cmpValue">{transacaoDetalhada.tipoTransacao}</div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="slds-m-top_large slds-m-bottom_large">
+                            <div class="listDadosHorizontal slds-m-bottom_large"> 
+                                <div class="subTitle">Financeiro</div>
+                                <div class="cmpName">
+                                    <lightning-button variant="base" name="dadosFinanceiros" icon-name="utility:copy" label="Copiar dados financeiros" onclick={handleCopy}></lightning-button>
+                                </div>
+                            </div>
+                            <ul class="listInformacoes slds-m-bottom_large">
+                                <li>
+                                    <div class="cmpName">Limite total</div>
+                                    <div class="cmpValue">{limiteTotal}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">Limite disponível</div>
+                                    <div class="cmpValue">R$ {limiteDisponivel}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpName"></div>
+                                    <div class="cmpValue"></div>
+                                </li>
+                                <li>
+                                    <div class="cmpName"></div>
+                                    <div class="cmpValue"></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </template>
+                    <template lwc:if={stepOne}> 
+                        <div>
+                            <p class="texto-label">Confirme a solicitação de contestação de compras</p>
+                            <p class="cmpLabel slds-m-top_xx-small">Será disponibilizado em até <strong>{slaCaso}</strong> na fatura atual ou na próxima (dependendo da data de fechamento) um crédito em confiança.</p>
+                            <p>No caso de compras parceladas, será feito o estorno da parcela atual e das anteriores. As próximas parcelas não serão debitadas.</p>
+                        </div>
+                        <div class="alert font-weight-600 slds-m-top_large">
+                            <lightning-icon size="small" icon-name="utility:warning" alternative-text="Warning!" title="Warning" class="slds-p-right_small color-icon"></lightning-icon>
+                            <div>
+                                <p>Para a segurança do cliente, <strong>os cartões utilizados nas compras serão bloqueados.</strong> O cliente perderá o acesso ao aplicativo enquanto não pedir um novo cartão.</p>
+                                <p>Caso algum cartão seja virtual, direcione o cliente a entrar no aplicativo, cancelá-lo e criar um novo.</p>
+                            </div>
+                        </div>
+                        <div class="table-confirmar slds-m-top_medium slds-p-bottom_large">
+                            <lightning-datatable key-field="index" 
+                                data={selectedListaTransacoes} 
+                                columns={columnsConfirmar}
+                                wrap-text-max-lines="1"
+                                hide-checkbox-column
+                                resize-column-disabled
+                                class="slds-table_header-fixed_container slds-scrollable slds-border_top iconDuplicadaColor"
+                                onrowaction={handleRowAction}>
+                            </lightning-datatable>
+                        </div>
+                        <div class="alignCenter">
+                            <lightning-icon size="small" icon-name="utility:warning" alternative-text="Warning!" title="Warning" class="slds-p-right_small color-icon"></lightning-icon>
+                            <div>
+                                <p>Caso não seja identificada a fraude, a compra voltará para a fatura com a adição dos juros referentes ao período em que ela ficou em aberto.</p>
+                            </div>
+                        </div>
+                    </template>
+                    <template lwc:if={stepTwo}> 
+                        <div class="">
+                            <label class="label-caso">Preenchimento de caso</label>
+                            <div class="slds-m-top_x-small boxCaso">
+                                <lightning-record-edit-form object-api-name="Case">
+                                    <ul>
+                                        <li>
+                                            <label>Origem</label>
+                                            <lightning-input-field 
+                                            language=""
+                                            value={origemValue}
+                                            field-name="Origin" 
+                                            class="lightningInput" 
+                                            placeholder="--Nenhuma--"
+                                            onchange={handleChangeOrigem} 
+                                                variant="label-hidden"> 
+                                            </lightning-input-field>
+                                        </li>
+                                        <li>
+                                            <label>Canal</label>
+                                            <lightning-input-field
+                                                value={canalValue}
+                                                field-name="CanalEntrada__c" 
+                                                class="lightningInput" 
+                                                placeholder="--Nenhuma--"
+                                                onchange={handleChangeCanal} 
+                                                variant="label-hidden"> 
+                                            </lightning-input-field>
+                                        </li>
+                                        <template lwc:if={direcionarFilaManual}>
+                                            <li class="slds-hide">
+                                                <label>Assunto</label>
+                                                <lightning-input-field 
+                                                    language=""
+                                                    value="Intercambio Fraude"
+                                                    field-name="Assunto__c" 
+                                                    class="lightningInput" 
+                                                    placeholder="--Nenhuma--"
+                                                    variant="label-hidden"> 
+                                                </lightning-input-field>
+                                            </li>
+                                            <li class="slds-hide">
+                                                <label>Evento</label>
+                                                <lightning-input-field 
+                                                    language=""
+                                                    value={eventoValue}
+                                                    field-name="Evento__c" 
+                                                    class="lightningInput" 
+                                                    placeholder="--Nenhuma--"
+                                                    variant="label-hidden"> 
+                                                </lightning-input-field>
+                                            </li>
+                                            <li>
+                                                <label>Tipo de Reclamação</label>
+                                                <lightning-input-field 
+                                                    language=""
+                                                    value={tipoReclamacaoValue}
+                                                    field-name="TipoReclamacao__c" 
+                                                    class="lightningInput" 
+                                                    placeholder="--Nenhuma--"
+                                                    onchange={handleChangeTipoReclamacao} 
+                                                    variant="label-hidden"> 
+                                                </lightning-input-field>
+                                            </li>
+                                        </template>
+                                        <li>
+                                            <label>Consulta realizada no Éthoca?</label>
+                                            <lightning-input-field 
+                                                language=""
+                                                value={consultaRealizadaEthoca}
+                                                field-name="ConsultaEthoca__c" 
+                                                class="lightningInput" 
+                                                placeholder="--Nenhuma--"
+                                                onchange={handleChangeEthoca} 
+                                                variant="label-hidden"> 
+                                            </lightning-input-field>
+                                        </li>
+                                    </ul>
+                                    <div class="slds-m-top_small">
+                                        <label>Descrição</label>
+                                        <lightning-input-field 
+                                            language=""
+                                            value={valueDescricao}    
+                                            onchange={handleDescricao}                                        
+                                            field-name="Description" 
+                                            class="lightningInput" 
+                                            variant="label-hidden"> 
+                                        </lightning-input-field>
+                                    </div>
+                                </lightning-record-edit-form>
+            
+                                <template for:each={cartoesCaso} for:item="cartao">
+                                    <ul key={cartao.numeroCartao} class="slds-m-top_large">
+                                        <li class="nomeCartao">
+                                            <div class="cmpName">Cartão</div>
+                                            <div class="cmpValue">{cartao.labelInicial}</div> 
+                                        </li>
+                                        <li class="infoCartao">
+                                            <lightning-combobox
+                                                data-id={cartao.value}
+                                                name="CartaoRoubado" 
+                                                label="Cartão roubado"
+                                                options={checkboxOptions}
+                                                value={cartao.cartaoRoubado}
+                                                onchange={handleInfoCartao}
+                                                placeholder="--Nenhuma--"
+                                                class="slds-m-right_large">
+                                            </lightning-combobox>
+                                        </li>
+                                        <li class="infoCartao">
+                                            <lightning-combobox 
+                                                placeholder="--Nenhuma--"
+                                                data-id={cartao.value}
+                                                name="ClienteComCartao" 
+                                                label="Cliente com cartão em mãos"
+                                                options={checkboxOptions}
+                                                value={cartao.clienteComCartao}
+                                                onchange={handleInfoCartao}
+                                                disabled={cartao.disableClienteComCartao}
+                                                class="slds-m-right_large">
+                                            </lightning-combobox>
+                                        </li>
+                                    </ul>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                    <template lwc:if={stepThree}>
+                        <div class="listInformacoes">
+                            <lightning-icon class="slds-m-right_small" icon-name="utility:info" size="small" alternative-text="Atenção"></lightning-icon>
+                            <p class="cmpLabel">O setor responsável será notificado e avaliará a solicitação.</p>
+                        </div>
+                        <div class="alert justify-space-between slds-m-top_large">
+                            <div class="alignCenter">
+                                <lightning-icon icon-name="utility:warning" alternative-text="Warning!" title="Warning" class="slds-p-right_small color-icon"></lightning-icon>
+                                <div>
+                                    <p>Importante! O cliente perderá o acesso ao aplicativo enquanto não pedir um novo cartão.</p>
+                                    <p>Para o cliente continuar aproveitando nossos benefícios, <strong>solicite uma nova via do cartão clicando ao lado.</strong></p>
+                                    <p>Caso algum cartão seja virtual, direcione o cliente a entrar no aplicativo, cancelá-lo e criar um novo.</p>
+                                </div>
+                            </div>
+                            <div>
+                                <a class='slds-m-left_medium slds-text-color_default' onclick={handleButtonSegundaViaCartao}>Solicitar 2ª via do cartão</a>
+                            </div>
+                        </div>
+                        <div class="slds-m-top_medium">
+                            <div class="listInformacoes">
+                                <lightning-icon icon-name="utility:success" class="slds-m-right_medium" alternative-text="Success!" variant="success" title="success variant" size="small"></lightning-icon>
+                                <h1 class="subTitle-2">Contestação solicitada!</h1>
+                            </div>
+                            <div class="slds-m-top_medium slds-m-left_large slds-m-right_small">
+                                <p class="subTitle-4">Protocolo: <strong>{numeroCaso}</strong></p>
+                                <p class="slds-m-top_small slds-p-bottom_x-large">{today}</p>
+                                <div class="separator slds-p-bottom_large">
+                                    <div lwc:if={displaycartoesJaBloqueados} class="slds-p-horizontal_small">
+                                        <div class="listInformacoes">
+                                            <lightning-icon class="slds-m-right_small" icon-name="utility:check" size="small" alternative-text="Bloqueado"></lightning-icon>
+                                            <p class="subTitle-3">Os cartões abaixo já estão bloqueados.</p>
+                                        </div>
+                                        <ul class="slds-p-top_medium">
+                                            <template for:each={cartoesJaBloqueados} for:item="cartao">
+                                                <li key={cartao} class="slds-p-bottom_medium">
+                                                    <div class="cmpValue">{cartao}</div> 
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </div>
+                                    <div lwc:if={displaycartoesBloqueados} class="slds-p-horizontal_small">
+                                        <div class="listInformacoes">
+                                            <lightning-icon class="slds-m-right_small" icon-name="utility:check" size="small" alternative-text="Bloqueado"></lightning-icon>
+                                            <p class="subTitle-3">Os cartões abaixo foram bloqueados.</p>
+                                        </div>
+                                        <ul class="slds-p-top_medium">
+                                            <template for:each={cartoesBloqueados} for:item="cartao">
+                                                <li key={cartao} class="slds-p-bottom_medium">
+                                                    <div class="cmpValue">{cartao}</div> 
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </div>
+                                    <div lwc:if={displaycartoesNaoBloqueados} class="boxGray slds-p-horizontal_small">
+                                        <div class="listInformacoes slds-p-top_medium">
+                                            <lightning-icon class="slds-m-right_small iconErro" icon-name="utility:close" size="small" alternative-text="Não Bloqueado"></lightning-icon>
+                                            <p class="subTitle-3">Os cartões abaixo <span class="slds-text-color_error">não</span> foram bloqueados.</p>
+                                        </div>
+                                        <ul class="slds-p-top_medium">
+                                            <template for:each={cartoesNaoBloqueados} for:item="cartao">
+                                                <li key={cartao} class="slds-p-bottom_medium">
+                                                    <div class="cmpValue">{cartao}</div> 
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h2 class="slds-text-heading_small slds-m-vertical_medium subTitle">Informações do caso:</h2>
+                                    <ul class="listDadosHorizontal">
+                                        <li>
+                                            <div class="cmpName">Origem</div>
+                                            <div class="cmpValue">{origemValue}</div>
+                                        </li>
+                                        <li>
+                                            <div class="cmpName">Canal</div>
+                                            <div class="cmpValue">{canalValue}</div>
+                                        </li>
+                                        <li lwc:if={direcionarFilaManual}>
+                                            <div class="cmpName">Tipo de relcamação</div>
+                                            <div class="cmpValue">{tipoReclamacaoValue}</div>
+                                        </li>
+                                        <li>
+                                            <div class="cmpName">Assunto</div>
+                                            <div class="cmpValue">Intercâmbio fraude</span></div>
+                                        </li>
+                                        <li>
+                                            <div class="cmpName">Evento</div>
+                                            <div class="cmpValue">{eventoValue}</span></div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+                <footer class="slds-modal__footer">
+                    <div lwc:if={stepThree}>
+                        <ul class="alignEnd slds-grid_align-spread">
+                            <li>
+                                <lightning-button variant="brand" label="Solicitar 2ª via do cartão" onclick={handleButtonSegundaViaCartao}></lightning-button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div lwc:else>
+                        <ul class="slds-grid slds-grid_align-spread">
+                            <li lwc:if={showDetalheTransacao}>
+                                <lightning-button variant="neutral" label="Fechar" onclick={handleButtonVoltar}></lightning-button>
+                            </li>
+                            <li lwc:if={showDetalheTransacao}>
+                                <lightning-button variant="brand" label="Contestar compra" onclick={handleButtonContestarCompra}></lightning-button>
+                            </li>
+                            <li lwc:if={showButtonVoltar}>
+                                <lightning-button variant="neutral" label="Voltar" onclick={handleButtonVoltar}></lightning-button>
+                            </li>
+                            <li lwc:if={stepOne}>
+                                <lightning-button variant="brand" label="Prosseguir" onclick={handleButtonProsseguir} disabled={disableButtonProsseguir}></lightning-button>
+                            </li>
+                            <li lwc:if={stepTwo}>
+                                <lightning-button variant="brand" label="Finalizar" onclick={handleButtonFinalizar} disabled={disableButtonFinalizar}></lightning-button>
+                            </li>
+                        </ul>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+    <!-- modal end -->
+    <!-- modal start 2 via de cartão -->
+    <template if:true={abrirSegundaViaCartao}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open  slds-modal_small">
+            <div id='MyModal' class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse slds-float_right" title="Close" onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close"
+                    alternative-text="close"
+                    variant="inverse"
+                    size="small" ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2-via">
+                    <c-bcsf_-segunda-via-cartao
+                        record-id={recordId}
+                        close-parent-component={closeModalComponent}
+                        oncloseparentmodal={closeQuickAction}>
+                    ></c-bcsf_-segunda-via-cartao>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+    <!-- modal end -->
+</template>

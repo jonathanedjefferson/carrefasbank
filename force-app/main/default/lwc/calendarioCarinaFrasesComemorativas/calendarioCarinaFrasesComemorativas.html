@@ -1,0 +1,9 @@
+<template>
+    <lightning-card title="Carregar datas comemorativas" icon-name="doctype:csv" variant="Narrow">
+        <lightning-file-upload 
+            accept           ={acceptedFormats} 
+            onuploadfinished ={handleUploadFinished} 
+            record-id        ={myRecordId}>
+        </lightning-file-upload>
+    </lightning-card>
+</template>

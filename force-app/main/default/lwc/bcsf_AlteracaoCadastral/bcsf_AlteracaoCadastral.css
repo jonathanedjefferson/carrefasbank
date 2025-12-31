@@ -1,0 +1,351 @@
+:host {
+    --font-size-small: 10px;
+    --font-size-medium: 12px;
+    --font-size-large: 14px;
+    --font-size-xlarge: 18px;
+    margin: 0;
+    padding: 0;
+}
+
+.avisoCpf{
+    background-color: #f89807;
+    opacity: 1;
+    background: repeating-linear-gradient( 45deg, #716f6c, #716f6c 50px, #797774 50px, #797774 100px );
+    width: 98%;
+    margin: auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.avisoTexto{
+    color: white;
+    font-weight: 400;
+}
+
+.avisoBlindagem{
+    background-color: #f89807;
+    opacity: 1;
+    background: repeating-linear-gradient( 45deg, #f8ae54, #f8ae54 50px, #ffbb67 50px, #ffbb67 100px );
+    width: 100%;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+.avisoBlindagem p{
+    margin-left: 10px;
+}
+.avisoTextoBlindagem{
+    text-decoration: underline black;
+    cursor: pointer;
+    font-size: 14px;
+    color: black;
+    font-weight: 400;
+}
+.blindagemSimples h1{
+    margin-top: 10px;
+    margin-bottom: 0px;
+    font-weight: 600;
+    font-size: 18px;
+}
+.blindagemSimples h2{
+    font-weight: 400;
+    font-size: 14px;
+    margin-top: 0px;
+    margin-left: 1%;
+    margin-bottom: 30px;
+}
+
+.blindagemSimples .boxInputs{
+    margin-top: 30px;
+    padding-top: 20px;
+    box-shadow:  0px -1px 0px #DDDBDA;
+}
+.blindagemSimples .boxInputs h1{
+    margin-bottom: 30px;
+}
+
+.c-container {
+    padding: 20px 30px;
+}
+
+.c-container > .containerInfos {
+    box-shadow: 0px 1px 0px #DDDBDA;
+    padding:20px 0;
+}
+
+h1 {
+    margin-left: 1%;
+    font-size: 18px;
+    color:#000;
+    font-weight: 500;
+    margin-bottom: 30px;
+}
+
+.listUl{
+    display: flex;
+    justify-content: space-between;
+}
+
+.listUl li{
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+.cmpName {
+    font-size: 12px;
+}
+.cmpValue {
+    margin-top: -17px;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.input-with-icon {
+    position: relative;
+    display: inline-block;
+}
+.input-icon {
+    position: absolute;
+    right: 10px;
+    top: 65%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 1;    
+}
+.slds-input {
+    padding-right: 2.5rem;
+}
+
+.autoComplete{
+    position: relative;
+}
+.slds-dropdown {
+    position: absolute;
+    z-index: 1;
+    background: white;
+    border: 1px solid #d8dde6;
+    box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);
+    width: 100%;
+    margin-top: 0.25rem;
+}
+.slds-listbox__option {
+    padding: 0.5rem;
+    cursor: pointer;
+}
+.slds-listbox__option:hover {
+    background-color: #f4f6f9;
+}
+
+.cmpNameInfo {
+    font-size: 14px;
+    font-weight: 400;
+}
+.cmpValueInfo {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.boxCardPrincipal {
+    box-shadow: 0px 1px 0px #DDDBDA;
+    padding-bottom: 20px;  
+    margin-bottom: 20px;
+}
+.boxCardPrincipal:last-child{
+    box-shadow: none;
+    margin-bottom: -20px;
+}
+.boxCardPrincipal ul {
+    margin: -20px 0px 0px 0px;
+}   
+.step02 p {
+    margin: -25px 0px 40px 1%;
+    font-size: 14px;
+    font-weight: 400;
+}
+.step02 h1{
+    font-weight: 600;
+}
+
+.aviso{
+    display: flex;
+    background-color: #FFB75D;
+    color: #080707;
+    font-size: 14px;
+    font-weight: 400;
+    margin: 0% 1% 2% 1%;
+    padding: 5px 15px;
+}
+.aviso p{
+    margin: 3px 3px 3px 20px;
+}
+.aviso y{
+    margin: auto;
+}
+
+.titleErro{
+    display: flex;
+    margin: 0% 0% 2% 0%;
+}
+.titleErro h1{
+    width: 98%;
+    margin: 3px 3px 3px 10px;
+}
+
+.listInformacoesStep02 {
+    background-color: #F8F9FA;
+}
+
+.listInformacoesStep02 ul li{
+    width: 23%;
+    margin: 1% 1%;
+}
+.listInformacoesStep02 ul{
+    padding-bottom: 20px;  
+    padding-top: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0px 1px 0px #DDDBDA;
+    display: flex;
+    flex-wrap: wrap;
+}
+.listInformacoesStep02 ul:last-child{
+    box-shadow: none;
+}
+.listInformacoesCheckBox{
+    margin-left: 1%;
+    box-shadow: none;
+    padding-top: 20px;
+}
+.listInformacoesCheckBox div{
+    padding-bottom: 20px;
+}
+
+/* Inputs */
+.boxInputs{
+    margin-left: 1%;
+    margin-bottom: 0px;
+}
+.boxInputs h1{
+    margin-left: 0%;
+    margin-bottom: 5px;
+}
+.boxInputs ul {
+    display:flex;
+    justify-content: start;
+    max-width: 95%;
+    flex-wrap: wrap;
+}
+.boxInputs ul li {
+    width: 40%;
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+
+/* tela final */
+.boxStep3 .section01 h2 {
+    font-size: 14px;
+    color:#000000;
+    margin-top: 0px;
+    margin-left: 1%;
+}
+.boxStep3 p {
+    margin-left: 1%;
+}
+.boxStep3 h1 {
+    margin-bottom: 0px;
+}
+.boxStep3 .section02 {
+    box-shadow: 0px 1px 0px #DDDBDA;
+}
+.listInformacoes {
+    margin-top: 20px;
+}
+
+.boxStep3 .listInformacoes ul{
+    display: flex;
+    justify-content: space-between;
+}
+.boxStep3 .listInformacoes ul li{
+    width: 23%;
+    margin: 1% 1%;
+}
+.info01 ul li{
+    width: 20%;
+}
+
+/* Footer */
+footer {
+    box-shadow:  0px -1px 0px #DDDBDA;
+    margin-top: 15px;
+    background-color: #F3F2F2;
+}
+.boxFooter  {
+    padding:20px;
+}
+.boxFooter ul {
+    display: flex;
+    justify-content: space-between;
+}
+
+.info-tooltip {
+    display: flex;
+    margin-left: 1%;
+}
+
+.info-tooltip p {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    text-align: left; 
+}
+
+/* Styles genericos */
+.title {
+    font-weight: 400;
+    font-size: 20px;
+    color:#080707;
+    text-align:center;
+    padding: 20px 0;
+    box-shadow: 0px 1px 0px #DDDBDA;
+}
+.subTitle{
+    font-weight: 400;
+    font-size: 13px;
+    margin: 10px auto 0px auto;
+}
+
+.colorName{
+    display: flex;
+    align-items: center;
+    color: #444444;
+    font-weight: 500;
+    font-size: var(--font-size-large);
+}
+.colorCode{
+    display: flex;
+    align-items: center;
+    color: #444444;
+    font-size: var(--font-size-medium);
+}
+.colorToken{
+    color: rgba(227, 6, 106, 1);
+    font-size: var(--font-size-small);
+}
+.container {
+    display: flex;
+    flex-wrap: wrap;
+}
+.containerAlternative{
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+}
+.alert{
+    background-color: #FFB75D;
+    padding: 10px;
+}
+/* Styles genericos Fim*/

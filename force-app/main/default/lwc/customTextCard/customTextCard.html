@@ -1,0 +1,10 @@
+<template>
+    <div class="external-container">
+        <div data-id="text">
+            <template if:true={hasIcon}>
+                <lightning-icon icon-name={iconName} size="x-small"></lightning-icon>
+            </template>
+            {text}
+        </div>
+    </div>
+</template>

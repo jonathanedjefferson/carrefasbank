@@ -1,0 +1,271 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <template lwc:if={showCardPrincipal}>
+        <div class="title">Aumento de limite</div>
+        <div class="c-container">
+            <div class="boxCardPrincipal">
+
+                <template lwc:if={stepOne}>
+                    <div class="separator slds-p-bottom_large">
+                        <div class="alert">
+                            <lightning-icon icon-name="utility:warning" size="small" alternative-text="Warning!" title="Warning" class="slds-p-right_small color-icon"></lightning-icon>
+                            <div>
+                                <p><strong>Importante!</strong> Para saber se esse cliente está <strong>elegível</strong> a solicitar um novo limite, consulte o histórico!</p>
+                            </div>
+                            <div class="slds-p-left_large">
+                                <a class="link" onclick={abrirHistorico}>Clique aqui consultar o histórico de limite</a>
+                            </div>
+                        </div>
+                        <div class="slds-p-around_medium">
+                            <div class="subtitle">Dados da conta</div>
+                            <ul class="listInformacoes slds-p-top_x-small">
+                                <li>
+                                    <div class="cmpLabel">Titular</div>
+                                    <div class="cmpValue">{nomeTitular}</div>
+                                </li>
+                                <li class="tipoConta">
+                                    <div class= "logo"><img src={logoTipo}></div>
+                                    <div class="slds-p-left_small">
+                                        <div class="cmpName">Tipo de conta</div>
+                                        <div class="cmpValue">{unidadeDescricao}</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">CPF</div>
+                                    <div class="cmpValue">{cpf}</div>
+                                </li>
+                            </ul>
+                            <ul class="listInformacoes slds-p-top_x-large">
+                                <li>
+                                    <div class="cmpName">Conta</div>
+                                    <div class="cmpValue">{numeroConta}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Status Geral</div>
+                                    <div class="cmpValue color-font-red">{statusConta}</div>
+                                </li>
+                                <li></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="slds-m-top_large">
+                        <div class="subtitle">Aumento de limite</div>
+                        <ul class="listDados slds-m-top_large">
+                            <li>
+                                <div class="cmpLabel">Limite total do cartão</div>
+                                <div class="cmpValue">{limiteTotalFormatado}</div>
+                            </li>
+                            <li>
+                                <div class="cmpLabel">Limite disponível para compras</div>
+                                <div class="cmpValue">{limiteDisponivelFormatado}</div>
+                            </li>
+                        </ul>
+                        <div>
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_2-of-7">
+                                    <div class="cmpLabel-input slds-m-top_large"><p class="color-red slds-p-right_x-small">*</p>Limite total desejado</div>
+                                    <lightning-input 
+                                    type="number" 
+                                    name="valorLimiteDesejado" 
+                                    placeholder="Insira o limite desejado aqui"
+                                    variant="label-hidden"
+                                    formatter="currency" 
+                                    value={valorLimiteDesejado}
+                                    onblur={handleValorLimiteDesejado}
+                                    step="0.01">
+                                    </lightning-input>
+                                    <p lwc:if={hasError} class="color-red msgErro">{msgErro}</p>
+                                </div>
+                                <div class="slds-col slds-size_2-of-7 slds-m-left_large">
+                                    <div class="cmpLabel-input slds-m-top_large"><p class="color-red slds-p-right_x-small">*</p>Valor de renda comprovada</div>
+                                    <lightning-input 
+                                    type="number" 
+                                    name="valorRendaComprovada" 
+                                    placeholder="Insira o valor da renda comprovada aqui"
+                                    variant="label-hidden"
+                                    formatter="currency" 
+                                    value={valorRendaComprovada}
+                                    onblur={handleValorRendaComprovada}
+                                    step="0.01">
+                                    </lightning-input>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </template>
+                <template lwc:if={stepTwo}>
+                    <div class="alert">
+                        <lightning-icon icon-name="utility:warning" size="small" alternative-text="Warning!" title="Warning" class="slds-p-right_small color-icon"></lightning-icon>
+                        <div>
+                            <p>Ao finalizar a solicitação, informar ao cliente os <strong>prazos</strong> para pedido de novo limite: Se essa solicitação for: <strong>Aprovada</strong>: aguardar 6 meses para realizar outro <strong>Recusada</strong>: pode solicitar novamente no próximo vencimento de fatura.</p>
+                        </div>
+                    </div>
+                    <div class="slds-m-top_large">
+                        <div class="subtitle">Confirme os dados</div>
+                        <div class="msg">Antes de finalizar, confirme com o cliente se os dados estão corretos</div>
+                    </div>
+                    <div class="slds-m-top_large slds-p-around_medium bkg-dados">
+                        <div class="subtitle">Dados da conta</div>
+                        <ul class="listInformacoes slds-p-top_x-small">
+                            <li>
+                                <div class="cmpLabel">Titular</div>
+                                <div class="cmpValue">{nomeTitular}</div>
+                            </li>
+                            <li class="tipoConta">
+                                <div class= "logo"><img src={logoTipo}></div>
+                                <div class="slds-p-left_small">
+                                    <div class="cmpName">Tipo de conta</div>
+                                    <div class="cmpValue">{unidadeDescricao}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="cmpLabel">CPF</div>
+                                <div class="cmpValue">{cpf}</div>
+                            </li>
+                        </ul>
+                        <ul class="listInformacoes slds-p-top_x-large separator slds-p-bottom_medium">
+                            <li>
+                                <div class="cmpName">Conta</div>
+                                <div class="cmpValue">{numeroConta}</div>
+                            </li>
+                            <li>
+                                <div class="cmpLabel">Status Geral</div>
+                                <div class="cmpValue color-font-red">{statusConta}</div>
+                            </li>
+                            <li></li>
+                        </ul>
+                        <div class="slds-p-top_large">
+                            <div class="subtitle">Aumento de limite</div>
+                            <ul class="listDados slds-m-top_medium">
+                                <li>
+                                    <div class="cmpLabel">Limite atual</div>
+                                    <div class="cmpValue">{limiteTotalFormatado}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Limite total desejado</div>
+                                    <div class="cmpValue">{valorLimiteDesejadoFormatado}</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="slds-m-top_large">
+                            <label class="subtitle">Preenchimento de caso</label>
+                            <ul class="listDados slds-p-vertical_medium">
+                                <li>
+                                    <div class="cmpLabel">Assunto</div>
+                                    <div class="cmpValue">Limites e Saldos</div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Evento</div>
+                                    <div class="cmpValue">Aumento de limite</div>
+                                </li>
+                            </ul>
+                            <div class="boxCaso">
+                                <lightning-record-edit-form object-api-name="Case">
+                                    <ul>
+                                        <li>
+                                            <label>Origem</label>
+                                            <lightning-input-field 
+                                                language=""
+                                                value={origemValue}
+                                                field-name="Origin" 
+                                                class="lightningInput mt-5" 
+                                                placeholder="--Nenhuma--"
+                                                onchange={handleChangeOrigem} 
+                                                variant="label-hidden"> 
+                                            </lightning-input-field>
+                                        </li>
+                                        <li>
+                                            <label>Canal</label>
+                                            <lightning-input-field
+                                                value={canalValue}
+                                                field-name="CanalEntrada__c" 
+                                                class="lightningInput mt-5" 
+                                                placeholder="--Nenhuma--"
+                                                onchange={handleChangeCanal} 
+                                                variant="label-hidden"> 
+                                            </lightning-input-field>
+                                        </li>
+                                    </ul>    
+                                </lightning-record-edit-form>   
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <template lwc:if={stepThree}>
+                    <div class="listInformacoes">
+                        <lightning-icon icon-name="utility:success" class="slds-m-right_medium" alternative-text="Success!" variant="success" title="success variant" size="small"></lightning-icon>
+                        <h1 class="subtitle-2">Solicitação de aumento de limite realizada!</h1>
+                    </div>
+                    <div class="slds-m-top_medium slds-m-horizontal_x-large">
+                        <p class="subTitle-4">Caso: <strong>{numeroCaso}</strong></p>
+                        <p class="slds-m-top_small slds-p-bottom_x-large">{today}</p>
+                        <div class="separator slds-p-bottom_medium">
+                            <ul>
+                                <li>
+                                    <div class="cmpLabel">Status do pedido do limite</div>
+                                    <div class="cmpValue">Em análise</div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h2 class="slds-text-heading_small slds-m-vertical_medium subTitle">Informações do caso:</h2>
+                            <ul class="listDadosCaso">
+                                <li>
+                                    <div class="cmpLabel">Origem</div>
+                                    <div class="cmpValue">{origemValue}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Canal</div>
+                                    <div class="cmpValue">{canalValue}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Assunto</div>
+                                    <div class="cmpValue">Limites e Saldos</span></div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Evento</div>
+                                    <div class="cmpValue">Aumento de limite</span></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div> 
+        <footer>
+            <div class="boxFooter">
+                <ul>
+                    <li lwc:if={stepThree}>
+                        <lightning-button label="Fechar" onclick={handleButtonVoltar}></lightning-button>
+                    </li>
+                    <li lwc:else>
+                        <lightning-button label="Voltar" onclick={handleButtonVoltar}></lightning-button>
+                    </li>
+                    <li lwc:if={stepOne}>
+                        <lightning-button variant="brand" label="Prosseguir" onclick={handleButtonProsseguir} disabled={disableButtonProsseguir}></lightning-button>
+                    </li>
+                    <li lwc:elseif={stepTwo}>
+                        <lightning-button variant="brand" label="Finalizar" onclick={handleButtonProsseguir} disabled={disableButtonFinalizar}></lightning-button>
+                    </li>
+                    <li lwc:if={stepThree}>
+                        <lightning-button label="Histórico de limite" onclick={handleButtonHistoricoLimite}></lightning-button>
+                    </li>
+                    <li lwc:if={stepThree}>
+                        <lightning-button variant="brand" label="Ir para o caso" onclick={handleButtonIrCaso}></lightning-button>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+    </template>
+    <template lwc:if={apresentarHistorico}>
+        <c-bcsf_-gestao-limite-consulta
+            record-id={recordId}
+            close-parent-component={closeModalComponent}
+            oncloseparentmodal={closeQuickAction}>
+        ></c-bcsf_-gestao-limite-consulta>
+    </template> 
+</template>

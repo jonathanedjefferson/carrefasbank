@@ -1,0 +1,716 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <template lwc:if={componenteAlteracaoCadastral}>
+        <div class="title">
+            Alterar dados cadastrais
+            
+            <p class="subTitle" lwc:if={ShowAlteracaoBlindagemSimples}>Abertura de Protocolo</p>
+            <p class="subTitle" lwc:if={ShowAlterarCPF}>Abertura de Protocolo</p>
+        </div>
+
+        <div class="c-container">
+            <template lwc:if={step01}> 
+                <div class="boxCardPrincipal">
+                    <div class="info-tooltip slds-m-bottom_medium">
+                        <lightning-helptext class="slds-m-right_x-small"></lightning-helptext> 
+                        <p>Apenas o titular da conta pode solicitar alterações no cadastro.</p>
+                    </div>
+                    <h1>Dados gerais</h1>              
+                    <div class="listInformacoes info01">
+                        <ul class="listUl">
+                            <li>
+                                <div class="cmpName">Primeiro nome</div>
+                                <lightning-input class="cmpValue" type="text" placeholder="Digite aqui" value={PrimeiroNome} id="PrimeiroNome" onchange={handlerField} maxlength="30" data-id="PrimeiroNome"></lightning-input>
+                            </li>
+                            
+                            <li lwc:if={MostrarNomeDoMeio}>
+                                <div class="cmpName">Nome do meio</div>
+                                <lightning-input class="cmpValue" type="text" placeholder="Digite aqui" value={NomeDoMeio} id="NomeDoMeio" onchange={handlerField} maxlength="30"></lightning-input>
+                            </li>
+                            
+                            <li>
+                                <div class="cmpName">Sobrenome</div>
+                                <lightning-input class="cmpValue" type="text" placeholder="Digite aqui" value={UltimoNome} id="UltimoNome" onchange={handlerField} maxlength="30"></lightning-input>
+                            </li>
+                            
+                            <li>
+                                <div class="cmpName">Data de nascimento</div>
+                                <lightning-input class="cmpValue" type="date" date-style="short" value={DataNascimento} id="DataNascimento" onchange={handlerField}></lightning-input>
+                            </li>
+                        </ul>
+
+                        <br>
+                        <br>
+
+                        <ul class="listUl">
+                            <li>
+                                <div class="cmpName">CPF</div>
+                                <lightning-input class="cmpValue" type="text" placeholder="Digite aqui" value={CPF} id="CPF" onchange={handlerField} disabled></lightning-input>
+                                <lightning-button variant="base" label="Alterar CPF" title="Alterar CPF" onclick={AlterarCPF} class="slds-m-left_x-small"></lightning-button>
+                            </li>
+                            
+                            <li>
+                                <div class="cmpName">RG</div>
+                                <lightning-input class="cmpValue" type="text" step="1" placeholder="Digite aqui" value={RG} id="RG" onchange={handlerField}  maxlength="12"></lightning-input>
+                            </li>
+                            
+                            
+                            <li>
+                                <div class="cmpName" style="margin-bottom: 0px;">Gênero</div>
+                                <lightning-combobox class="cmpValue"
+                                    name="genero"
+                                    value={Genero} 
+                                    id="Genero" 
+                                    placeholder="Selecione"
+                                    options={optionsGenero}
+                                    onchange={handlerField}>
+                                </lightning-combobox>
+                            </li>
+                            
+                            <!-- <li>
+                                <div class="cmpName">Naturalidade</div>
+                                <lightning-input class="cmpValue" type="text" placeholder="Digite aqui" value={Naturalidade} id="Naturalidade" onchange={handlerField} maxlength="30"></lightning-input>
+                            </li> -->
+                            
+                            <li>
+                                <div class="cmpName">Estado civil</div>
+                                <lightning-combobox class="cmpValue"
+                                    name="estadoCivil"
+                                    value={EstadoCivil} 
+                                    id="EstadoCivil"
+                                    placeholder="Selecione"
+                                    options={optionsEstadoCivil}
+                                    onchange={handlerField}>
+                                </lightning-combobox>
+                            </li>
+                        </ul>
+
+                        <br>
+                        <br>
+
+                        <ul class="listUl">
+                            <li style="width: 40%;">
+                                <div class="cmpName">Nome da mãe</div>
+                                <lightning-input class="cmpValue" type="text" placeholder="Digite aqui" value={NomeMae} id="NomeMae" onchange={handlerField} maxlength="30"></lightning-input>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="boxCardPrincipal">
+                    <div class="avisoBlindagem" lwc:if={showMsgBlindagemSimples} onclick={handleAlteracaoBlindademSimples}>
+                        <lightning-icon
+                            icon-name="utility:warning"
+                            size="x-small"
+                            alternative-text="Indicates approval"
+                        >
+                        </lightning-icon>
+                        <p class="avisoTextoBlindagem">
+                            &#32; &#32; &#32;Clique aqui para realizar alterações no endereço ou contato. O setor responsável avaliará e o cliente será notificado em até um dia útil.
+                        </p>
+                    </div>
+
+                    <h1>Endereço do cliente</h1>
+                    <div class="listInformacoes">
+                        <ul class="listUl">
+                            <li>
+                                <div class="cmpName">CEP</div>
+                                <lightning-input class="cmpValue" disabled={disableFiledsEndereco} type="text" placeholder="Digite aqui" value={CEP} id="CEP" onchange={handlerField} maxlength="9"></lightning-input>
+                            </li>
+                            
+                            <li style="width: 50%;">
+                                <div class="cmpName">Endereço</div>
+                                <lightning-input class="cmpValue" disabled={disableFiledsEndereco} type="text" placeholder="Digite aqui" value={Rua} id="Rua" onchange={handlerField} maxlength="40"></lightning-input>
+                            </li>
+                            
+                            <li>
+                                <br>
+                                <lightning-button variant="base" label="Localizar" title="Localizar" onclick={handleLocalizar} class="slds-m-left_x-small"></lightning-button>
+                            </li>
+                            
+                            <li>
+                                <div class="cmpName">Número (opcional)</div>
+                                <lightning-input class="cmpValue" disabled={disableFiledsEndereco} type="number" step="1" placeholder="Digite aqui" value={NumeroCasa} id="NumeroCasa" onchange={handlerField} maxlength="5"></lightning-input>
+                            </li>
+                        </ul>
+
+                        <br>
+                        <br>
+
+                        <ul class="listUl">
+                            <li style="width: 50%;">
+                                <div class="cmpName">Complemento (opcional)</div>
+                                <lightning-input class="cmpValue" disabled={disableFiledsEndereco} type="text" placeholder="Digite aqui" value={Complemento} id="Complemento" onchange={handlerField} maxlength="20"></lightning-input>
+                            </li>
+                            
+                            <li>
+                                <div class="cmpName">Bairro</div>
+                                <lightning-input class="cmpValue" disabled={disableFiledsEndereco} type="text" placeholder="Digite aqui" value={Bairro} id="Bairro" onchange={handlerField} maxlength="30"></lightning-input>
+                            </li>
+                            
+                            <li>
+                                <div class="cmpName">Cidade</div>
+                                <lightning-input class="cmpValue" disabled={disableFiledsEndereco} type="text" placeholder="Digite aqui" value={Cidade} id="Cidade" onchange={handlerField} maxlength="20"></lightning-input>
+                            </li>
+                            
+                            <li>
+                                <div class="cmpName">UF</div>
+                                <lightning-combobox class="cmpValue" 
+                                    disabled={disableFiledsEndereco}
+                                    name="UF"
+                                    value={Estado} 
+                                    id="Estado"
+                                    placeholder="Selecione"
+                                    options={optionsUF}
+                                    onchange={handlerField}>
+                                </lightning-combobox>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="boxCardPrincipal">
+                    <div class="aviso" lwc:if={showAvisoCelularSeguro}>
+                        <y>
+                            <lightning-icon icon-name="utility:warning" alternative-text="Warning!" title="Warning" size="x-small"></lightning-icon> 
+                        </y>
+                    
+                        <p>
+                            Para tornar o novo número um celular seguro, o cliente deve ir a uma loja e autenticá-lo. Celulares não seguros não têm acesso a certas funcionalidades do aplicativo.
+                        </p>
+                    </div>
+                    <h1>Dados de contato</h1>
+                    <div class="listInformacoes">
+                        <ul class="listUl">
+                            <li>
+                                <div class="cmpName">Telefone residencial (opcional)</div>
+                                <div class="cmpValue input-with-icon">
+                                    <lightning-input disabled={disableFieldsContato} type="text" placeholder="Digite aqui" value={TelefoneResidencial} id="TelefoneResidencial" data-id="TelefoneResidencial" onchange={handlerField} maxlength="14"></lightning-input>
+                                    <lightning-icon lwc:if={ShowErroDigito10} icon-name="utility:error" size="x-small" alternative-text="Bloqueado" class="input-icon" variant="error"></lightning-icon>
+                                    <lightning-icon lwc:elseif={TelefoneResidencialErro} icon-name="utility:error" size="x-small" alternative-text="Bloqueado" class="input-icon" variant="error"></lightning-icon>
+                                </div>
+                                <p lwc:if={ShowErroDigito10} style="color: red;">Deve conter 10 digitos</p>
+                                <p lwc:if={TelefoneResidencialErro} style="color: red;">Não pode iniciar com 0, 1, 6, 7, 8 ou 9</p>
+                            </li>
+                            
+                            <li>
+                                <div class="cmpName">Telefone celular</div>
+                                <div class="cmpValue input-with-icon">
+                                    <lightning-input disabled={disableFieldsContato} type="text" placeholder="Digite aqui" value={Telefone} id="Telefone" onchange={handlerField} maxlength="15"></lightning-input>
+                                    <lightning-icon lwc:if={showAvisoCelularSeguro} icon-name="utility:warning" size="x-small" alternative-text="Não seguro" class="input-icon" variant="warning"></lightning-icon>
+                                    <lightning-icon lwc:else icon-name="utility:success" size="x-small" alternative-text="Seguro" class="input-icon" variant="success"></lightning-icon>
+                                </div>
+                                <p lwc:if={ShowErroDigito11} style="color: red;">Deve conter 11 digitos</p>
+                                <p lwc:if={TelefoneErro} style="color: red;">Deve iniciar com 5, 6, 7, 8 ou 9</p>
+                                <p>{AvisoCelularSeguro}</p>
+                            </li>
+                            
+                            <li style="width: 50%;">
+                                <div class="cmpName">E-mail</div>
+                                <lightning-input class="cmpValue" disabled={disableFieldsContato} type="email" placeholder="Digite aqui" value={Email} id="Email" onchange={handlerField} maxlength="40" onfocusout={focusOutAutoComplete}></lightning-input>
+                                <template if:true={showDropdown}>
+                                    <div class="autoComplete">
+                                        <div class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid">
+                                            <ul class="slds-listbox slds-listbox_vertical" role="listbox">
+                                                <br>
+                                                <template for:each={optionsEmailAutoComplete} for:item="option">
+                                                    <li key={option} role="presentation" class="slds-listbox__item" id={option} onclick={handleComplete}>
+                                                        <div id={option} role="option" class="slds-listbox__option slds-listbox__option_plain slds-media slds-media_small slds-media_center">
+                                                            <span class="slds-media__body">
+                                                                <span class="slds-truncate">{option}</span>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </template>
+                                <p lwc:if={ShowErroEmail} style="color: red;">Não pode prosseguir com dominio @CARREFOUR ou @ATACADAO</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="boxCardPrincipal">
+                    <h1>Envio de fatura</h1>
+                    <div class="listInformacoes">
+                        <ul class="listUl">
+                            <li>
+                                <div class="cmpName">Tipo de envio de fatura</div>
+                                <div class="cmpValueInfo">{ModoRecebimentoFatura}</div>
+                            </li>
+                            
+                            <li>
+                                <div class="cmpName">E-mail</div>
+                                <div class="cmpValueInfo">{EmailInfo}</div>
+                            </li>
+                            
+                            <li>
+                                <lightning-button variant="brand-outline" label="Alterar tipo de envio" title="lterar tipo de envio" onclick={alterarTipoEnvio} class="slds-m-left_x-small"></lightning-button>
+                            </li>
+
+                            <li></li>
+                            <li></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="boxCardPrincipal">
+                    <h1>Autorizações</h1>
+                    <div class="listInformacoes">
+                        <ul style="margin-left: 1%;">
+                            <li> 
+                                <lightning-input type="checkbox" onchange={handlerField} checked={AceiteRecebimentoEmail} label="Autoriza o Grupo Carrefour a utilizar seus dados para enviar ofertas e promoções dos nossos produtos e serviços." name="checkboxInput1" id="AceiteRecebimentoE_mail"></lightning-input>
+                            </li>
+                        </ul>
+
+                        <ul style="margin-left: 1%; margin-top: 8px;">
+                            <li> 
+                                <lightning-input type="checkbox" onchange={handlerField} checked={IndicadorAceiteAtualizacaoLimite} label="Autoriza o Grupo Carrefour a realizar aumento automático de limite de crédito para o cartão." name="checkboxInput2" id="IndicadorAceiteAtualizacaoLimite"></lightning-input>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </template>
+
+            <template lwc:if={step02}>
+                <div class="boxCardPrincipal step02">    
+                    <div class="aviso" lwc:if={showAvisoCelularSeguro}>
+                        <y>
+                            <lightning-icon icon-name="utility:warning" alternative-text="Warning!" title="Warning" size="x-small"></lightning-icon> 
+                        </y>
+
+                        <p>
+                            Para tornar o novo número um celular seguro, o cliente deve ir a uma loja e autenticá-lo. Celulares não seguros não têm acesso a certas funcionalidades do aplicativo.
+                        </p>
+                    </div>
+
+                    <h1>Confirme os dados cadastrais alterados</h1>
+                    <p>Antes de finalizar, confirme com o cliente se os dados alterados estão corretos</p>        
+                    <div class="listInformacoesStep02">
+                        <ul lwc:if={MostarSessao01}>
+                            <li lwc:if={MudouPrimeiroNome}>
+                                <div class="cmpNameInfo">Primeiro nome</div>
+                                <div class="cmpValueInfo">{PrimeiroNome}</div>
+                            </li>
+                            
+                            <li lwc:if={MudouNomeDoMeio}>
+                                <div class="cmpNameInfo">Nome do meio</div>
+                                <div class="cmpValueInfo">{NomeDoMeio}</div>
+
+                            </li>
+                            
+                            <li lwc:if={MudouUltimoNome}>
+                                <div class="cmpNameInfo">Sobrenome</div>
+                                <div class="cmpValueInfo">{UltimoNome}</div>
+                            </li>
+                            
+                            <li lwc:if={MudouDataNascimento}>
+                                <div class="cmpNameInfo">Data de nascimento</div>
+                                <div class="cmpValueInfo">{DataNascimentoFormat}</div>
+                            </li>
+
+                            <li lwc:if={MudouCPF}>
+                                <div class="cmpNameInfo">CPF</div>
+                                <div class="cmpValueInfo">{CPF}</div>
+                            </li>
+                            
+                            <li lwc:if={MudouRG}>
+                                <div class="cmpNameInfo">RG</div>
+                                <div class="cmpValueInfo">{RG}</div>
+                            </li>
+                            
+                            <li lwc:if={MudouGenero}>
+                                <div class="cmpNameInfo" style="margin-bottom: 0px;">Gênero</div>
+                                <div class="cmpValueInfo">{GeneroFormat}</div>
+                            </li>
+                            
+                            <!-- <li lwc:if={MudouNaturalidade}>
+                                <div class="cmpNameInfo">Naturalidade</div>
+                                <div class="cmpValueInfo">{Naturalidade}</div>
+                            </li> -->
+                            
+                            <li lwc:if={MudouEstadoCivil}>
+                                <div class="cmpNameInfo">Estado civil</div>
+                                <div class="cmpValueInfo">{EstadoCivilFormat}</div>
+                            </li>
+
+                            <li lwc:if={MudouNomeMae}>
+                                <div class="cmpNameInfo">Nome da mãe</div>
+                                <div class="cmpValueInfo">{NomeMae}</div>
+                            </li>
+                        </ul>
+
+                        <ul lwc:if={MostarSessao02}>
+                            <li lwc:if={MudouCEP}>
+                                <div class="cmpNameInfo">CEP</div>
+                                <div class="cmpValueInfo">{CEP}</div>
+                            </li>
+                            
+                            <li lwc:if={MudouRua}>
+                                <div class="cmpNameInfo">Endereço</div>
+                                <div class="cmpValueInfo">{Rua}</div>
+                            </li>
+                            
+                            <li lwc:if={MudouNumeroCasa}>
+                                <div class="cmpNameInfo">Número (opcional)</div>
+                                <div class="cmpValueInfo">{NumeroCasaFormat}</div>
+                            </li>
+
+                            <li lwc:if={MudouComplemento}>
+                                <div class="cmpNameInfo">Complemento (opcional)</div>
+                                <div class="cmpValueInfo">{ComplementoFormat}</div>
+                            </li>
+                            
+                            <li lwc:if={MudouBairro}>
+                                <div class="cmpNameInfo">Bairro</div>
+                                <div class="cmpValueInfo">{Bairro}</div>
+                            </li>
+                            
+                            <li lwc:if={MudouCidade}>
+                                <div class="cmpNameInfo">Cidade</div>
+                                <div class="cmpValueInfo">{Cidade}</div>
+                            </li>
+                            
+                            <li lwc:if={MudouEstado}>
+                                <div class="cmpNameInfo">UF</div>
+                                <div class="cmpValueInfo">{Estado}</div>
+                            </li>
+                        </ul>
+
+                        <ul lwc:if={MostarSessao03}>
+                            <li lwc:if={MudouTelefoneResidencial}>
+                                <div class="cmpNameInfo">Telefone residencial (opcional)</div>
+                                <div class="cmpValueInfo">{TelefoneResidencialFormat}</div>
+                            </li>
+                            
+                            <li lwc:if={MudouTelefone}>
+                                <div class="cmpNameInfo">Telefone celular</div>
+                                <div class="cmpValueInfo">{Telefone}</div>
+                            </li>
+                            
+                            <li lwc:if={MudouEmail}>
+                                <div class="cmpNameInfo">E-mail</div>
+                                <div class="cmpValueInfo">{Email}</div>
+                            </li>
+                        </ul>
+
+                        <ul  lwc:if={MostarSessao04}>
+                            <div class="listInformacoesCheckBox">
+                                <div lwc:if={MudouAceiteRecebimentoEmail}> 
+                                    <lightning-input type="checkbox" checked={AceiteRecebimentoEmail} label="Autoriza o Grupo Carrefour a utilizar seus dados para enviar ofertas e promoções dos nossos produtos e serviços." name="checkboxInput1" disabled></lightning-input>
+                                </div>
+                                
+                                <div lwc:if={MudouIndicadorAceiteAtualizacaoLimite}> 
+                                    <lightning-input type="checkbox" checked={IndicadorAceiteAtualizacaoLimite} label="Autoriza o Grupo Carrefour a realizar aumento automático de limite de crédito para o cartão." name="checkboxInput2" disabled></lightning-input>
+                                </div>
+                            </div>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="boxInputs">
+                    <h1>Preenchimento de Caso</h1>
+                    <lightning-record-edit-form object-api-name="Case">
+                        <ul>
+                            <li>
+                                <label>Origem</label>
+                                <lightning-input-field 
+                                    language=""
+                                    value={valueOrigem}
+                                    field-name="Origin" 
+                                    class="lightningInput" 
+                                    placeholder="--Nenhuma--"
+                                    onchange={handleChangeOrigem} 
+                                    variant="label-hidden"> 
+                                </lightning-input-field>
+                            </li>
+                            <li>
+                                <label>Canal</label>
+                                <lightning-input-field
+                                    value={valueCanal}
+                                    field-name="CanalEntrada__c" 
+                                    class="lightningInput" 
+                                    placeholder="--Nenhuma--"
+                                    onchange={handleChangeCanal} 
+                                    variant="label-hidden"> 
+                                </lightning-input-field>
+                            </li>
+                        </ul>    
+                    </lightning-record-edit-form>   
+                </div>
+
+            </template>
+
+            <template lwc:if={step03}>
+                <div class="boxStep3">
+                    <div class="section01" style="box-shadow: 0px 1px 0px #DDDBDA;">
+                        <h1><lightning-icon icon-name="utility:success" alternative-text="Success!" variant="success" title="success variant" size="small"></lightning-icon> Operação realizada com sucesso!</h1> <br>
+                        <h2>Protocolo: <b>{numeroProtocolo}</b></h2>
+                        <br>
+                        <p>{dateToday}</p>
+                        <br>
+                    </div>
+                    <br>
+
+                    <div class="section02" style="box-shadow: none;">
+                        <h1>Informações do Caso:</h1>
+                        
+                        <div class="listInformacoes">
+                            <ul>
+                                <li>
+                                    <div class="cmpNameInfo">Origem</div>
+                                    <div class="cmpValueInfo">{valueOrigem}</div>
+                                </li>
+
+                                <li>
+                                    <div class="cmpNameInfo">Canal</div>
+                                    <div class="cmpValueInfo">{valueCanal}</div>
+                                </li>
+
+                                <li>
+                                    <div class="cmpNameInfo">Assunto</div>
+                                    <div class="cmpValueInfo">{Assunto}</div>
+                                </li>
+
+                                <li>
+                                    <div class="cmpNameInfo">Evento</div>
+                                    <div class="cmpValueInfo">{Evento}</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <template lwc:if={ShowTelaErrorAPI}>
+                <div class="boxCardPrincipal boxStep3">
+                    <div class="section01">
+                        <div class="titleErro">
+                            <p>
+                                <lightning-icon icon-name="action:close" alternative-text="error!" variant="error" title="error variant" size="xx-small" style="font-size: xx-small;"></lightning-icon>
+                            </p>
+                            <h1 style="font-weight: 600;">Poxa, algo deu errado!</h1> <br>
+                        </div>
+                        <h2>Ocorreu um erro ao tentar realizar a ação, tente novamente mais tarde.</h2>
+                    </div>
+                </div>
+            </template>
+
+            <template lwc:if={ShowAlterarCPF}>
+                <div class="boxCardPrincipal boxStep3">
+                    <div class="avisoCpf">
+                        <p class="avisoTexto">
+                            <lightning-icon icon-name="utility:user" size="x-small" alternative-text="Indicates approval" variant="inverse"></lightning-icon> 
+                            
+                            &#32; &#32; &#32; O setor responsável será notificado e avaliará a solicitação em até três dias úteis.
+                        </p>
+                    </div>
+                    
+                    <br>
+                    <div class="section01">
+                        <h1 style="font-weight: 600; margin-bottom: -15px;">Confirme o CPF</h1> <br>
+                        <h2>Para seguir com a solicitação, confirme o novo CPF com o cliente.</h2>
+                    </div>
+
+                    <br>
+                    <div  style="width: 30%; margin-left: 1%;">
+                        <div class="cmpName">CPF</div>
+                        <lightning-input class="cmpValue" type="text" placeholder="Digite aqui" value={CPF} onchange={handlerCPF} maxlength="14"></lightning-input>
+                        <p lwc:if={ShowErroCpfInvalido} style="color: red;">CPF Invalido</p>
+                    </div>
+                </div>
+            </template>
+
+            <template lwc:if={ShowAlteracaoBlindagemSimples}>
+                <div class="boxCardPrincipal blindagemSimples">
+                    <div class="avisoCpf">
+                        <p class="avisoTexto">
+                            <lightning-icon icon-name="utility:user" size="x-small" alternative-text="Indicates approval" variant="inverse"></lightning-icon> 
+                            
+                            &#32; &#32; &#32; O setor de responsável será notificado e avaliará a solicitação. O cliente será notificado em até um dia útil.
+                        </p>
+                    </div>
+
+                    <h1>Altere os dados cadastrais desejados pelo cliente</h1>
+                    <h2>Antes de finalizar, confirme com o cliente se os dados alterados estão corretos</h2>
+                    <div class="listInformacoes ">
+                        <ul class="listUl">
+                            <li>
+                                <div class="cmpName">CEP</div>
+                                <lightning-input class="cmpValue" type="text" placeholder="Digite aqui" value={CEP} id="CEPBlindagemSimples" onchange={handlerField} maxlength="9"></lightning-input>
+                            </li>
+                            
+                            <li style="width: 50%;">
+                                <div class="cmpName">Endereço</div>
+                                <lightning-input class="cmpValue" type="text" placeholder="Digite aqui" value={Rua} id="RuaBlindagemSimples" onchange={handlerField} maxlength="40"></lightning-input>
+                            </li>
+
+                            <li>
+                                <br>
+                                <lightning-button variant="base" label="Localizar" title="Localizar" onclick={handleLocalizar} class="slds-m-left_x-small"></lightning-button>
+                            </li>
+                            
+                            <li>
+                                <div class="cmpName">Número (opcional)</div>
+                                <lightning-input class="cmpValue" type="number" step="1" placeholder="Digite aqui" value={NumeroCasa} id="NumeroCasaBlindagemSimples" onchange={handlerField} maxlength="5"></lightning-input>
+                            </li>
+                        </ul>
+
+                        <br>
+                        <br>
+
+                        <ul class="listUl">
+                            <li style="width: 50%;">
+                                <div class="cmpName">Complemento (opcional)</div>
+                                <lightning-input class="cmpValue" type="text" placeholder="Digite aqui" value={Complemento} id="ComplementoBlindagemSimples" onchange={handlerField} maxlength="20"></lightning-input>
+                            </li>
+                            
+                            <li>
+                                <div class="cmpName">Bairro</div>
+                                <lightning-input class="cmpValue" type="text" placeholder="Digite aqui" value={Bairro} id="BairroBlindagemSimples" onchange={handlerField} maxlength="30"></lightning-input>
+                            </li>
+                            
+                            <li>
+                                <div class="cmpName">Cidade</div>
+                                <lightning-input class="cmpValue" type="text" placeholder="Digite aqui" value={Cidade} id="CidadeBlindagemSimples" onchange={handlerField} maxlength="20"></lightning-input>
+                            </li>
+                            
+                            <li>
+                                <div class="cmpName">UF</div>
+                                <lightning-combobox class="cmpValue" 
+                                    name="UF"
+                                    value={Estado} 
+                                    id="EstadoBlindagemSimples"
+                                    placeholder="Selecione"
+                                    options={optionsUF}
+                                    onchange={handlerField}>
+                                </lightning-combobox>
+                            </li>
+                        </ul>
+
+                        <br>
+                        <br>
+
+                        <ul class="listUl">
+                            <li>
+                                <div class="cmpName">Telefone residencial (opcional)</div>
+                                <div class="cmpValue input-with-icon">
+                                    <lightning-input type="text" placeholder="Digite aqui" value={TelefoneResidencial} id="TelefoneResidencialBlindagemSimples" onchange={handlerField} maxlength="14"></lightning-input>
+                                    <lightning-icon lwc:if={ShowErroDigito10} icon-name="utility:error" size="x-small" alternative-text="Bloqueado" class="input-icon" variant="error"></lightning-icon>
+                                    <lightning-icon lwc:elseif={TelefoneResidencialErro} icon-name="utility:error" size="x-small" alternative-text="Bloqueado" class="input-icon" variant="error"></lightning-icon>
+                                </div>
+                                <p lwc:if={ShowErroDigito10} style="color: red;">Deve conter 10 digitos</p>
+                                <p lwc:if={TelefoneResidencialErro} style="color: red;">Não pode iniciar com 0, 1, 6, 7, 8 ou 9</p>
+                            </li>
+                            
+                            <li>
+                                <div class="cmpName">Telefone celular</div>
+                                <div class="cmpValue input-with-icon">
+                                    <lightning-input type="text" placeholder="Digite aqui" value={Telefone} id="TelefoneBlindagemSimples" onchange={handlerField} maxlength="15"></lightning-input>
+                                    <lightning-icon lwc:if={showAvisoCelularSeguro} icon-name="utility:warning" size="x-small" alternative-text="Não seguro" class="input-icon" variant="warning"></lightning-icon>
+                                    <lightning-icon lwc:else icon-name="utility:success" size="x-small" alternative-text="Seguro" class="input-icon" variant="success"></lightning-icon>
+                                </div>
+
+                                <p lwc:if={ShowErroDigito11} style="color: red;">Deve conter 11 digitos</p>
+                                <p lwc:if={TelefoneErro} style="color: red;">Deve iniciar com 5, 6, 7, 8 ou 9</p>
+                                <p>{AvisoCelularSeguro}</p>
+                            </li>
+                            
+                            <li style="width: 30%;">
+                                <div class="cmpName">E-mail</div>
+                                <lightning-input class="cmpValue" type="email" placeholder="Digite aqui" value={Email} id="EmailBlindagemSimples" onchange={handlerField}  maxlength="40" onfocusout={focusOutAutoComplete}></lightning-input>
+                                <template if:true={showDropdown}>
+                                    <div class="autoComplete">
+                                        <div class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid">
+                                            <ul class="slds-listbox slds-listbox_vertical" role="listbox">
+                                                <br>
+                                                <template for:each={optionsEmailAutoComplete} for:item="option">
+                                                    <li key={option} role="presentation" class="slds-listbox__item" id={option} onclick={handleComplete}>
+                                                        <div id={option} role="option" class="slds-listbox__option slds-listbox__option_plain slds-media slds-media_small slds-media_center">
+                                                            <span class="slds-media__body">
+                                                                <span class="slds-truncate">{option}</span>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </template>
+                            </li>
+
+                            <li>
+                                <div class="cmpName">Solicitação de cartão</div>
+                                <lightning-combobox class="cmpValue"
+                                name="SolicitacaoCartaoBlindagemSimples"
+                                value={solicitacaoCartao} 
+                                id="SolicitacaoCartaoBlindagemSimples"
+                                placeholder="Selecione"
+                                options={optionsSolicitacaoCartao}
+                                onchange={handlerField}>
+                            </lightning-combobox>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="boxInputs">
+                        <h1>Preenchimento de Caso</h1>
+                        <lightning-record-edit-form object-api-name="Case">
+                            <ul>
+                                <li>
+                                    <label>Origem</label>
+                                    <lightning-input-field 
+                                        language=""
+                                        value={valueOrigem}
+                                        field-name="Origin" 
+                                        class="lightningInput" 
+                                        placeholder="--Nenhuma--"
+                                        onchange={handleChangeOrigem} 
+                                        variant="label-hidden"> 
+                                    </lightning-input-field>
+                                </li>
+                                <li>
+                                    <label>Canal</label>
+                                    <lightning-input-field
+                                        value={valueCanal}
+                                        field-name="CanalEntrada__c" 
+                                        class="lightningInput" 
+                                        placeholder="--Nenhuma--"
+                                        onchange={handleChangeCanal} 
+                                        variant="label-hidden"> 
+                                    </lightning-input-field>
+                                </li>
+                            </ul>    
+                        </lightning-record-edit-form>   
+                    </div>
+                </div>
+            </template>
+        </div>
+    </template>
+
+    <template lwc:if={ShowAlterarTipoEnvio}>
+        <c-bcsf_-modo-envio-fatura
+            close-parent-component={ShowAlterarTipoEnvio}
+            cmp-alteracao-cadastral={ShowAlterarTipoEnvio}
+            oncloseparentmodal={closeQuickAction}
+        ></c-bcsf_-modo-envio-fatura> 
+    </template>
+
+    <template lwc:if={componenteAlteracaoCadastral}>
+        <footer>   
+            <div class="boxFooter">
+                <ul>
+                    <li>
+                        <lightning-button variant="Neutral" label={buttonVoltar} onclick={handleButtonVoltar} disabled={disableButtonVoltar} class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                    <li>
+                        <lightning-button variant="brand" label={buttonAvancar}  onclick={handleProsseguir} disabled={disableButtonAvancar}  class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+    </template>
+</template>

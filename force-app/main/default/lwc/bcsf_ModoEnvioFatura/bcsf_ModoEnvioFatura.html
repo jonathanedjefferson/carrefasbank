@@ -1,0 +1,216 @@
+<template>
+    <div if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <div class="title">Alterar Modo de Envio de Fatura</div>
+
+    
+    
+    <template if:false={pageOne}>
+        <div class="subTitle">Abertura de Protocolo</div>
+    </template>
+    <template lwc:if={pageOne}>
+        <div if:true={pageCorreio} class="alertMessageAlteracao" role="alert">
+            <span class="slds-icon_container slds-icon-utility-user slds-m-right_x-small">
+                <lightning-icon icon-name="utility:warning" size="x-small" style="--slds-c-icon-color-foreground-default: black;" alternative-text="Ícone de Aviso"></lightning-icon>
+            </span>
+            <div class="textContainerAlteracao">
+                <p class="textAlertAlteracao">Para trocar o endereço do cliente, é necessário acessar o módulo de Alteração Cadastral.</p>
+                <p class="textAlertAlteracao"><span style="text-decoration:underline;font-weight:bold;" onclick={navegarParaAlteracao}>Clique aqui</span> para realizar a alteração de endereço.</p>
+            </div>
+        </div>
+        <div class="container">
+            <lightning-combobox
+                label="Tipo de recebimento de fatura"
+                value={tipoEnvioValue}
+                options={tipoEnvioOptions}
+                class="tipoEnvio" 
+                onchange={handleTipoEnvioChange}>
+            </lightning-combobox>
+
+            <template lwc:if={pageEmail}>
+                <div class="slds-col slds-m-right_large">
+                    <lightning-input
+                        label="Email"
+                        type="email"
+                        value={email}
+                        onchange={handleEmailChange}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col">
+                    <lightning-radio-group
+                        label="Atualizar e-mail de cadastro?"
+                        name="radioGroup"
+                        options={atualizarEmailOptions}
+                        value={atualizaEmailValue}
+                        disabled={disableBtnAtualizarEmail}
+                        onchange={handleAtualizarEmailChange}>
+                    </lightning-radio-group>
+                </div>
+            </template>
+
+            <template lwc:if={pageCorreio}>
+                <div class="boxCardEndereco">
+                    <ul class="firstUlEnd">
+                        <li>
+                            <div class="cmpName">CEP</div>
+                            <div class="cmpValue">{cep}</div>
+                        </li>
+                        <li>
+                            <div class="cmpName">Endereço</div>
+                            <div class="cmpValue">{rua}</div>
+                        </li>
+                        <li>
+                            <div class="cmpName">Número</div>
+                            <div class="cmpValue">{numero}</span></div>
+                        </li>
+                    </ul>
+                    <ul class="secondListEnd">
+                        <li>
+                            <div class="cmpName">Complemento</div>
+                            <div class="cmpValue">{complemento}</div>
+                        </li>
+                        <li>
+                            <div class="cmpName">Bairro</div>
+                            <div class="cmpValue">{bairro}</div>
+                        </li>
+                        <li>
+                            <div class="cmpName">Cidade</div>
+                            <div class="cmpValue">{cidade}</div>
+                        </li>
+                        <li>
+                            <div class="cmpName">UF</div>
+                            <div class="cmpValue">{estado}</div>
+                        </li>
+                    </ul>
+                </div>
+            </template>
+
+            <template lwc:elseif={pagePhone}>
+                <div class="boxCardEndereco">
+                    <ul class="firstUlEnd">
+                        <li>
+                            <div class="cmpName">Telefone</div>
+                            <div class="cmpValue">{telefone}</div>
+                        </li>
+                        <li>
+                            <div class="cmpName">Celular Seguro</div>
+                            <div class="cmpValue">{celularSeguro}</div>
+                            <template lwc:if={infoCelularSeguro}>
+                                <div class="infoCelularSeguro">Celular não seguro, escolha outro Tipo de recebimento.</div>
+                            </template>
+                        </li>
+    
+                    </ul>
+                </div>
+            </template>
+            
+            <template lwc:if={pageApp}>
+                <div class="boxObservacao">
+                    <div class="cmpName">Observação</div>
+                    <div class="cmpValue">Comunique ao cliente que ele deverá consultar suas faturas no Aplicativo</div>
+                </div>
+            </template>            
+        </div>
+    </template>
+
+    <template lwc:if={pageTwo}>
+        <div class="dadosCaso">
+            <div class="avisoAlternativo">
+                <p class="avisoTextoAlternative">
+                    <lightning-icon
+                        icon-name="utility:user"
+                        size="small"
+                        alternative-text="Indicates approval">
+                    </lightning-icon> &#32; &#32; &#32;Para finalizar a mudança solicitada, registre a abertura do protocolo preenchendo os dados abaixo.
+                </p>
+            </div>
+            <h1>Preenchimento de caso</h1>
+
+            <div class="boxInputs">
+                <lightning-record-edit-form object-api-name="Case">
+                    <ul>
+                        <li>
+                            <lightning-combobox
+                                label="Tipo de alteração"
+                                name="progress"
+                                placeholder="--Nenhuma--"
+                                value={evento}
+                                options={optionsAlteracao}
+                                onchange={handleTipoAlteracao} >
+                            </lightning-combobox>
+                        </li>
+                        <li>
+                            <lightning-combobox
+                                label="Tipo de envio alterado para"
+                                name="progress"
+                                placeholder={novoModoEnvio}
+                                value={novoModoEnvio}
+                                options={optionsTipoAlterado}
+                                onchange={handleTipoAlterado} 
+                                disabled='true'>
+                            </lightning-combobox>
+                        </li>
+                        <li>
+                            <label>Origem</label>
+                            <lightning-input-field 
+                                language=""
+                                value={origemValue}
+                                field-name="Origin" 
+                                class="lightningInput" 
+                                placeholder="--Nenhuma--"
+                                onchange={handleChangeOrigem} 
+                                variant="label-hidden"> 
+                            </lightning-input-field>
+                        </li>
+                        <li>
+                            <label>Canal</label>
+                            <lightning-input-field
+                                value={canalValue}
+                                field-name="CanalEntrada__c" 
+                                class="lightningInput" 
+                                placeholder="--Nenhuma--"
+                                onchange={handleChangeCanal} 
+                                variant="label-hidden"> 
+                            </lightning-input-field>
+                        </li>
+                    </ul>    
+                </lightning-record-edit-form>   
+            </div>
+        </div>
+    </template>
+
+    <template lwc:if={pageTree}>
+        <div class="numeroCase">
+            <h1>Dados cadastrais alterados com sucesso!</h1>
+            <p>Protocolo: {numProtocolo}</p>
+        </div>
+    </template>
+
+    <footer>
+        <div class="boxFooter">
+            <ul>
+                <li>
+                    <template if:false={pageTree}>
+                        <lightning-button variant="Neutral" label="Voltar" onclick={handleBtnVoltar} disabled={disableBtnVoltar}></lightning-button>
+                    </template>
+                    <template lwc:if={pageOne}>
+                        <lightning-button variant="Neutral" label="Fechar" onclick={handleBtnFechar} class="slds-m-left_x-small"></lightning-button>
+                    </template>
+                </li>
+                <li>
+                    <template lwc:if={pageOne}>
+                        <lightning-button variant="brand" label="Salvar Alterações e Abrir Protocolo"  onclick={handleBtnSalvar} disabled={disableBtnSalvar}></lightning-button>
+                    </template>
+                    <template lwc:elseif={pageTwo}>
+                        <lightning-button variant="brand" label="Finalizar"  onclick={handleBtnFinalizar} disabled={disableBtnFinalizar}></lightning-button>
+                    </template>
+                    <template lwc:else>
+                        <lightning-button variant="brand" label="Ir para caso"  onclick={handleBtnIrCase}></lightning-button>
+                    </template>
+                </li>
+            </ul>
+        </div>
+    </footer>
+    
+</template>

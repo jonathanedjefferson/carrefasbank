@@ -1,0 +1,60 @@
+<template>
+    <div if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <template if:true={showCardPrincipal}>
+        <div class="title">Código de rastreio</div>
+        <div class="c-container">
+            <div class="boxCardPrincipal">
+                <div class="boxListaCartoes">
+                    <div class="cmpName">Cartão rastreado</div>
+                    <lightning-combobox
+                        name="progress"
+                        value={valueCartaoSelecionado}
+                        options={optionsCartoes}
+                        class="lightningInput" 
+                        variant="label-hidden"
+                        onchange={handleChangeCartaoSelecionado} >
+                    </lightning-combobox>
+                </div>
+
+                <div class="boxInputs">
+                    <ul>
+                        <li class="">
+                            <div class="cmpName">Código de Rastreio</div>
+                            <div class="cmpValue codigoRastreio">{codigoRastreio}</div> 
+                            <template lwc:if={temCodigoRastreio}>
+                                <a onclick={handleCopyCodigoRastreio} class="copy">Copiar</a>
+                            </template>
+                        </li>
+                        <template lwc:if={temCodigoRastreio}> 
+                            <li class="">
+                                <div class="cmpName">Data de Emissão</div>
+                                <div class="cmpValue">{dataEmissao}</div>
+                            </li>
+                            <li class="">
+                                <div class="txtInfos">Para acompanhar o Status de Rastreio clique no botão abaixo:</div>
+                                <lightning-button variant="brand-outline" label="Rastreio do Cartão"  onclick={handleAbrirRastreio} class=""></lightning-button>
+                            </li>
+                        </template>
+                        <template lwc:else>
+                            <li class="">
+                                <div class="txtInfosSemCod">Nenhum código de rastreio disponível.</div>
+                                <div class="txtInfosSemCod">O código de rastreio pode demorar até 48 horas para estar disponível.</div>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </div>
+        </div> 
+        <footer>
+            <div class="boxFooter">
+                <ul>
+                    <li>
+                        <lightning-button label="Voltar" onclick={handleButtonVoltar} disabled={disableButton} class=""></lightning-button>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+    </template>   
+</template>

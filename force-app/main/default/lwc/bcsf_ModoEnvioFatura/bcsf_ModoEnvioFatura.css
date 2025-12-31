@@ -1,0 +1,182 @@
+.container{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-top: 20px;
+    margin-left: 30px;
+}
+.aviso{
+    background-color: #f89807;
+    opacity: 1;
+    background: repeating-linear-gradient( 45deg, #f8ae54, #f8ae54 50px, #ffbb67 50px, #ffbb67 100px );
+    width: 95%;
+    margin: auto;
+    margin-top: 15px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.avisoAlternativo{
+    background-color: #706E6B;
+    opacity: 1;
+    background: repeating-linear-gradient( 45deg, #868584c2, #868584c2 50px, #868584 50px, #868584 100px );
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.avisoTexto{
+    color: black;
+    font-weight: 500;
+}
+.avisoTextoAlternative{
+    color: rgb(255, 255, 255);
+    font-weight: 500;
+}
+.tipoEnvio{
+    width: 25%;
+    margin-right: 30px;
+}
+.dadosCaso{
+    padding: 20px 40px;
+}
+.dadosCaso h1{
+    margin-top: 10px;
+}
+.border2{
+    border: 2px solid #8017ad;
+}
+.title {
+    font-size: 20px;
+    font-weight: bold;  
+    text-align:center; 
+    padding: 20px 0 10px 0; 
+}
+.subTitle {
+    font-size: 14px;  
+    text-align:center; 
+    padding-bottom: 10px; 
+    box-shadow: 0px 1px 0px #DDDBDA;
+}
+h1 {
+    font-weight: bold; 
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+.listDados{
+    margin-right: 20px;
+    margin-bottom: 8px;
+}
+.boxObservacao{
+    width: 300px;
+}
+.boxCardEndereco {
+    padding-bottom: 20px;
+}
+.boxCardEndereco h1{
+    font-size: 12px;
+}
+.boxCardEndereco ul li {
+    margin-right: 30px;
+}
+.boxCardEndereco ul {
+    display: flex;
+    justify-content: start;
+}
+.firstUlEnd{
+    width: 500px;
+    margin-bottom: 10px;
+}
+.secondListEnd{
+    width: 500px;
+}
+.boxInputs ul {
+    display:flex;
+    justify-content: space-between;
+    max-width: 95%;
+    flex-wrap: wrap;
+}
+.boxInputs ul li {
+    width: 48%;
+    margin-bottom: 10px;
+}
+.boxInputs ul .liMaior {
+    width: 65%;
+}
+.numeroCase{
+    margin-left: 30px;
+    margin-top: 20px;
+}
+.numeroCase p{
+    font-size: 16px;
+    font-weight: bold; 
+}
+.copiar{
+    text-decoration: none;
+    color: #0070D2;}
+.copiar:hover{
+    color: #073257;
+}
+.copiar:active{
+    color: #0070D2;
+}
+.infoCelularSeguro{
+    font-size: 12px;
+    color: #C23934;
+}
+.cmpName {
+    font-size: 12px;
+}
+.cmpValue {
+    font-size: 14px; font-weight: bold;
+}
+footer {
+    box-shadow:  0px -1px 0px #DDDBDA; margin-top: 30px;
+}
+.boxFooter  {
+    padding:20px;
+}
+.boxFooter ul {
+    display: flex; justify-content: space-between; align-items: center; 
+}
+.boxFooter ul li {
+    display: flex;flex-direction: row;
+}
+.boxFooter ul li.liBtnCaso {
+    width: 15%;
+}
+.boxFooter ul li.liBtnConfirmar {
+    width:30%;
+}
+.txtInfosBoxTwo {
+    margin-bottom: 10px;
+}
+.listTwo {
+    margin-bottom: 20px; padding-left: 17px;
+}
+.listTwo li {
+    list-style-type: circle;
+}
+.alertMessageAlteracao{
+    background: #F9B765;
+    height: 58px;
+    padding-top: 16px;
+    padding-left: 16px;
+    padding-bottom: 16px;
+    margin-right: 16px;
+    margin-left: 16px;
+    display: flex;
+    align-items: center;
+}
+.textContainerAlteracao{
+    display: flex;
+    flex-direction: column;
+}
+.textAlertAlteracao{
+    color: #080707;
+    font-family: 'Segoe UI';
+    font-size: 14px;
+    font-weight: 600;
+}

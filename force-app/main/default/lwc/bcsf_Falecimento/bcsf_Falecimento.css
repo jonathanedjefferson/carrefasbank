@@ -1,0 +1,42 @@
+.title {
+    font-size: 20px;
+    font-weight: bold;  
+    text-align:center; 
+    padding: 20px 0; 
+    box-shadow: 0px 1px 0px #DDDBDA;
+}
+
+h1 {
+    font-weight: bold; 
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+.listDados{
+    margin-right: 20px;
+    margin-bottom: 8px;
+}
+
+
+.copiar{
+    text-decoration: none;
+    color: #0070D2;}
+.copiar:hover{color: #073257;}
+.copiar:active{color: #0070D2;}
+
+.cmpName {font-size: 12px;}
+.cmpValue {font-size: 16px; font-weight: bold;}
+
+footer {box-shadow:  0px -1px 0px #DDDBDA; margin-top: 30px;}
+.boxFooter  {padding:20px;}
+.boxFooter ul {display: flex; justify-content: space-between; align-items: center;}
+.boxFooter ul li {width: 76%;}
+.boxFooter ul li:first-child {width: 12%; text-align: center;}
+.boxFooter ul li:last-child {width: 12%; text-align: center;}
+.boxFooter ul li.liBtnCaso {width: 15%;}
+.boxFooter ul li.liBtnConfirmar {width:30%;}
+.customProgress {--lwc-progressBarColorBackgroundFill: green !important;}
+.customProgress .slds-progress {max-width: 85% !important;}
+.txtInfosBoxTwo {margin-bottom: 10px;}
+.listTwo {margin-bottom: 20px; padding-left: 17px;}
+.listTwo li {list-style-type: circle;}

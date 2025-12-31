@@ -1,0 +1,569 @@
+/* :host{
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol'
+} */
+
+.lwc-header {
+    border: 0;
+    height: 100%;
+    box-shadow: none;
+    border-radius: var(--lwc-borderRadiusMedium, 0.25rem);
+    /* background-color: rgb(243, 243, 243); */
+    /* background-color: rgb(237, 237, 237); */
+    background-color: #FAFAF9;
+    padding: var(--lwc-spacingMedium, 0.75rem) 0;
+    border-bottom: 1px solid rgb(201, 201, 201);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.top-header {
+    display: inline-flex;
+    width: 100%;
+}
+
+.top-headerRetorno {
+    display: inline-flex;
+    width: 100%;
+    box-shadow: 0px -1px 0px #DDDBDA;
+}
+
+.header-name {
+    min-width: 184px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-right: 10px;
+}
+
+.field-status{
+    width: 300px;
+    margin-right: 16px;
+    --lwc-sizeXSmall: 350px;
+}
+
+.field-modalidade{
+    --lwc-sizeXSmall: 220px;
+}
+
+.header-fields{
+    width: 160px;
+    margin-right: 16px;
+}
+
+.field-cpf{
+    width: 140px;
+}
+
+.boxMenu {
+    width: 85%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    margin-left: auto;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 27px;
+    text-align: left;
+    color:#080707;
+}
+.input-data, .btn-buscar, .field-status, .field-modalidade{
+    margin-bottom: 2px;
+}
+
+.container-btn-buscar{
+    min-width: 135px !important;
+    padding-bottom: 2px;
+}
+
+.btn-buscar {
+    display: flex;
+    align-items: end;
+}
+
+@media (max-width:1600px) {
+    .field-status{
+        width: 200px;
+    }
+
+    .header-fields{
+        width: 130px;
+    }
+
+    .field-cpf{
+        width: 120px;
+    }
+}
+
+@media (max-width:1340px) {
+    .field-status{
+        width: 160px;
+        margin-right: 12px;
+    }
+
+    .header-fields{
+        width: 120px;
+        margin-right: 12px;
+    }
+}
+
+@media (max-width:1230px) {
+    .field-status{
+        width: 120px;
+        margin-right: 5px;
+    }
+
+    .header-fields{
+        width: 120px;
+        margin-right: 5px;
+    }
+}
+
+@media (max-width:1000px) {
+    .boxMenu {
+        width: 70%;
+    }
+}
+
+.separator {
+    box-shadow: 0px 1px 0px #DDDBDA;
+}
+
+.container-imagem{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 70%;
+}
+
+.container-imagem img{
+    width: 300px;
+    height: 200px;
+}
+
+.container-imagem h1{
+    font-size: 20px;
+    margin: 10px 0px 5px 0px;
+}
+
+.container-imagem h3{
+    font-size: 13px;
+}
+
+.container-table-propostas{
+    width: 100%;
+    max-height: 500px;
+    overflow-x: auto;
+    --slds-g-color-success-base-50: #2E844A;
+    --lwc-fontSize4: 13px;
+    --lwc-fontWeightBold: 600;
+}
+
+@media (max-width:1400px) {
+    .container-table-propostas{
+        max-height: 250px;
+    }
+}
+
+.table-propostas{
+    width: 100%;
+}
+
+.container-dados{
+    margin-bottom: 18px;
+}
+
+.text-title{
+    font-size: 18px;
+    font-weight: 600;
+    color: #181818;
+}
+
+.container-dados ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.container-dados ul li{
+    min-width: 30%;
+    margin-top: 8px;
+}
+
+.nameDados{
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 20px;
+}
+
+.valueDados{
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.container-historico{
+    padding-top: 18px;
+}
+
+.custom-table-container {
+    border-radius: 4px;
+    border: 1px solid #DDDBDA;
+    max-height: 350px;
+    overflow: auto;
+    margin-top: 15px;
+}
+
+.custom-table {
+    width: 100%;
+}
+
+.custom-table thead {
+    width: 50%;
+    background-color: #FAFAF9;
+    border-radius: 4px;
+    border-bottom: 1px solid #ddd; 
+    color: #3E3E3C;
+}
+
+.custom-table thead th{
+    width: 50%;
+}
+
+.custom-table tr, .custom-table tbody{
+    width: 100%;
+}
+
+.custom-table td {
+    text-align: left;
+}
+
+.custom-table th {
+    font-weight: bold;
+    padding: 6px 10px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.custom-table tr:not(:last-child) td {
+    border-bottom: 1px solid #ddd; 
+}
+
+.custom-table td + td,
+.custom-table th + th {
+    border-left: none; 
+}
+
+.custom-table-item{
+    min-width: 50%;
+    padding: 4px 10px;
+}
+
+.separador{
+    box-shadow: 0px -1px 0px #D9D9D9;
+}
+
+.container-detalhes{
+    margin-top: 18px;
+}
+
+.container-detalhes ul{
+    display: flex;
+    flex-direction: row;
+    margin-top: 16px;
+}
+
+.container-detalhes li{
+    min-width: 20%;
+    margin-right: 60px;
+}
+
+.container-dados-completos{
+    margin-top: 20px;
+    padding-top: 18px;
+}
+
+.container-dados-completos .nameDados{
+    font-size: 14px;
+}
+
+.container-dados-completos ul{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px 30px;
+    margin-top: 18px;
+}
+
+.container-dados-minimos{
+    margin-top: 20px;
+    padding-top: 18px;
+}
+
+.container-dados-minimos ul{
+    display: flex;
+    flex-direction: row; 
+    margin-top: 18px;
+    gap: 0px 60px;
+}
+
+.container-info-caso-proposta ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 10px;
+}
+.container-info-caso-proposta li{
+    min-width: 100px;
+    margin-right: 60px;
+}
+.container-info-caso-proposta ul li:first-child{
+    min-width: 200px;
+    margin-right: 30px;
+}
+
+.container-preenchimento{
+    margin-top: 18px;
+    padding-top: 16px;
+}
+
+.container-preenchimento ul{
+    display: flex;
+    flex-direction: row; 
+    margin-top: 12px;
+    gap: 0px 60px;
+}
+
+.container-preenchimento ul:last-child{
+    gap: 0px 30px;
+}
+
+.field-caso{
+    min-width: 30%;
+}
+
+.content-confirmar-dados{
+    background-color: #F8F9FA;
+    padding: 20px 16px;
+}
+
+.descricao-dados{
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    margin-top: 6px;
+    margin-bottom: 22px;
+}
+
+.content-confirmar-dados ul{
+    display: flex;
+    flex-direction: row; 
+    justify-content: flex-start;
+    margin-top: 8px;
+}
+.content-confirmar-dados .confirmar-dados li{
+    margin-right: 30px;
+    min-width: 150px;
+}
+.content-confirmar-dados .confirmar-dados ul li:first-child{
+    min-width: 61ch;
+    margin-right: 30px;
+}
+
+@media (max-width: 1340px) {
+    .content-confirmar-dados .confirmar-dados li{
+        margin-right: 20px;
+        min-width: 150px;
+    }
+    .content-confirmar-dados .confirmar-dados ul li:first-child{
+        min-width: 61ch;
+        margin-right: 20px;
+    }
+}
+
+.info-caso{
+    margin-top: 12px;
+    padding-top: 20px;
+}
+
+.info-caso ul{
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-between;
+    margin-top: 12px;
+    margin-right: 100px;
+}
+
+
+.success-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    --slds-c-icon-color-background: #087C2B;
+    margin: 2px 10px 0px 15px;
+    padding: 5px;
+    height: 20px;
+    width: 20px;
+}
+
+.container-casoGerado{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.casoGerado{
+    width: 100%;
+}
+.casoGerado h1{
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.casoGerado h2{
+    font-size: 16px;
+    font-weight: 600;
+    padding-top: 20px;
+    padding-bottom: 12px;
+}
+
+.casoGerado ul{
+    display: flex;
+    flex-direction: row;
+}
+
+.casoGerado ul li{
+    min-width: 25%;
+}
+
+.casoGeradoName{
+    font-size: 0.875rem;
+    color: #3E3E3C;
+    line-height: 18px;
+}
+
+.casoGeradoValue{
+    font-size: 1rem;
+    color: #080707;
+    font-weight: 600;
+    line-height: 22px;
+}
+
+.dados-casoGerado{
+    margin-bottom: 20px;
+}
+
+.dados-casoGerado h2{
+    font-size: 16px;
+    font-weight: 400;
+    margin: 12px 0px 4px 0px;
+    padding: 0px;
+}
+
+.dados-casoGerado span{
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.resumo-CasoContestar h1{
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 8px;
+}
+
+
+.container-info-caso-recusa ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 10px;
+}
+
+.container-info-caso-recusa li{
+    min-width: 200px;
+    margin-right: 60px;
+}
+
+.container-info-caso-recusa ul li:first-child{
+    min-width: 250px;
+    margin-right: 30px;
+}
+
+@media (max-width:1200px) {
+    .container-info-caso-recusa li{
+        margin-right: 20px;
+    }
+}
+
+.erroAlert{
+    height: 36px;
+    background-color: #C23934;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0px 16px;
+    font-size: 14px;
+    color: #ffffff;
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+.avisoAlert{
+    height: 36px;
+    background-color: #FFB75D;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0px 0px 16px;
+    font-size: 13px;
+    --slds-c-icon-color-foreground-default: #3E3E3C;
+}
+
+.avisoAlert-margin{
+    margin: 50px 0px 12px;
+}
+
+.field-descricao-caso{
+    margin-top: 6px;
+}
+
+.info-caso-proposta-rescusado{
+    margin-top: 12px;
+    padding-top: 8px;
+}
+
+.info-caso-proposta-rescusado ul{
+    display: flex;
+    flex-direction: row; 
+    justify-content: space-between;
+    margin-top: 12px;
+    padding-right: 100px;
+}
+
+.text-descricao-caso{
+    margin-bottom: 26px;
+}
+.text-descricao-caso .nameDados{
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.text-descricao-caso .valueDados{
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.text-cinza-1{
+    color: #3E3E3C;
+}
+
+.text-cinza-2{
+    color: #444444;
+}
+
+.field-label{
+    line-height: 25px;
+}

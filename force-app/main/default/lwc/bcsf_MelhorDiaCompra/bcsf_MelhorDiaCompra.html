@@ -1,0 +1,43 @@
+<template>
+    <div if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <div class="title">Melhor dia de compra</div>
+    <div class="c-container">
+        <template if:true={showCardPrincipal}>
+            <div class="boxCardPrincipal">
+                <div class="informacoes">
+                    <div class="icone">
+                        <lightning-icon
+                            icon-name="standard:event"
+                            size="large"
+                            alternative-text="Indicates approval"
+                        >
+                        </lightning-icon>
+                    </div>
+                    <div class="texto">
+                        <p>
+                            <b>O melhor dia de compra para {name}<br/></b>
+                            é dia <span style="color: #0076D2"><b>{dia}</b></span>
+                        </p>
+                    </div>
+                    <div class="data">
+                        Última fatura fechada<br/>
+                        <b>{data}</b>
+                    </div>
+                </div>
+                <div class="aviso">
+                    <p class="avisoTexto">
+                        <lightning-icon
+                            icon-name="utility:info"
+                            size="small"
+                            alternative-text="Indicates approval"
+                        >
+                        </lightning-icon> &#32; &#32; &#32;As compras realizadas a partir dessa data serão somente consideradas na próxima fatura.
+                    </p>
+                </div>
+            </div>
+        </template>        
+        
+    </div>
+</template>

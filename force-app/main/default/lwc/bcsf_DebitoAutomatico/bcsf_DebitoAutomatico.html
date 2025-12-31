@@ -1,0 +1,352 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Carrgando..." size="large" variant="brand"></lightning-spinner>
+    </div>
+    <template if:true={loadComponent}>
+        <header>
+            <div class="title">Débito automático</div>
+        </header>
+        <div class="container">
+            <template if:true={showHeaderBU}>
+                <div class="boxcardHeader">
+                    <ul>
+                        <li>
+                            <div class="infoName">Titular da conta</div>
+                            <div class="infoValue">{nomeTitular}</div>
+                        </li>
+                        <li class="tipoConta">
+                            <div class= "logo"><img src={logoTipo}></div>
+                            <div>
+                                <div class="infoName">Tipo de conta</div>
+                                <div class="infoValue">{tipoConta}</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <hr />
+            </template>
+            <template lwc:if={funcionarioBanco}> 
+                <div class="avisoFuncionario">
+                    <lightning-icon class="slds-m-right_small" icon-name="utility:info" size="small" alternative-text="Atenção"></lightning-icon>
+                    <p>Essa funcionalidade não está liberada porque o <strong>cliente faz parte do time Carrefour</strong> e o pagamento do valor mínimo da sua fatura é feito diretamente em folha. <strong>Não é possível desativar esse desconto do mínimo na folha de pagamento</strong>.</p>
+                </div>
+            </template>
+        </div>
+        <template if:true={step01}>
+            <div class="container">
+                <div class="toggleBoxCardStatus" if:true={showToggle}>
+                    <lightning-accordion allow-multiple-sections-open class="accordionstyle">
+                        <lightning-accordion-section name="Funcionamento" label="Como funciona o Débito automático?">
+                            <p>O Débito Automático é um serviço que utiliza o saldo da conta corrente do cliente para quitar de forma simples e programada a fatura do seu Cartão Carrefour, evitando possíveis atrasos e eventuais encargos. Para cadastrar o serviço, que é gratuito, o cliente deve obrigatoriamente ser o titular da conta.</p>
+                        </lightning-accordion-section>
+                    </lightning-accordion>
+                    <label class="slds-checkbox_toggle slds-grid">
+                        <span class="slds-form-element__label slds-m-bottom_none">Débito automático</span>
+                        <input type="checkbox" name="ativarDesativarDebito" value="ativarDesativarDebito" checked={checkedToggle}  onchange={hangleToggle} aria-describedby="checkbox-toggle-16" />
+                        <span id="checkbox-toggle-16" class="slds-checkbox_faux_container">
+                        <span class="slds-checkbox_faux"></span>
+                        <span class="slds-checkbox_on toggleStatus">Ativado</span>
+                        <span class="slds-checkbox_off toggleStatus">Desativado</span>
+                        </span>
+                    </label>
+                </div>
+            </div>
+            <template if:true={showDetails}>
+                <div class="inputDeDados">
+                    <div class="aviso" if:true={showAvisoAtivacao}>
+                        <lightning-icon class="slds-m-right_small" icon-name="utility:info" size="small" alternative-text="Atenção"></lightning-icon>
+                        <p>A ativação no débito automático só será realizada ao finalizar o fluxo.</p>
+                    </div>
+                    <div class="avisoCenarioDesativacao" if:true={showAvisoDesativacao}>
+                        <lightning-icon class="slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="Atenção"></lightning-icon>
+                        <div>
+                            <h3><strong>Atenção operador verifique em qual cenário o cliente se encaixa:</strong></h3>
+                            <div class="item">
+                                <p>1. </p>
+                                <p> Caso queria apenas <strong>bloquear o lançamento atual</strong>, você pode informar que esse processo deve ser realizado diretamente em seu banco, até 02 dias antes do vencimento da fatura.</p>
+                            </div>       
+                            <div class="item">
+                                <p>2. </p>
+                                <p> Caso queira a <strong>exclusão do serviço</strong>, você pode prosseguir com a solicitação por aqui.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <ul>
+                        <li>
+                            <lightning-input 
+                                label="Nome do correntista"
+                                type="text"
+                                value={nomeTitular}
+                                disabled={disableNomeCorrentista}>
+                            </lightning-input>
+                        </li>
+                        <li>
+                            <lightning-combobox
+                                id="lightningcombobox"
+                                label="Banco"
+                                value={bancoCliente}
+                                options={optionsBanco}
+                                placeholder="Selecione"
+                                disabled={disableBanco}
+                                onchange={handleBancoChange}
+                                class="picklistBanco">
+                            </lightning-combobox>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <lightning-input
+                            label="Agência (sem digito)"
+                            value={agenciaCliente}
+                            type="text"
+                            id="agenciaCliente"
+                            onchange={handleAgenciaAltrada}
+                            placeholder="Digite"
+                            pattern="^\d+$" 
+                            message-when-pattern-mismatch="formato inválido." 
+                            maxlength="4"
+                            disabled={disableAgencia}>
+                            </lightning-input>
+                        </li>
+                        <li>
+                            <lightning-input 
+                            label="Número da conta (com digito)"
+                            value={numeroContaBancoCliente}
+                            type="text"
+                            id="numeroContaBancoCliente"
+                            maxlength="10"
+                            onchange={handleNumeroContaAlterado}
+                            placeholder="Digite"
+                            pattern="^\d+$"
+                            message-when-pattern-mismatch="formato inválido." 
+                            disabled={disableNumeroConta}>
+                            </lightning-input>
+                        </li>
+                    </ul>
+                    <div class="formaDePagamento">
+                        <h1>Forma de pagamento</h1>
+                        <p>Será cobrado o valor total na conta passada pelo cliente.</p>
+                    </div>
+                    <ul>
+                        <li>
+                            <div class="labelPersonalizada">
+                                <div class="infoName">Cliente autoriza Débito após vencimento</div>
+                                <lightning-helptext content="Caso o cliente autorize e o serviço esteja habilitado pelo Banco de Relacionamento, o banco poderá realizar uma nova tentativa de débito em data posterior, caso o pagamento não tenha sido efetuado na data de vencimento, por exemplo, devido a saldo insuficiente na conta."></lightning-helptext>
+                            </div>
+                            <lightning-radio-group 
+                                name="autorizaCobrancaPosVencimento"
+                                options={options}
+                                value={aceitarPagamentoPosVencimento}
+                                type="radio"
+                                class="radioGrupo"
+                                disabled={disabelDebitoPosVencimento}
+                                onchange={handleAutorizaCobrancaAlterado}>
+                            </lightning-radio-group>
+                        </li>
+                        <li>
+                            <div class="labelPersonalizada">
+                                <div class="infoName">Cliente autoriza Cheque especial</div>
+                                <lightning-helptext content="Caso o cliente autorize e, na data de vencimento da fatura, não houver saldo disponível na conta, o Banco de Relacionamento realizará o pagamento total da fatura utilizando o limite de cheque especial."></lightning-helptext>
+                            </div>
+                            <lightning-radio-group
+                                name="autotizaChequeEspecial"
+                                options={options}
+                                value={aceitaChequeEspecial}
+                                type="radio"
+                                class="radioGrupo"
+                                disabled={disableChequeEspecial}
+                                onchange={handleAutorizaChequeAlterado} >
+                            </lightning-radio-group>
+                        </li>
+                    </ul>
+                </div>
+            </template>
+        </template>
+        <div class="container">
+            <template if:true={step02}>
+                <div>
+                    <div class="resumoSolicitacao">
+                        <div class="alertaAtivacao" if:true={showAlertaAtivacao}>
+                            <lightning-icon class="slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="Atenção"></lightning-icon>
+                            <p>Lembre ao cliente que a ativação do débito automático está condicionada à análise do seu Banco e deverá ocorrer em até <strong>5 (cinco) dias úteis</strong>. O cliente poderá acompanhar o status do pedido através da fatura de seu cartão.</p>
+                        </div>
+                        <div class="alertaAtivacao" if:true={showAlertaDesativacao}>
+                            <lightning-icon class="slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="Atenção"></lightning-icon>
+                            <p>Lembrando que, ao finalizar a solicitação, o pedido de exclusão não altera imediatamente a sua forma de pagamento, ou seja, <strong>caso o lançamento deste mês já esteja disponível, ele ainda ocorrerá via débito automático</strong>.</p>
+                        </div>
+                        <h1 class="confimarSolicitacao">Confirme a solicitação</h1>
+                        <label class="slds-checkbox_toggle slds-grid toggle">
+                            <span class="slds-form-element__label slds-m-bottom_none">Débito automático</span>
+                            <input type="checkbox" name="checkbox-toggle-16" value="checkbox-toggle-16" disabled checked={checkedToggle} aria-describedby="checkbox-toggle-16" />
+                            <span id="checkbox-toggle-02" class="slds-checkbox_faux_container">
+                            <span class="slds-checkbox_faux"></span>
+                            <span class="slds-checkbox_on toggleStatus">Ativado</span>
+                            <span class="slds-checkbox_off toggleStatus">Desativado</span>
+                            </span>
+                        </label>
+                        <div if:true={showResumo} class="">
+                            <ul>
+                                <li>
+                                    <div class="infoName">Nome do correntista</div>
+                                    <div class="infoValue">{nomeTitular}</div>
+                                </li>
+                                <li>
+                                    <div class="infoName">Banco</div>
+                                    <div class="infoValue">{nomeBancoCliente}</div>
+                                </li>
+                            </ul>
+                            <ul>
+                                <li>
+                                    <div class="infoName">Agência (sem digito)</div>
+                                    <div class="infoValue">{agenciaCliente}</div>
+                                </li>
+                                <li>
+                                    <div class="infoName">Número da conta (com digito)</div>
+                                    <div class="infoValue">{numeroContaBancoCliente}</div>
+                                </li>
+                            </ul>
+                            <div class="formaPagamento">
+                                <h1>Forma de pagamento</h1>
+                                <p>Será cobrado o valor total na conta passada pelo cliente.</p>
+                            </div>
+                            <ul>
+                                <li>
+                                    <div class="infoName">Cliente autoriza Débito após vencimento</div>
+                                    <div class="infoValue">{aceitarPagamentoPosVencimento}</div>
+                                </li>
+                                <li>
+                                    <div class="infoName">Cliente autoriza Cheque especial</div>
+                                    <div class="infoValue">{aceitaChequeEspecial}</div>
+                                </li>
+                            </ul>
+                            <div class="avisoSite">
+                                <lightning-icon class="slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="Atenção"></lightning-icon>
+                                <p><strong>Atenção operador</strong>, verbalize o acesso ao termo de adesão de débito automático: https://www.carrefoursolucoes.com.br/ na área de informações úteis</p>
+                            </div>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="preenchimentoCaso">
+                        <h1>Preenchimento de caso</h1>
+                        <lightning-record-edit-form object-api-name="Case">
+                            <ul>
+                                <li>
+                                    <div class="infoName">Origem</div>
+                                    <lightning-input-field 
+                                        value={origemCaso}
+                                        field-name="Origin" 
+                                        class="lightningInput" 
+                                        placeholder="Selecione"
+                                        onchange={handleOrgemAlterado} 
+                                        variant="label-hidden"> 
+                                    </lightning-input-field>
+                                </li>
+                                <li>
+                                    <div class="infoName">Canal</div>
+                                    <lightning-input-field
+                                        value={canalCaso}
+                                        field-name="CanalEntrada__c" 
+                                        class="lightningInput" 
+                                        placeholder="Selecione"
+                                        onchange={handleCanalAlterado} 
+                                        variant="label-hidden"> 
+                                    </lightning-input-field>
+                                </li>
+                            </ul>    
+                        </lightning-record-edit-form>   
+                    </div>
+                </div>
+            </template>
+            <template if:true={step03}>
+                <div class="dadosDaSolicitacao">
+                    <div class="avisoTempoAlteracao" if:true={showAlertaDesativado}>
+                        <lightning-icon class="slds-m-right_small" icon-name="utility:info" size="small" alternative-text="Atenção"></lightning-icon>
+                        <p>Lembrando que o pedido de exclusão não altera imediatamente a sua forma de pagamento, ou seja, <strong>caso o lançamento deste mês já esteja disponível, ele ainda ocorrerá via débito automático</strong>. <br/> Caso queira bloquear o lançamento deste mês, é preciso entrar em contato com seu banco de relacionamento solicitando este serviço. O processo de exclusão do serviço débito automático será realizado via seu Banco em até 5 dias úteis. O cliente pode acompanhar o status do pedido através da fatura de seu cartão.</p>
+                    </div>
+                    <div class="protocoloHeader">
+                        <div class="dadosSolicitacaoTitulo">
+                            <div class="IconeSuccess" if:true={showIconeConcluido}>
+                                <lightning-icon class="slds-m-right_small" icon-name="utility:success" size="small" alternative-text="realizada!"></lightning-icon>
+                            </div>
+                            <div class="IconeClock" if:true={showIconeAguardando}>
+                                <lightning-icon class="slds-m-right_small" icon-name="utility:clock" size="small" alternative-text="realizada!"></lightning-icon>
+                            </div>  
+                            <h1><Strong>Solicitação realizada!</Strong></h1>
+                        </div> 
+                        <h2>Protocolo: <strong>{numeroCaso}</strong></h2>
+                        <p class="dataProtocolo">{dataProtocolo}</p>
+                    </div>
+                    <div if:true={showResumo}>
+                        <div class="avisoTempoAlteracao">
+                            <lightning-icon class="slds-m-right_small" icon-name="utility:info" size="small" alternative-text="Atenção"></lightning-icon>
+                            <p>O pedido da inclusão da fatura do cartão em débito automático não altera imediatamente a forma de pagamento, <strong>o débito automático ainda não está ativo</strong>. Ele está condicionado à análise do Banco do cliente que deverá ocorrer em até 5 (cinco) dias úteis.</p>
+                        </div>
+                        <h1 class="detalheDoDebito">Detalhes do débito</h1>
+                        <ul>
+                            <li>
+                                <div class="infoName">Nome do correntista</div>
+                                <div class="infoValue">{nomeTitular}</div>
+                            </li>
+                            <li>
+                                <div class="infoName">Banco</div>
+                                <div class="infoValue">{nomeBancoCliente}</div>
+                            </li>
+                            <li>
+                                <div class="infoName">Agência (sem digito)</div>
+                                <div class="infoValue">{agenciaCliente}</div>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li>
+                                <div class="infoName">Número da conta (com dígito)</div>
+                                <div class="infoValue">{numeroContaBancoCliente}</div>
+                            </li>
+                            <li>
+                                <div class="infoName">Cliente autoriza Débito após vencimento</div>
+                                <div class="infoValue">{aceitarPagamentoPosVencimento}</div>
+                            </li>
+                            <li>
+                                <div class="infoName">Cliente autoriza Cheque especial</div>
+                                <div class="infoValue">{aceitaChequeEspecial}</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <hr />
+                <div class="InformacoesDoCaso">
+                    <h2><strong>Informações do caso:</strong></h2>
+                    <ul>
+                        <li>
+                            <div class="infoName">Origem</div>
+                            <div class="infoValue">{origemCaso}</div>
+                        </li>
+                        <li>
+                            <div class="infoName">Canal</div>
+                            <div class="infoValue">{canalCaso}</div>
+                        </li>
+                        <li>
+                            <div class="infoName">Assunto</div>
+                            <div class="infoValue">{assuntoCaso}</div>
+                        </li>
+                        <li>
+                            <div class="infoName">Evento</div>
+                            <div class="infoValue">{eventoCaso}</div>
+                        </li>
+                    </ul>
+                </div>
+            </template>
+        </div>
+        <footer>
+            <div class="boxFooter">
+                <ul>
+                    <li>
+                        <lightning-button variant="Neutral" label={buttonVoltar} onclick={handleButtonVoltar} disabled={disableButtonVoltar} class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                    <li if:true={showButonAvancar}>
+                        <lightning-button variant="brand" label={buttonAvancar}  onclick={handleProsseguir} disabled={disableButtonAvancar}  class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+    </template>
+</template>

@@ -1,0 +1,75 @@
+<template>
+    <!-- Filtos -->
+    <lightning-layout horizontal-align="space" multiple-rows="true">
+        <lightning-layout-item size="3" padding="around-small">
+            <template if:true={subjects}>
+                <c-combobox-autocomplete 
+                    label="Assunto"
+                    options={subjects}
+                    placeholder="Selecione um Assunto"
+                    onselectoption={handleSubjectSelection}
+                    classes="slds-m-bottom_small">
+                </c-combobox-autocomplete>
+            </template>
+        </lightning-layout-item>
+        <lightning-layout-item size="3" padding="around-small">
+            <template if:true={events}>
+                <c-combobox-autocomplete
+                    label="Evento"
+                    options={events}
+                    placeholder="Selecione um Evento"
+                    onselectoption={handleEventSelection}
+                    classes="slds-m-bottom_small">
+                </c-combobox-autocomplete>
+            </template>
+        </lightning-layout-item>
+        <lightning-layout-item size="3" padding="around-small">
+            <lightning-combobox
+                name="importType"
+                label="Tipo de importação"
+                options={importTypes}
+                onchange={handleTypeSelection}
+                value={selectedFilterValue.importType}>
+            </lightning-combobox>
+        </lightning-layout-item>
+        <lightning-layout-item size="3" padding="around-small" class="button-container">
+            <lightning-button variant="brand" label="Buscar" onclick={handleSearch}></lightning-button>
+        </lightning-layout-item>
+    </lightning-layout>
+    <template if:true={hasData}>
+        <!-- Tabela -->
+        <lightning-datatable
+            key-field="id"
+            data={errorData}
+            columns={columns}
+            hide-checkbox-column
+            class="slds-m-bottom_medium">
+        </lightning-datatable>
+        <div class="paginacao-footer">
+            <div class="slds-grid slds-grid_vertical-align-center">
+                <lightning-button-icon icon-name="utility:chevronleft" onclick={handlePreviousPage} alternative-text="Anterior"></lightning-button-icon>
+                <div class="slds-m-horizontal_medium">{currentPage}</div>
+                <lightning-button-icon icon-name="utility:chevronright" onclick={handleNextPage} alternative-text="Próxima"></lightning-button-icon>
+            </div>
+            <div class="slds-m-left_small">
+                <lightning-combobox
+                    label="Itens por página"
+                    placeholder=""
+                    variant="label-hidden"
+                    class="input-paginas"
+                    value={itensPerPage}
+                    options={itensPerPageOptions}
+                    onchange={handleItensPerPage}>
+                </lightning-combobox>
+            </div>
+            <div class="paginacao-footer-item">Ver 1 - {currentPage} de {totalPages}</div>
+        </div>
+    </template>
+    <template if:true={showEmptyState}>
+        <div class="empty-state">
+            <img src={emptyStateImg} class="empty-image">
+            <p class="empty-message">{message}</p>
+            <p class="empty-submessage">{subMessage}</p>
+        </div>
+    </template>
+</template>

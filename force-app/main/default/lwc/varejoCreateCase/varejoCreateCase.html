@@ -1,0 +1,10 @@
+<template>
+    <div lwc:if={showDetalhes}>
+        <lightning-card>
+            <div lwc:if={spinner}>
+                <lightning-spinner alternative-text="Loading" size="x-small"></lightning-spinner>
+            </div>
+            <a class="slds-m-left_x-small slds-button slds-button_brand" href={urlOrgVarejo} target="_blank">Ver Detalhes do Protocolo</a>
+        </lightning-card>
+    </div>
+</template>

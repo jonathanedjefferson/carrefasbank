@@ -1,0 +1,36 @@
+.sub-info {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0px 10px;
+    font-size: 0.813rem;
+    color: #444;
+    background-color: #F3F2F2;
+}
+
+.sub-info a {
+    margin-left: auto;
+}
+
+.upload-area {
+    border: 2px dashed #ccc;
+    padding: 2rem;
+    text-align: center;
+    background-color: #f9f9f9;
+    margin-top: 1rem;
+    position: relative;
+    border-radius: 4px;
+}
+
+.hidden-input {
+    display: none;
+}
+
+.link-download {
+    margin-left: 0.5rem;
+    font-size: 0.85rem;
+    color: #0070d2;
+    text-decoration: underline;
+}

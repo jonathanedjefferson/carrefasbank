@@ -1,0 +1,15 @@
+<template>
+
+    <div><b>JSON recebido pelo web service</b></div>
+
+    <c-fsc_flow-combobox builder-context={_builderContext} name="inputJSONString"
+        onvaluechanged={handleFlowComboboxValueChange} value={inputJSONString} value-type={inputJSONStringType}
+        automatic-output-variables={automaticOutputVariables}>
+
+    </c-fsc_flow-combobox>
+
+    <c-target-key-section master-label="Especifique os valores do JSON que deseja extrair"
+        add-button-label="Adicionar nova variável" list-data={keysToExtract} onchangelist={changekeysToExtract}
+        builder-context={builderContext} automatic-output-variables={automaticOutputVariables}>
+    </c-target-key-section>
+</template>

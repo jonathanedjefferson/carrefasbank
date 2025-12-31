@@ -1,0 +1,93 @@
+.botao_fechar{
+    background-color: transparent;
+}
+.icon_botao_fechar{
+    --slds-c-icon-color-foreground-default: #FFFFFF;
+}
+.container-modal{
+    padding: 0;
+    margin: 0;
+}
+.header-modal{
+    padding: 16px;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 30px;
+    letter-spacing: 0px;
+    text-align: center;
+    border-bottom: 1px solid #C9C9C9;
+}
+.conteudo-modal{
+    padding: 0px 24px;
+}
+.footer-modal{
+    width: 100%;
+    display: flex;
+    background-color: #F3F2F2;
+    padding: 16px 24px;
+    border-top: 1px solid #C9C9C9;
+    justify-content: flex-end;
+}
+
+.subtitulo-modal{
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 27px;
+}
+
+.subtitle {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 27px;
+}
+
+.texto {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.sub-texto {
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 20px;
+}
+
+.accordion-detalhes{
+    border-top: 1px solid #DDDBDA;
+    border-bottom: 1px solid #DDDBDA;
+    border-left: 1px solid #DDDBDA;
+    border-right: 1px solid #DDDBDA;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.accordion-detalhes lightning-accordion-section{
+--slds-c-accordion-summary-color-background: #F3F2F2;
+--slds-c-accordion-heading-font-size: 16px;
+--slds-c-accordion-heading-font-weight: 400;
+--slds-c-accordion-heading-line-height: 24px;
+--slds-c-accordion-summary-height: 32px;
+--slds-c-accordion-section-spacing-blockstart: 5px;
+--slds-c-accordion-section-spacing-blockend: 5px;
+--slds-c-accordion-section-spacing-inlinestart: 5px;
+--slds-c-accordion-section-spacing-inlineend: 5px;
+}
+
+
+.separator {
+    box-shadow: 0px 1px 0px #DDDBDA;
+}
+
+.flex-item {
+    display: flex;
+}
+
+.justify-content-between {
+    justify-content: space-between;
+}
+
+
+.list-style-disc {
+    list-style: disc;
+}

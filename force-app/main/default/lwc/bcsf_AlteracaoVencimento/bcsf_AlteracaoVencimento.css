@@ -1,0 +1,342 @@
+:host {
+    --font-size-small: 10px;
+    --font-size-medium: 12px;
+    --font-size-large: 14px;
+    --font-size-xlarge: 18px;
+    margin: 0;
+    padding: 0;
+}
+
+.c-container {
+    padding: 20px 40px;
+}
+
+.c-container > .containerInfos {
+    box-shadow: 0px 1px 0px #DDDBDA;
+    padding:20px 0;
+}
+h1 {
+    font-size: 20px;
+    color:#000;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.cmpName {
+    font-size: 14px;
+}
+.cmpValue {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.boxCardPrincipal {
+    box-shadow: 0px 1px 0px #DDDBDA;
+    padding-bottom: 20px;  
+}
+.boxCardPrincipal ul {
+    margin: -20px 0px 0px 0px;
+}   
+
+.boxStep2{
+    box-shadow: 0px 1px 0px #DDDBDA;
+    padding-bottom: 20px;  
+}
+.boxStep2 .section01 h1 {
+    margin-bottom: 0px;
+}
+.boxStep2 .section01 h2 {
+    font-size: 14px;
+    color:#000000;
+    margin-bottom: 30px;
+    margin-top: 0px;
+}
+.boxStep2 .section02 h1 {
+    margin-bottom: 0px;
+}
+.boxStep2 .section02{
+    padding: 10px;
+    background-color: #F8F9FA;
+}
+.boxStep2 .section03{
+    font-size: 14px;
+    padding: 10px;
+    background-color: #F3F2F2;
+}
+
+.boxStep3 .section01 h2 {
+    font-size: 14px;
+    color:#000000;
+    margin-top: 0px;
+}
+.boxStep3 h1 {
+    margin-bottom: 0px;
+}
+.boxStep3 .section02 {
+    box-shadow: 0px 1px 0px #DDDBDA;
+}
+
+.listInformacoes{
+    display: flex;
+    justify-content: space-between;
+}
+
+.boxStep3 .listInformacoes {
+    margin-top: 20px;
+}
+
+.cursorPointer {
+    cursor: pointer;
+}
+
+.listDataVencimento {
+    display: flex;
+    justify-content:  start;
+    white-space: nowrap;
+}
+.divItemDataVencimento{
+    display: block;
+    width: 12%;
+    margin: 10px 0px;
+    text-align: center;
+    line-height: 25px;
+}
+.valueDataVencimento{
+    font-weight: bold;
+    padding: 10%;
+}
+
+
+
+/* Footer */
+footer {
+    box-shadow:  0px -1px 0px #DDDBDA;
+    margin-top: 30px;
+}
+.boxFooter  {
+    padding:20px;
+}
+.boxFooter ul {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/* Inputs */
+.boxInputs{
+    margin-bottom: 0px;
+}
+.boxInputs h1{
+    margin-bottom: 5px;
+}
+.boxInputs ul {
+    display:flex;
+    justify-content: start;
+    max-width: 95%;
+    flex-wrap: wrap;
+}
+.boxInputs ul li {
+    width: 40%;
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+
+
+/* Styles genericos */
+.title {
+    font-size: 20px;
+    color:#080707;
+    text-align:center;
+    padding: 20px 0;
+    box-shadow: 0px 1px 0px #DDDBDA;
+}
+.subTitle{
+    font-weight: bold;
+    font-size: var(--font-size-xlarge);
+    margin-top: 15px;
+    margin-bottom: 2px;
+    padding-bottom: 15px;
+    position: relative;
+    display: inline-block;
+}
+.subTitle::after{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50%; 
+    border-bottom: 2px solid black;
+}
+.colorName{
+    display: flex;
+    align-items: center;
+    color: #444444;
+    font-weight: 500;
+    font-size: var(--font-size-large);
+}
+.colorCode{
+    display: flex;
+    align-items: center;
+    color: #444444;
+    font-size: var(--font-size-medium);
+}
+.colorToken{
+    color: rgba(227, 6, 106, 1);
+    font-size: var(--font-size-small);
+}
+.container {
+    display: flex;
+    flex-wrap: wrap;
+}
+.containerAlternative{
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+}
+.alert{
+    background-color: #FFB75D;
+    padding: 10px;
+}
+/* Styles genericos Fim*/
+
+/* Styles cores */
+.color-item {
+    width: 25%;
+    height: 120px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.color-itemAlternative {
+    width: 30%;
+    height: 120px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.colorDiv{
+    width: 100%;
+    height: 50%;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.copy-icon {
+    margin-left: 5px;
+    transform: scale(0.8);
+    filter: brightness(60%);
+    transition: 0.2s;
+}
+.copy-icon:hover {
+    transform: scale(0.85);
+    filter: brightness(100%);
+}
+.copy-icon:active {
+    transform: scale(0.8);
+    filter: brightness(60%);
+}
+/* Styles cores Fim*/
+
+/* Styles fontes*/
+.fonteWeightItem{
+    width: 15%;
+    height: 120px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.colorFonte {
+    font-size: var(--font-size-small);
+    color: var(--lwc-colorTextLink);
+}
+.containerFonte {
+    display: flex;
+    flex-direction: column;
+}
+.containerFonteWeight{
+    display: flex;
+    flex-direction: row;
+}
+.fonteWeight{
+    font-size: var(--font-size-xlarge);
+}
+.fonteWeightNumber{
+    font-size: var(--font-size-small);
+}
+.fonteExemplo{
+    margin-left: 5px;
+    letter-spacing: 0.2rem;
+}
+.containerFonteSize{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: start;
+    height: 630px;
+    width: 70%;
+}
+.fonteSizeItem{
+    height: 110px;
+    width: 250px;
+    padding: 0px 0px 0px 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+.fonteSizeItemAlternative{
+    height: 140px;
+    padding: 0px 0px 0px 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+.containerFonteSize p{
+    margin-bottom: 3px;
+}
+.fonteSizeName{
+    color: rgba(227, 6, 106, 1);
+    font-size: var(--font-size-large);
+    font-weight: var(--lwc-fontWeightBold);
+}
+/* Styles fontes fim */
+
+/* Styles objetos */
+.containerBorder{
+    display: flex;
+    flex-direction: row;
+}
+.borderItem{
+    width: 20%;
+    padding-top: 10px;
+    box-sizing: border-box;
+}
+.borderItem p{
+    margin-bottom: 3px;
+}
+.borderDiv{
+    width: 70px;
+    height: 70px;
+    margin-bottom: 15px;
+    background-color: black;
+}
+.espacingDiv{
+    width: 0px;
+    height: 0px;
+    background-color: black;
+    margin-bottom: 5px;
+}
+.containerEspacing{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding-top: 5px;
+    height: 850px;
+}
+/* Styles objetos fim*/
+
+/*Descrição início*/
+.containerDescricao p{
+    margin-bottom: var(--lwc-spacingSmall);
+    font-size: var(--font-size-medium);
+}
+
+.containerDescricao span{
+    color: var(--lwc-brandAccessible);
+    font-size: var(--font-size-large);
+}
+/*Descrição fim*/

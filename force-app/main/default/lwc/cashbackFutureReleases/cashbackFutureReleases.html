@@ -1,0 +1,99 @@
+<template>
+    <template if:true={showData}>
+        <h1 class="title">Lançamentos Futuros</h1>
+        <lightning-accordion allow-multiple-sections-open>
+            <lightning-accordion-section label="Lançamentos Futuros">
+                <div class="container">
+                    <!-- Tabela -->
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nome da operação</th>
+                                <th>Compra</th>
+                                <th>Cashback</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={futureReleases} for:item="futureRelese">
+                                <tr key={futureRelese.Id}>
+                                    <td>
+                                        <span class="icon-container">
+                                            <lightning-icon icon-name="utility:clock" alternative-text="Waiting" title="Waiting" size="xx-small" class="icon"></lightning-icon>
+                                            {futureRelese.rewardTransactionTypeDescription}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <p class="light-info">{futureRelese.originDescription}</p>
+                                        <p>{futureRelese.purchase.amount}</p>
+                                        <p class="light-info">{futureRelese.purchase.dateReplacedShort}</p>
+                                    </td>
+                                    <td>
+                                        <span class="bold">{futureRelese.rewardAmount}</span>
+                                    </td>
+                                    <td>
+                                        <span class="details-button">
+                                            <lightning-button variant="base" label="Detalhes" onclick={handleExpand} data-id={futureRelese.id}></lightning-button>
+                                            <lightning-button-icon icon-name="utility:chevrondown" variant="container" alternative-text="Expand" title="Expand" onclick={handleExpand} data-id={futureRelese.id}></lightning-button-icon>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <template if:true={futureRelese.showDetails}>
+                                    <td colspan=4 key={futureRelese.id}>
+                                        <div class="detail-container">
+                                            <h1 class="detail-title">Dados da Transação:</h1>
+                                            <lightning-layout multiple-rows="true">
+                                                <lightning-layout-item size="4">
+                                                    Tipo da Transação
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="8" class="detail-value">
+                                                    {futureRelese.rewardTransactionTypeDescription}
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="4">
+                                                    Cashback Pendente
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="8" class="detail-value">
+                                                    {futureRelese.rewardAmount}
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="4">
+                                                    Loja
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="8" class="detail-value">
+                                                    {futureRelese.originDescription}
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="4">
+                                                    Data da Compra
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="8" class="detail-value">
+                                                    {futureRelese.purchaseDateTime}
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                            <div class="detail-message">
+                                                <lightning-icon icon-name="utility:info" alternative-text="Info" title="Info" size="small" class="icon"></lightning-icon>
+                                                Compra confirmada! Seu cashback estará disponível dentro de alguns dias.
+                                            </div>
+                                        </div>
+                                    </td>
+                                </template>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </template>
+    <template if:true={isLoading}>
+        <h1 class="title">Lançamentos Futuros</h1>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </div>
+    </template>
+    <template if:true={showError}>
+        <h1 class="title">Lançamentos Futuros</h1>
+        <div class="error-state">
+            <img src={errorImg} class="error-image">
+            <p class="error-message">{message}</p>
+            <p class="error-submessage">{subMessage}</p>
+        </div>
+    </template>
+</template>

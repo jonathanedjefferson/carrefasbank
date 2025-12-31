@@ -1,0 +1,325 @@
+.errorAlert{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    padding: 15px;
+    background-color: #C23934;
+    line-height: 20px;
+    margin: 8px auto 24px auto;
+    color: rgb(255, 255, 255);
+}
+
+.errorAlert p{
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.errorAlert a{
+    color: white;
+    text-decoration: underline;
+}
+
+.errorAlert a:active{
+    color: rgb(230, 230, 230);
+}
+
+.errorAlert a:hover{
+    color: rgb(211, 205, 205);
+}
+.errorAlert span:first-child{
+    font-weight: 700;
+}
+
+.iconErrorAlert{
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+.pageTreeAlert{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 15px;
+    background-color: #FFB75D;
+    line-height: 20px;
+    margin: 8px 0px 24px 0px;
+}
+
+.pageTreeAlert p{
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.pageTreeAlert span:first-child{
+    font-weight: 700;
+}
+
+.pageTreeAlert span:nth-child(2){
+    font-weight: 600;
+}
+
+.iconAlert{
+    --slds-c-icon-color-foreground-default: #3E3E3C;
+}
+
+.tabelaParcelamento{
+    margin: 24px 0px 80px 0px;
+    border: 1px solid #d8dde6;
+}
+
+
+.slds-table th, .slds-table td {
+    border-left: 1px solid #d8dde6; 
+    border-right: 1px solid #d8dde6; 
+}
+
+.slds-table td:first-child {
+    border-left: none; 
+}
+
+.slds-table th:first-child {
+    border-left: none; 
+    border-bottom: 1px solid #d8dde6; 
+}
+
+.slds-table td:last-child, .slds-table th:last-child {
+    border-bottom: none; 
+}
+
+.slds-table tbody tr {
+    border: 1px solid #d8dde6; 
+}
+
+.selectColumn{
+    width: 8px;
+    text-align: center;
+    margin: 0;
+    padding: 2px 0 0 0 !important;
+}
+
+.resumoBtn{
+    color: #0070D2;
+}
+
+.resumoBtn:hover{
+    color: #08599f;
+}
+
+.resumoBtn:active{
+    color: #1875c7;
+}
+
+.titleResumoContrato{
+    display: flex;
+    flex-direction:row;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #d8dde6;
+}
+
+.titleResumoContrato h1{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.nameLine{
+    font-size: 14px;
+    font-weight: 600;
+    width: 50%;
+}
+
+.valueLine{
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.resumoLine{
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid #d8dde6;
+    margin-bottom: 8px;
+}
+
+.containerResumo{
+    margin-bottom: 24px;
+}
+
+.formasPagamento{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 20px 0px 34px 10px;
+    border-bottom: 1px solid #d8dde6;
+}
+
+.formasPagamento label {
+    display: flex;
+    align-items: center;
+}
+
+.formasPagamento input[type="radio"] {
+    margin-right: 5px; 
+}
+
+.containerCase h1{
+    font-size: 18px;
+    margin: 24px 0px 10px 0px;
+}
+
+.containerCase ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.containerCase li{
+    width: 46%;
+    margin-bottom: 8px;
+}
+
+.pageFive{
+    width: 100%;
+    border: 1px solid #d8dde6;
+    border-radius: 4px;
+    margin-bottom: 24px;
+    padding: 16px;
+}
+
+.caseNumber h1{
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.caseNumber h1 span{
+    font-weight: 700;
+}
+
+.caseNumber p{
+    font-size: 14px;
+}
+
+.success-message {
+    display: flex;
+    align-items: center;
+    height: 18px;
+    margin-bottom: 24px;
+}
+
+.success-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    --slds-c-icon-color-foreground-default: #2e844a;
+    margin-right: 8px;
+    padding: 5px;
+    height: 18px;
+    width: 18px;
+}
+
+.success-text {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.containerDadosContrato{
+    margin-bottom: 16px;
+}
+
+.containerDadosContrato h1{
+    font-size: 18px;
+    font-weight: 600;
+    margin: 32px 0px 20px 0px;
+}
+
+.containerDadosContrato ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-bottom: 16px;
+}
+
+.emailAlternativo{
+    font-size: 13px;
+    font-weight: 600;
+    padding: 0;
+}
+
+.buttonGroupContrato{
+    padding: 6px 0px 32px 0px;
+    border-bottom: 1px solid #d8dde6;
+}
+
+.dadosCaso{
+    margin-top: 24px;
+}
+
+.dadosCaso h1{
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.dadosCaso ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.infoName{
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.infoValue{
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.emailAlternativoField{
+    padding-top: 10px;
+    width: 55%;
+}
+
+.tavaAlternativa{
+    display: flex;
+    align-items: center;
+    background-color: #F9E3B6;
+}
+
+.tavaAlternativa:hover{
+    background-color: #F9E3B6;
+}
+
+.iconTaxa{
+    --slds-c-icon-color-foreground-default: #e4a201;
+}
+
+.buttonFooter{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.listaEmpty{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 40px 0px;
+}
+
+.listaEmpty img{
+    width: 300px;
+    height: 200px;
+}
+
+.listaEmpty h1{
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.listaEmpty p{
+    font-size: 13px;
+}

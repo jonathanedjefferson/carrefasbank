@@ -1,0 +1,10 @@
+<template>
+    <template if:true={isOpen}>
+        <section class="modal-backdrop">
+            <div class="modal-content">
+                <h1 class="message">{message}</h1>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+</template>

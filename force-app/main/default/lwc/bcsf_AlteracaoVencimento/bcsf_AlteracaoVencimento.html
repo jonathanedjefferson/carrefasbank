@@ -1,0 +1,286 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <div class="title">Alterar Vencimento Fatura</div>
+    <div class="c-container">
+        <template lwc:if={step01}>
+            <div class="boxCardPrincipal">
+                <h1>Dados do cliente</h1>              
+                <div class="listInformacoes">
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Nome</div>
+                            <div class="cmpValue">{nome}</div>
+                        </li>
+                        <br>
+                        <li>
+                            <div class="cmpName">Conta</div>
+                            <div class="cmpValue">{numeroConta}</div>
+                        </li>
+                    </ul>
+    
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">CPF</div>
+                            <div class="cmpValue">{cpf}</div>
+                        </li>
+                        <br>
+                        <li>
+                            <div class="cmpName">Produto</div>
+                            <div class="cmpValue">{produto}</div>
+                        </li>
+                        
+                    </ul>
+    
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Data de nascimento</div>
+                            <div class="cmpValue">{dataNascimento}</div>
+                        </li>
+                        <br>
+                        <li>
+                            <div class="cmpName">Celular Seguro</div>
+                            <div class="cmpValue">{celularSeguro}</div>
+                        </li>
+                    </ul>
+    
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Status Geral</div>
+                            <div class="cmpValue">{statusConta}</div>
+                        </li>
+                        <br>
+                    </ul>
+                </div>
+            </div>
+            <br>
+            <div class="boxCardPrincipal">
+                <h1>Gerenciar vencimentos de pagamento de fatura <span style="position:relative; top:-3px;"><lightning-helptext content='As datas de vencimento são vinculadas tanto no cartão do titular quanto aos cartões adicionais, caso existam.' class="slds-m-left_xx-small"></lightning-helptext></span></h1>
+                <div class="listInformacoes">
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Vencimento atual</div>
+                            <div class="cmpValue">{vencimentoAtual}</div>
+                        </li>
+                        <br>
+                    </ul>
+    
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Status</div>
+                            <div class="cmpValue">{statusVencimento}</div>
+                        </li>
+                        <br>
+                    </ul>
+    
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Última alteração</div>
+                            <div class="cmpValue">{dataUltimaAlteracaoVencimento}</div>
+                        </li>
+                        <br>
+                    </ul>
+    
+                    <ul class="listUl">
+                        <li>
+                            <!-- <div class="cmpName">Última alteração</div>
+                            <div class="cmpValue">{dataNascimento}</div> -->
+                        </li>
+                        <br>
+                    </ul>
+                </div>
+
+                <div class="alert">
+                    <p><lightning-icon icon-name="utility:warning" alternative-text="Warning!" title="Warning"></lightning-icon> {msgAlert}</p>
+                </div>
+            </div>
+            <br>
+            <div lwc:if={showSelecaoDatas}>
+                <h1>Selecione a melhor data de vencimento</h1>
+                <div class="listDataVencimento">
+                    <template for:each={listDatasVencimento01} for:item="item">
+                        <p key={item} class="divItemDataVencimento">
+                            <input type="radio" name="item" id={item} class="radioDataVencimento" value={item} onchange={handleChangeDataVencimento}>
+                            <label for={item} class="valueDataVencimento">{item}</label>
+                        </p>
+                    </template>
+                </div>
+                <br>
+                <div class="listDataVencimento">
+                    <template for:each={listDatasVencimento02} for:item="item">
+                        <p key={item} class="divItemDataVencimento">
+                            <input type="radio" name="item" id={item} class="radioDataVencimento" value={item} onchange={handleChangeDataVencimento}>
+                            <label for={item} class="valueDataVencimento">{item}</label>
+                        </p>
+                    </template>
+                </div>
+            </div>
+        </template>
+
+        <template lwc:if={step02}>
+            <div class="boxStep2">
+                <div class="alert">
+                    <p><lightning-icon icon-name="utility:warning" alternative-text="Warning!" title="Warning"></lightning-icon> {msgAlert}</p>
+                </div>
+                <br>
+                
+                <div class="section01">
+                    <h1>Confirme a nova data de vencimento</h1>
+                    <h2>Antes de finalizar, confirme com o cliente se a data selecionada está correta</h2>
+                </div>
+                
+                <div class="section02">
+                    <p>Novo Vencimento</p>
+                    <h1>{novoDiaVencimento}</h1>
+                </div>
+                <br>
+
+                <div class="section03">
+                    <p> <span style="position:relative; top:-3px;"><lightning-helptext content='' class="slds-m-left_xx-small"></lightning-helptext></span> Após finalizar, em alguns minutos o cliente já pode visualizar a alteração na sua conta via aplicativo e outros canais.</p>
+                </div>
+            </div>
+            <br>
+
+            <div class="boxInputs">
+                <h1>Preenchimento de Caso</h1>
+                <lightning-record-edit-form object-api-name="Case">
+                    <ul>
+                        <li>
+                            <label>Origem</label>
+                            <lightning-input-field 
+                                language=""
+                                value={valueOrigem}
+                                field-name="Origin" 
+                                class="lightningInput" 
+                                placeholder="--Nenhuma--"
+                                onchange={handleChangeOrigem} 
+                                variant="label-hidden"> 
+                            </lightning-input-field>
+                        </li>
+                        <li>
+                            <label>Canal</label>
+                            <lightning-input-field
+                                value={valueCanal}
+                                field-name="CanalEntrada__c" 
+                                class="lightningInput" 
+                                placeholder="--Nenhuma--"
+                                onchange={handleChangeCanal} 
+                                variant="label-hidden"> 
+                            </lightning-input-field>
+                        </li>
+                    </ul>    
+                </lightning-record-edit-form>   
+            </div>
+        </template>
+
+        <div class="boxStep3" lwc:if={step03}>
+            <div class="section01">
+                <h1><lightning-icon icon-name="utility:success" alternative-text="Success!" variant="success" title="success variant" size="small"></lightning-icon> Operação realizada com sucesso!</h1> <br>
+                <h2>Protocolo: <b>{numeroProtocolo}</b></h2>
+                <p>{dateToday}</p>
+            </div>
+            <br>
+
+            <div class="section02">
+                <h1>Detalhes da alteração:</h1>
+                
+                <div class="listInformacoes">
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Novo Vencimento</div>
+                            <div class="cmpValue">{novoDiaVencimento}</div>
+                        </li>
+                        <br>
+                    </ul>
+                    
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Fecha em</div>
+                            <div class="cursorPointer" lwc:if={showPreviewIcon}>
+                                <lightning-icon size="x-small" icon-name="utility:preview" alternative-text="preview!" title="preview" onclick={handleGetDataVencimentoAtualizada}></lightning-icon>
+                            </div>
+                            <div lwc:else>
+                                <div class="cmpValue">{novaDataFechamento}</div>
+                            </div>
+                        </li>
+                        <br>
+                    </ul>
+                    
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Próximo Vencimento</div>
+                            <div class="cursorPointer" lwc:if={showPreviewIcon}>
+                                <lightning-icon size="x-small" icon-name="utility:preview" alternative-text="preview!" title="preview" onclick={handleGetDataVencimentoAtualizada}></lightning-icon>
+                            </div>
+                            <div lwc:else>
+                                <div class="cmpValue">{novaDataVencimento}</div>
+                            </div>
+                        </li>
+                        <br>
+                    </ul>
+
+                    <ul class="listUl">
+                        <li>
+                            <!-- <div class="cmpName">Última alteração</div>
+                            <div class="cmpValue">{dataNascimento}</div> -->
+                        </li>
+                        <br>
+                    </ul>
+                </div>
+            </div>
+            <br>
+
+            <div class="section02" style="box-shadow: none;">
+                <h1>Informações do Caso:</h1>
+                
+                <div class="listInformacoes">
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Origem</div>
+                            <div class="cmpValue">{valueOrigem}</div>
+                        </li>
+                        <br>
+                    </ul>
+                    
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Canal</div>
+                            <div class="cmpValue">{valueCanal}</div>
+                        </li>
+                        <br>
+                    </ul>
+                    
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Assunto</div>
+                            <div class="cmpValue">Fatura</div>
+                        </li>
+                        <br>
+                    </ul>
+
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Evento</div>
+                            <div class="cmpValue">Alteração de vencimento</div>
+                        </li>
+                        <br>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>   
+        <div class="boxFooter">
+            <ul>
+                <li>
+                    <lightning-button variant="Neutral" label="Voltar" onclick={handleButtonVoltar} disabled={disableButtonVoltar} class="slds-m-left_x-small"></lightning-button>
+                </li>
+                <li>
+                    <lightning-button variant="brand" label={buttonAvancar}  onclick={handleProsseguir} disabled={disableButtonAvancar}  class="slds-m-left_x-small"></lightning-button>
+                </li>
+            </ul>
+        </div>
+    </footer>
+</template>

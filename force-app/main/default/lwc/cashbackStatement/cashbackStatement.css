@@ -1,0 +1,54 @@
+.title {
+    margin-top: 24px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+:host { 
+    --sds-c-accordion-summary-color-background: var(--lwc-colorBackground,rgb(243,242,242)); 
+}
+
+.day-container {
+    margin-top: 10px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+    border: 1px solid #ddd;
+    margin: 20px 0;
+    font-size: 16px;
+}
+
+table th, table td {
+    text-align: left;
+    padding: 8px;
+}
+
+table th {
+    background-color: #fafaf9;
+    font-weight: bold;
+}
+
+table tr {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.icon-container {
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    margin-right: 5px;
+}
+
+.detalhes {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}

@@ -1,0 +1,300 @@
+.title{
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    line-height: 30px;
+    font-weight: 400;
+    border-bottom: 2px solid #DDDBDA;
+}
+
+.avisoAlert{
+    height: 48px;
+    background-color: #FFB75D;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0px 0px 24px;
+    font-size: 14px;
+    color: #080707;
+    --slds-c-icon-color-foreground-default: #222222;
+}
+
+.text-name{
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 20px;
+    color: #444444;
+}
+
+.text-value{
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: #181818;
+}
+
+.dados-conta{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 32px 20px;
+}
+
+.dados-separador{
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 2px solid #DDDBDA;
+}
+
+.container-logo{
+    display: grid;
+    grid-template-columns: auto 1fr;
+}
+
+.container-logo div:nth-last-child{
+    grid-column: 2;
+}
+
+.logo {
+    margin-right: 5px;
+}
+.logo > img {
+    max-width: 100%;
+    height: 45px;
+}
+
+.dados-itens{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 25px;
+}
+
+.fields-caso{
+    display: flex;
+    flex-direction: row;
+}
+
+.field-caso{
+    width: 200px;
+    margin-right: 20px;
+}
+
+.preenchimento-caso h2{
+    font-weight: 400;
+}
+
+.preenchimento-caso .text-name{
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 12px;
+    color: #444444;
+}
+
+.preenchimento-caso .text-value{
+    line-height: 20px;
+}
+
+.text-termo{
+    font-weight: 600;
+    font-size: 16px;
+    margin-top: 20px;
+    color: #000000;
+}
+
+.info-adicionais{
+    margin: 28px 0px 16px 0px;
+    padding: 25px 0px 16px 0px;
+    border-bottom: 2px solid #DDDBDA;
+    border-top: 2px solid #DDDBDA;
+}
+
+.info-adicionais h3{
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 27px;
+    margin: 16px 0px 8px 0px;;
+    color: #000000;
+}
+
+.fields-adicionais{
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0px 24px;
+}
+.field-adicional{
+    min-width: 50%;
+}
+
+.field{
+    display: none;
+    line-height: 0px;
+}
+
+.field-label{
+    font-weight: 600;
+    font-size: 13px;
+    color: #2E2E2E;
+    margin: 0px 0px 4px;
+    line-height: 24px;
+}
+
+.field-label span{
+    font-weight: 400;
+    font-size: 13px;
+    color: #b60554;
+    margin: 0px 2px;
+}
+
+
+
+/* Tela de adesão */
+.container-adesao{
+    margin: 24px 40px;
+}
+
+.container-adesao h2{
+    font-size: 18px;
+    line-height: 27px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #181818;
+}
+
+/* Tela página caso */
+.success-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    --slds-c-icon-color-background: #087C2B;
+    margin: 23px 10px 0px 24px;
+    padding: 5px;
+    height: 20px;
+    width: 20px;
+}
+
+.container-casoGerado{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.casoGerado{
+    width: 100%;
+    padding-bottom: 30px;
+    padding: 20px 30px 30px 00px;
+}
+.casoGerado h1{
+    font-size: 18px;
+    font-weight: 700;
+    color: #000000;
+}
+
+.casoGerado h2{
+    font-size: 16px;
+    font-weight: 600;
+    padding-top: 20px;
+    padding-bottom: 12px;
+    color: #000000;
+}
+
+.casoGerado ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.casoGeradoName{
+    font-size: 0.875rem;
+    color: #3E3E3C;
+    line-height: 18px;
+}
+
+.casoGeradoValue{
+    font-size: 1rem;
+    color: #080707;
+    font-weight: 600;
+    line-height: 22px;
+}
+
+.dados-casoGerado{
+    margin-bottom: 20px;
+}
+
+.dados-casoGerado h2{
+    font-size: 16px;
+    font-weight: 600;
+    margin: 12px 0px 4px 0px;
+    padding: 0px;
+    color: #000000;
+}
+
+.dados-casoGerado span{
+    font-size: 16px;
+    font-weight: 700;
+    color: #000000;
+}
+
+/* Tela cancelar  */
+.container-cancelar{
+    margin: 24px 40px;
+}
+
+.dados-contrato{
+    display: grid;
+    grid-template-columns: 0.9fr 0.9fr 1.1fr 0.9fr 0.9fr;
+    grid-gap: 40px 32px;
+}
+
+.dados-contrato-flex{
+    display: flex;
+    grid-gap: 0px 32px;
+    margin-top: 40px;
+}
+
+.item-large {
+    grid-column: span 2;
+    font-weight: bold;
+} 
+
+.container-cancelar h2{
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 27px;
+    margin: 24px 0px;
+    color: #000000;
+}
+
+.container-cancelar .text-name{
+    font-size: 12px;
+    line-height: 12px;
+    color: #000000;
+}
+
+/* tela contestar */
+.detalhes-cancelamento{
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 2px solid #DDDBDA;
+}
+
+.detalhes-cancelamento h2{
+    margin: 0px 0px 26px;
+}
+
+.detalhes-cancelamento .dados-contrato-flex{
+    display: flex;
+    grid-gap: 0px 32px;
+    margin: 0px 0px 40px;
+}
+/* Footer */
+footer{
+    height: 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #F3F2F2;
+    padding: 0px 24px;
+}

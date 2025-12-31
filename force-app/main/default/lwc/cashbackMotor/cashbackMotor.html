@@ -1,0 +1,130 @@
+<!-- force-app/main/default/lwc/cashbackMotor/cashbackMotor.html -->
+<template>
+    <lightning-card>
+        <div class="filters slds-p-horizontal_medium slds-p-top_medium slds-p-bottom_x-small">
+            <div class="filters-row">
+                <div class="control w-220">
+                    <lightning-input
+                        data-id="rms"
+                        type="search"
+                        variant="label-hidden"
+                        placeholder="RMS"
+                        value={rms}
+                        required={rmsRequired}
+                        message-when-value-missing="Informe o RMS"
+                        onchange={handleRmsChange}>
+                    </lightning-input>
+                    <template if:true={showRmsHint}>
+                        <div class="control-hint">Campo obrigatório</div>
+                    </template>
+                </div>
+
+                <div class="control w-180">
+                    <lightning-combobox
+                        data-id="bu"
+                        variant="label-hidden"
+                        placeholder="BU"
+                        value={selectedBu}
+                        options={buOptions}
+                        onchange={handleBuChange}>
+                    </lightning-combobox>
+                    <div class="control-hint">&nbsp;</div>
+                </div>
+
+                <div class="control w-180">
+                    <lightning-combobox
+                        data-id="canal"
+                        variant="label-hidden"
+                        placeholder="Canal"
+                        value={selectedCanal}
+                        options={canalOptions}
+                        onchange={handleCanalChange}>
+                    </lightning-combobox>
+                    <div class="control-hint">&nbsp;</div>
+                </div>
+
+                <div class="control w-200">
+                    <lightning-input
+                        data-id="data-compra"
+                        type="date"
+                        variant="label-hidden"
+                        placeholder="Data da compra"
+                        value={dataCompra}
+                        onchange={handleDataCompraChange}>
+                    </lightning-input>
+                    <div class="control-hint">&nbsp;</div>
+                </div>
+
+                <div class="actions">
+                    <lightning-button
+                        class="buscar-btn"
+                        variant="brand"
+                        label="Buscar"
+                        onclick={handleBuscarClick}>
+                    </lightning-button>
+                </div>
+            </div>
+        </div>
+
+        <template if:true={isLoading}>
+            <div class="slds-p-around_large slds-align_absolute-center">
+                <lightning-spinner alternative-text="Carregando" size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <div class="slds-p-horizontal_medium slds-p-bottom_large dtTableCustom">
+            <template if:true={data.length}>
+                <lightning-datatable
+                    key-field="id"
+                    data={registrosPaginados}
+                    columns={columns}
+                    hide-checkbox-column>
+                </lightning-datatable>
+
+                <div class="paginacao-footer slds-grid slds-grid_vertical-align-center slds-grid_align-spread slds-m-top_small">
+                    <div class="slds-grid slds-grid_vertical-align-center">
+                        <lightning-button-icon
+                            icon-name="utility:chevronleft"
+                            onclick={paginaAnterior}
+                            alternative-text="Anterior"
+                            disabled={isFirstPage}>
+                        </lightning-button-icon>
+                        <div class="slds-m-horizontal_medium">  {paginaAtual}</div>
+                        <lightning-button-icon
+                            icon-name="utility:chevronright"
+                            onclick={paginaProxima}
+                            alternative-text="Próxima"
+                            disabled={isLastPage}>
+                        </lightning-button-icon>
+                    </div>
+
+                    <div class="slds-grid slds-grid_vertical-align-center">
+                        <div class="slds-m-right_x-small"></div>
+                        <lightning-combobox
+                            variant="label-hidden"
+                            class="input-paginas"
+                            value={itensPorPagina}
+                            options={opcoesItensPorPagina}
+                            onchange={handleItensPorPagina}>
+                        </lightning-combobox>
+                        <div class="slds-m-left_medium paginacao-footer-item">
+                            Ver {viewStart} - {viewEnd} de {totalRegistros}
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <template if:false={data.length}>
+                <div class="empty slds-p-vertical_xx-large slds-text-align_center slds-border_top">
+                    <lightning-icon icon-name="utility:search" size="large"></lightning-icon>
+                    <h3 class="slds-text-heading_medium slds-m-top_small">
+                        Use os filtros acima para buscar
+                    </h3>
+                    <p class="slds-text-body_regular slds-text-color_weak">
+                        Após isto, serão listados todos os resultados de acordo com os filtros
+                    </p>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+</template>

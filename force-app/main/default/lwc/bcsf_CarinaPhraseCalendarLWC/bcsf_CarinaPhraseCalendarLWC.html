@@ -1,0 +1,22 @@
+<template>
+    <div if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </div>
+
+    <lightning-card title="Calendário de Frases" icon-name="doctype:csv" variant="Narrow">
+        <lightning-file-upload 
+            accept = {acceptedFormats} 
+            onuploadfinished = {handleUploadFinished} 
+            record-id = {myRecordId}>
+        </lightning-file-upload>
+
+        <template if:true={textFiles}>
+            <p class="arquivosParaUpload">{fileName}</p>
+        </template>
+
+        <div class="botao">
+            <lightning-button variant="brand" label="Finalizar Importação" title="Finalizar Importação" disabled={showButton} onclick={FinalizarImportacao}></lightning-button>
+        </div>        
+
+    </lightning-card>
+</template>

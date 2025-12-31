@@ -1,0 +1,259 @@
+<template>
+    <div if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <template if:true={showCardPrincipal}>
+        <div class="title">Desbloqueio de senha</div>
+        <div class="c-container">
+            <div class="boxCardPrincipal">
+                <div if:true={stepOne}>
+                    <label class="texto-label">Dados do cliente</label>
+                    <div class="listInformacoes">
+                        <ul class="">
+                            <li class="">
+                                <div class="cmpLabel">Nome</div>
+                                <div class="cmpValue">{nome}</div>
+                            </li>
+                            <li class="">
+                                <div class="cmpLabel">Conta</div>
+                                <div class="cmpValue">{numeroConta}</div>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li class="">
+                                <div class="cmpLabel">CPF</div>
+                                <div class="cmpValue">{cpf}</div>
+                            </li>
+                            <li class="">
+                                <div class="cmpLabel">Produto</div>
+                                <div class="cmpValue">{produto}</div>
+                            </li>
+                        </ul>
+                        <ul>
+                            <li class="">
+                                <div class="cmpLabel">Data de Nascimento</div>
+                                <div class="cmpValue">{dataNascimento}</div>
+                            </li>
+                            <li class="">
+                                <div class="cmpLabel">Celular Seguro</div>
+                                <div class="cmpValue">{possuiCelularSeguro}</div>
+                            </li>
+                        </ul>
+                        <ul class="">
+                            <li class="">
+                                <div class="cmpLabel">Status Geral</div>
+                                <div class="cmpValue">{statusConta}</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+				<div if:true={stepTwo}>
+                    <label class="texto-label">Confirmação de desbloqueio de senha</label>
+                    <div class="cmpLabel">Verifique o cartão selecionado antes de finalizar</div>
+                    
+                    <div class="mt-30 pl-20 cardDadosCartao">
+                        <label class="cartaoOfuscado">Cartão {numeroCartaoOfuscado}</label>
+                        <ul class="dadosCartaoUl">
+                            <li class="dadosCartao">
+                                <div class="cmpLabel">Status da senha</div>
+                                <div class="statusBloqueada">Bloqueada</div>
+                            </li>
+                            <li class="dadosCartao">
+                                <div class="cmpLabel">Qtd. tentativas de senha incorreta</div>
+                                <div class="cmpValue">{wrongPinRetries} tentativas</div>
+                            </li>
+                        </ul>
+                        <div class="cmpLabel mt-20">Após finalizar, a senha será desbloqueada imediatamente</div>
+                        
+                        <div class="alert mt-30" if:true={possuiCartoesBloqueados}>
+                            <lightning-icon icon-name="utility:warning" alternative-text="Warning!" title="Warning" class="pr-10"></lightning-icon>
+                            <p>{msgAlertCartoes}</p>
+                        </div>
+                    </div>
+
+                    <div class="cardPreenchimentoCaso mt-20">
+                        <label class="label-caso mt-20">Preenchimento de caso</label>
+                        <div class="">
+                            <lightning-record-edit-form object-api-name="Case">
+                                <ul>
+                                    <li>
+                                        <label>Origem</label>
+                                        <lightning-input-field 
+                                            language=""
+                                            value={origemValue}
+                                            field-name="Origin" 
+                                            class="lightningInput" 
+                                            placeholder="--Nenhuma--"
+                                            onchange={handleChangeOrigem} 
+                                            variant="label-hidden"> 
+                                        </lightning-input-field>
+                                    </li>
+                                    <li>
+                                        <label>Canal</label>
+                                        <lightning-input-field
+                                            value={canalValue}
+                                            field-name="CanalEntrada__c" 
+                                            class="lightningInput" 
+                                            placeholder="--Nenhuma--"
+                                            onchange={handleChangeCanal} 
+                                            variant="label-hidden"> 
+                                        </lightning-input-field>
+                                    </li>
+                                </ul>    
+                            </lightning-record-edit-form>   
+                        </div>
+                    </div>
+                </div>
+                <div if:true={stepThree}>
+                    <div class="result-message">
+                        <lightning-icon icon-name="utility:success" alternative-text="Success!" variant="success" title="success variant" size="small"></lightning-icon>
+                        <label class="texto-label ml-10">Operação realizada!</label>
+                    </div>
+                                        
+                    <div class="mt-30 ml-40 dadosCaso">
+                        <ul class="dadosCasoUl">
+                            <li>
+                                <div class="cmpLabel">Protocolo: <span class="cmpValue">{numeroProtocolo}</span></div>
+                                <div class="cmpValue">{dataAberturaCaso}</div>
+                                <p>{dateToday}</p>
+                            </li>
+                            <li>
+                                <div class="cmpValue">Cartão {numeroCartaoOfuscado}</div>
+                            </li>
+                            <li>
+                                <div class="cmpLabel">Status da senha</div>
+                                <div class="cmpValue">Desbloqueada</div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mt-20 ml-40">
+                        <label class="label-info-caso">Informações do caso</label>
+                        <div class="mt-20">
+                            <ul class="info-casos">
+                                <li>
+                                    <div class="cmpLabel">Origem</div>
+                                    <div class="cmpValue">{origemValue}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Canal</div>
+                                    <div class="cmpValue">{canalValue}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Assunto</div>
+                                    <div class="cmpValue">Senha</div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Evento</div>
+                                    <div class="cmpValue">Desbloqueio de senha</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div if:true={falhaDesbloqueio}>
+                    <div class="result-message">
+                        <lightning-icon icon-name="action:close" size="xx-small" class="error-icon"></lightning-icon>
+                        <label class="texto-label ml-10">Poxa, algo deu errado!</label>
+                    </div>
+                    <div class="cmpLabel mt-20">Ocorreu um erro ao tentar realizar a ação, tente novamente mais tarde.</div>
+                </div>
+            </div>
+        </div>
+        <div class="c-container color-neutral">
+            <div class="boxCardPrincipal">
+                <div if:true={stepOne}>
+                    <template lwc:if={naoPossuiCartaoBloqueado}>
+                        <div class="texto-label">Gerenciar desbloqueio de senha</div>
+                        <div class="alert mt-30">
+                            <lightning-icon icon-name="utility:warning" alternative-text="Warning!" title="Warning" class="pr-10"></lightning-icon>
+                            <p>{msgAlertSemCartoes}</p>
+                        </div>
+                    </template>
+                    <template lwc:if={possuiUmCartaoBloqueado}>
+                        <div class="texto-label">Gerenciar desbloqueio de senha</div>
+                        <div class="mt-30 ml-20">
+                            <template for:each={optionsCartoes} for:item="cartao">
+                                <div key={cartao.numeroCartaoSerno}>
+                                    <label class="cartaoOfuscado">Cartão {cartao.numeroCartaoOfuscado}</label>
+                                    <ul class="dadosCartaoUl">
+                                        <li class="dadosCartao ml-20">
+                                            <div class="cmpLabel">Status da senha</div>
+                                            <div class="statusBloqueada">Bloqueada</div>
+                                        </li>
+                                        <li class="dadosCartao ml-20">
+                                            <div class="cmpLabel">Qtd. tentativas de senha incorreta</div>
+                                            <div class="cmpValue">{cartao.wrongPinRetries} tentativas</div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </template>
+                        </div>
+                        <div class="alert mt-30">
+                            <lightning-icon icon-name="utility:warning" alternative-text="Warning!" title="Warning" class="pr-10"></lightning-icon>
+                            <p>{msgAlertUmCartao}</p>
+                        </div>
+                    </template>
+                    <template lwc:if={possuiCartoesBloqueados}>
+                        <div class="texto-label mb-10">Escolha o cartão que deseja desbloquear:</div>
+                    
+                        <template for:each={optionsCartoes} for:item="cartao" for:index="index">
+                            <div class="opcaoCartao" key={cartao.numeroCartaoSerno}>
+                                <span class="slds-radio">
+                                    <input type="radio" id={cartao.numeroCartaoSerno} value={cartao.numeroCartaoSerno} onclick={changRadioCartaoSelecionado} name="default" />
+                                    <label class="slds-radio__label" for={cartao.numeroCartaoSerno}>
+                                    <span class="slds-radio_faux"></span>
+                                    <span class="slds-form-element__label cartaoOfuscado">Cartão {cartao.numeroCartaoOfuscado}</span>
+                                    </label>
+                                </span>
+                                <ul class="dadosCartaoUl">
+                                    <li class="dadosCartao">
+                                        <div class="cmpLabel">Status da senha</div>
+                                        <div class="statusBloqueada">Bloqueada</div>
+                                    </li>
+                                    <li class="dadosCartao">
+                                        <div class="cmpLabel">Qtd. tentativas de senha incorreta</div>
+                                        <div class="cmpValue">{cartao.wrongPinRetries} tentativas</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </template>
+                    </template>
+                </div>
+            </div>
+        </div>  
+        <footer>
+            <div class="boxFooter">
+                <ul>
+                    <li if:true={showVoltar}>
+                        <lightning-button label="Voltar" onclick={handleButtonVoltar} disabled={disableButtonVoltar}></lightning-button>
+                    </li>
+                    <li if:true={stepOne}>
+                        <lightning-button label="Prosseguir" variant="brand" onclick={handleButtonProsseguir} disabled={disableButtonProsseguir}></lightning-button>
+                    </li>
+                    <li if:true={stepTwo}>
+                        <lightning-button label="Finalizar" variant="brand" onclick={handleButtonFinalizar} disabled={disableButtonFinalizar}></lightning-button>
+                    </li>
+                    <li if:true={stepThree} class="liBtnDesbloquearMais">
+                        <lightning-button label="Desbloquear senha de mais cartões" onclick={handleButtonInicio} disabled={possuiUmCartaoBloqueado}></lightning-button>
+                    </li>
+                    <li if:true={stepThree} class="liBtnReimprimirSenha">
+                        <lightning-button label="Reimprimir Senha" onclick={handleButtonReimprimirSenha}></lightning-button>
+                    </li>
+                    <li if:true={stepThree} class="liBtnCaso">
+                        <lightning-button label="Ir para o caso" variant="brand" onclick={handleButtonIrCaso}></lightning-button>
+                    </li>
+                    <li if:true={falhaDesbloqueio}>
+                        <lightning-button label="Tentar novamente" variant="brand" onclick={handleButtonInicio} class=""></lightning-button>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+    </template>
+    <template if:true={abrirReimprimirSenha}>
+        <c-bcsf_-reimpressao-senha
+            close-parent-component={closeModalComponent}
+            oncloseparentmodal={closeQuickAction}>
+        ></c-bcsf_-reimpressao-senha>   
+    </template>
+</template>

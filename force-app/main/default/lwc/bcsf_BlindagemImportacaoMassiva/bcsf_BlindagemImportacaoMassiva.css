@@ -1,0 +1,193 @@
+.page-container {
+    /* padding: 1rem; */
+    background-color: #FAFAF9;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-header-container{
+    margin-top: auto;
+}
+
+.btn-header{
+    margin-bottom: 2px;
+}
+
+.header h1 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.input-paginas{
+    max-width: 65px;
+    --lwc-sizeXSmall: 65px;
+}
+
+/* .container-table{
+    max-height: 500px;
+    width: 100%;
+    over
+} */
+
+.hidden-input {
+    display: none;
+}
+
+.slds-modal__title {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.slds-button-group lightning-button {
+    margin-left: 0.5rem;
+}
+
+.filtros-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.acoes-wrapper {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-end;
+    margin-bottom: 1rem;
+}
+
+.paginacao-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: #FAFAF9;
+    border-radius: 0 0 4px 4px;
+    font-size: 0.9rem;
+    position: relative;
+    margin-top: auto;
+}
+
+.paginacao-footer-item{
+    position: absolute;
+    right: 24px;
+}
+
+.paginacao-footer .slds-button_icon {
+    margin-left: 0.5rem;
+}
+
+.paginacao-footer lightning-combobox {
+    width: 75px;
+}
+
+.upload-area {
+    border: 2px dashed #ccc;
+    padding: 2rem;
+    text-align: center;
+    background-color: #f9f9f9;
+    margin-top: 1rem;
+    position: relative;
+    border-radius: 4px;
+}
+
+.upload-button {
+    margin-bottom: 0.5rem;
+}
+
+.hidden-input {
+    display: none;
+}
+
+.sub-info {
+    display: flex;
+    align-items: center;
+    height: 48px;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    padding: 0px 10px;
+    font-size: 0.813rem;
+    color: #444;
+    background-color: #F3F2F2;
+}
+
+.sub-info a {
+    margin-left: auto;
+}
+
+.link-download {
+    margin-left: 0.5rem;
+    font-size: 0.85rem;
+    color: #0070d2;
+    text-decoration: underline;
+}
+
+.descricao-import{
+    font-size: 18px;
+    color: #181818;
+}
+
+.descricao-import small{
+    font-size: 14px;
+    color: #444444;
+}
+
+.modal-confirmacao .slds-modal__container {
+    width: 80%;
+    max-width: 1200px;
+    border-radius: 8px;
+}
+
+.modal-confirmacao .slds-modal__header {
+    background-color: white;
+    padding: 1rem 1.5rem 0 1.5rem;
+    border-bottom: none;
+    text-align: center;
+}
+
+.modal-confirmacao .slds-modal__title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000;
+}
+
+.modal-confirmacao .slds-modal__content {
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    background-color: white;
+    font-size: 0.95rem;
+}
+
+.modal-confirmacao .mensagem-wrapper {
+    background-color: #f3f2f2;
+    border-radius: 0.25rem;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.modal-confirmacao .mensagem-wrapper lightning-icon {
+    flex-shrink: 0;
+}
+
+.modal-confirmacao .mensagem-texto {
+    font-size: 0.9rem;
+    color: #3e3e3c;
+}
+
+.modal-confirmacao lightning-datatable {
+    border-radius: 4px;
+    max-height: 360px;
+    overflow: auto;
+}
+
+.modal-confirmacao .slds-modal__footer {
+    background-color: white;
+    border-top: none;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+}

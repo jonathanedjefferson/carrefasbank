@@ -1,0 +1,229 @@
+<template>
+    <div class="container" lwc:if={isCaseClosed}>
+        <div class="header">
+            <lightning-icon icon-name="standard:case_wrap_up" alternative-text="case_wrap_up" title="case_wrap_up"></lightning-icon>
+            <h1>Tratativa do Caso</h1>
+        </div>
+        <div class="informacoes">
+            <lightning-layout multiple-rows="true">
+                <lightning-layout-item size="6" class="field-title">
+                    Celular Solicitado
+                </lightning-layout-item>
+                <lightning-layout-item size="6" class="field-title">
+                    Novo Celular Seguro
+                </lightning-layout-item>
+                <lightning-layout-item size="6" class="field-value">
+                    {closedCaseData.celularOrignal}
+                </lightning-layout-item>
+                <lightning-layout-item size="6" class="field-value">
+                    {closedCaseData.celularSeguro}
+                </lightning-layout-item>
+
+                <lightning-layout-item size="6" class="field-title" lwc:if={closedCaseData.statusAprovacao}>
+                    Status da solicitação
+                </lightning-layout-item>
+                <lightning-layout-item size="6" class="field-title" lwc:if={closedCaseData.houveAlteracao}>
+                    Houve alteração cadastral?
+                </lightning-layout-item>
+                <lightning-layout-item size="6" class="field-value" lwc:if={closedCaseData.statusAprovacao}>
+                    {closedCaseData.statusAprovacao}
+                </lightning-layout-item>
+                <lightning-layout-item size="6" class="field-value" lwc:if={closedCaseData.houveAlteracao}>
+                    {closedCaseData.houveAlteracao}
+                </lightning-layout-item>
+
+                 <lightning-layout-item size="12" class="field-title" lwc:if={closedCaseData.houveFraude}>
+                   Fraude identificada?
+                </lightning-layout-item>
+                <lightning-layout-item size="12" class="field-value" lwc:if={closedCaseData.houveFraude}>
+                    {closedCaseData.houveFraude}
+                </lightning-layout-item>
+                <lightning-layout-item size="12" class="field-title" lwc:if={closedCaseData.resolucao}>
+                   Resolução
+                </lightning-layout-item>
+                <lightning-layout-item size="12" class="field-value" lwc:if={closedCaseData.resolucao}>
+                    {closedCaseData.resolucao}
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+    </div>
+    <div class="container" lwc:else>
+        <div lwc:if={spinner} role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+            <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+        </div>
+        <div class="header">
+            <lightning-icon icon-name="standard:approval" alternative-text="Approved" title="Approved"></lightning-icon>
+            <h1>Pendente de Validação</h1>
+        </div>
+
+        <div class="informacoes" lwc:if={showInfo}>
+            <div class="columInformacoes">
+                <ul>
+                    <li>Celular seguro</li>
+                    <li>{telefone}</li>
+                    <li><lightning-icon icon-name="utility:edit" alternative-text="Editar" title="Editar" size="xx-small" class="btnEdit" onclick={handleEdit}></lightning-icon></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slds-m-around_medium" lwc:if={showEditForm}>
+            <lightning-record-edit-form object-api-name="Case" record-id={recordId}>
+                <div class="recordEditForm">
+                    <div class="columEditForm">
+                        <lightning-input-field field-name="Telefone__c"> </lightning-input-field>
+                    </div>
+                </div>
+            
+                <div class="slds-clearfix slds-p-top_medium slds-p-bottom_medium">
+                    <div  class="slds-float_left">
+                        <lightning-button variant="neutral" label="Cancelar" onclick={handleEdit}></lightning-button>
+                    </div>
+                    <div  class="slds-float_right">
+                        <lightning-button variant="brand" type="submit" label="Salvar"></lightning-button>
+                    </div>
+                </div>
+            </lightning-record-edit-form>
+        </div>
+
+        <footer lwc:if={showInfo}>     
+            <div>
+                <lightning-button variant="neutral" label="Aprovar" name="Aprovado" onclick={handleBtnValidar}></lightning-button>
+            </div>
+            <div>
+                <lightning-button variant="neutral" label="Reprovar" name="Reprovado" onclick={handleBtnValidar}></lightning-button>
+            </div>
+        </footer>
+    </div>
+
+    <template if:true={showModal}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-03" class={classModal}>
+            <div id='myModalSaldoVencido' class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={handleCloseModal}>
+                    <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close" title="Close"></lightning-icon>
+                    <span class="slds-assistive-text">Cancelar e fechar</span>
+                </button>
+                <div class="slds-modal__header">
+                    <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate" tabindex="-1">Finalizar caso</h1>
+                </div>
+                <div class="slds-modal__content slds-p-around_large" id="modal-content-id-3">
+                    <div lwc:if={spinner} role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+                        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+                    </div>
+                    <div lwc:if={pageOne}>
+                        <div class="avisoAlert">
+                            <lightning-icon class="slds-m-horizontal_medium" icon-name="utility:warning" size="x-small" alternative-text="Atenção"></lightning-icon>
+                            <p>{textAlert}</p>
+                        </div>
+                        <div class="container-detalhes">
+                            <h1>Detalhes da Solicitação</h1>
+                            <p class="text-name">Novo celular seguro</p>
+                            <p class="text-value">{telefone}</p>
+                        </div>
+                        <div class="container-info">
+                            <ul class="slds-list_horizontal">
+                                <li class="slds-m-right_xx-large">
+                                    <p class="text-name">Número do caso</p>
+                                    <p class="text-value">{CaseNumber}</p>
+                                </li>
+                                <li>
+                                    <p class="text-name">Status da solicitação</p>
+                                    <p class="text-value">{status}</p>
+                                </li>
+                            </ul>
+                            <ul class="slds-list_horizontal options-item">
+                                <li class="slds-m-right_xx-large">
+                                    <p><span>* </span>Houve alteração cadastral?</p>
+                                    <lightning-input 
+                                        type="radio"  
+                                        name="optionAlteracao" 
+                                        label="Sim" 
+                                        value="Sim" 
+                                        class="cenarios-itens"
+                                        onchange={handleChangeAlteracao}>
+                                    </lightning-input>
+                                    <lightning-input 
+                                        type="radio"  
+                                        name="optionAlteracao" 
+                                        label="Não" 
+                                        value="Não" 
+                                        class="cenarios-itens"
+                                        onchange={handleChangeAlteracao}>
+                                    </lightning-input>
+                                </li>
+                                <li class="slds-m-right_xx-large">
+                                    <p><span>* </span>Fraude</p>
+                                    <lightning-input 
+                                        type="radio"  
+                                        name="optionFraude" 
+                                        label="Sim" 
+                                        value="Sim" 
+                                        class="cenarios-itens"
+                                        onchange={handleChangeFraude}>
+                                    </lightning-input>
+                                    <lightning-input 
+                                        type="radio"  
+                                        name="optionFraude" 
+                                        label="Não" 
+                                        value="Não" 
+                                        class="cenarios-itens"
+                                        onchange={handleChangeFraude}>
+                                    </lightning-input>
+                                </li>
+                            
+                            </ul>
+    
+                            <lightning-textarea 
+                                name="resolucao" 
+                                label="Resolução"
+                                onchange={handleChangeResolucao}
+                                value={resolucao}
+                                required
+                                placeholder="Digite seu comentário aqui">
+                            </lightning-textarea>
+    
+                            <h1 class="info-title">Informações do caso:</h1>
+                            <ul class="info-itens">
+                                <li>
+                                    <p class="text-name">Origem</p>
+                                    <p class="text-value">{origem}</p>
+                                </li>
+                                <li>
+                                    <p class="text-name">Canal</p>
+                                    <p class="text-value">{canal}</p>
+                                </li>
+                                <li>
+                                    <p class="text-name">Assunto</p>
+                                    <p class="text-value">{assunto}</p>
+                                </li>
+                                <li>
+                                    <p class="text-name">Evento</p>
+                                    <p class="text-value">{evento}</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div lwc:if={pageTwo}>
+                        <div class="caso-gerado slds-m-bottom_small">
+                            <lightning-icon icon-name="action:approval" size="xx-small" alternative-text="Sucesso" title="Sucesso" class="success-icon"></lightning-icon>
+                            <h1>Caso finalizado!</h1>
+                        </div>
+                        <div class="dados-casoGerado">
+                            <h2>Caso: {CaseNumber}</h2>
+                            <p  class="slds-m-vertical_x-small">Em: {dataAtualFormatada}</p>
+                            <p class="slds-m-vertical_xx-small">Tratativa</p>
+                            <li class="slds-m-left_x-small">Cadastro de celular Seguro</li>
+                        </div>
+                    </div>
+                </div>
+                <div lwc:if={pageOne} class="slds-modal__footer">
+                    <lightning-button class="slds-button" variant="neutral" label="Cancelar" title="Cancelar" onclick={handleCloseModal}></lightning-button>
+                    <lightning-button class="slds-button" variant="brand" label="Finalizar" title="Finalizar" onclick={handleBtnFinalizar} disabled={disabledBtnFinalizar}></lightning-button>
+                </div>
+                <div lwc:else class="slds-modal__footer slds-modal__footer_directional">
+                    <lightning-button class="slds-button" variant="neutral" label="Fechar" title="Fechar" onclick={handleCloseModal}></lightning-button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+</template>

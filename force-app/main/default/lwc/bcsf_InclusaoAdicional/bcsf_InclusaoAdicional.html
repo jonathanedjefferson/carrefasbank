@@ -1,0 +1,253 @@
+<template>
+    <div if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <template if:true={showCardPrincipal}>
+        <div class="title">Incluir adicional</div>
+        <div class="c-container">
+            <div class="boxCardPrincipal">
+                <div if:true={stepOne}>
+                    <div class="subTitle">Dados do titular</div>
+                    <div class="separator pb-15">
+                        <ul class="listInformacoes mt-10">
+                            <li>
+                                <div class="cmpLabel">Titular</div>
+                                <div class="cmpValue">{nome}</div>
+                            </li>
+                            <li class="tipoConta">
+                                <div class= "logo"><img src={logoTipo}></div>
+                                <div class="texts">
+                                    <div class="cmpName">Tipo de conta</div>
+                                    <div class="cmpValue">{unidadeDescricao}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="cmpLabel">Status geral</div>
+                                <div class="cmpValue">{statusConta}</div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="subTitle mt-20">Dados gerais da pessoa adicional</div>
+                    <div class="separator pb-15">
+                        <ul class="listInputs mt-10">
+                            <li>
+                                <lightning-input class="cmpInput" type="text" label="CPF" required placeholder="Digitar CPF" value={cpfAdicional} id="cpfAdicional" onchange={handlerCPF} maxlength="14"></lightning-input>
+                            </li>
+                            <li>
+                                <lightning-input class="cmpInput" label="Data de nascimento" required  placeholder="DD/MM/AAAA" value={dataNascimentoAdicional}  type="date" date-style="short" id="dataNascimentoAdicional" onchange={handlerField}></lightning-input>
+                            </li>
+                            <li>
+                                <lightning-input class="cmpInput" type="text" 
+                                label="Nome do adicional"
+                                field-level-help="Regras:
+                                1. O nome não pode conter caracteres especiais ou números."
+                                placeholder="Digitar nome" value={nomeAdicional} id="nomeAdicional" maxlength="100" onchange={handlerField} required></lightning-input>
+                            </li>
+                            <li>
+                                <lightning-combobox class="cmpInput"
+                                    label="Sexo"
+                                    name="genero"
+                                    value={sexoAdicional}
+                                    id="sexoAdicional" 
+                                    placeholder="Selecionar opção"
+                                    options={optionsGenero}
+                                    onchange={handlerField}
+                                    required>
+                                </lightning-combobox>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="subTitle mt-20">Endereço da pessoa titular</div>
+                    <div class="alert mt-20">
+                        <lightning-icon icon-name="utility:warning" size="x-small" alternative-text="Warning!" title="Warning" class="pr-10 pl-15 color-icon"></lightning-icon>
+                        <div>
+                            <p class="text-info">Para trocar o endereço do cliente, é necessário acessar o módulo de Alteração Cadastral.</p>
+                            <a class="link-alteracao" onclick={handleButtonAlteracaoCadastral}>Clique aqui para realizar a alteração de endereço.</a>
+                        </div>
+                    </div>
+                    <div class="boxGray mt-20">
+                        <div class="boxEndereco separator pb-15">
+                            <ul class="listVertical">
+                                <li>
+                                    <div class="cmpLabel">CEP</div>
+                                    <div class="cmpValue">{cep}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Bairro</div>
+                                    <div class="cmpValue">{bairro}</div>
+                                </li>
+                            </ul>
+                            <ul class="listVertical">
+                                <li>
+                                    <div class="cmpName">Endereco</div>
+                                    <div class="cmpValue">{logradouro}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">Cidade</div>
+                                    <div class="cmpValue">{cidade}</div>
+                                </li>
+                            </ul>
+                            <ul class="listVertical">
+                                <li>
+                                    <div class="cmpLabel">Número</div>
+                                    <div class="cmpValue">{numeroEndereco}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">UF</div>
+                                    <div class="cmpValue">{estado}</div>
+                                </li>
+                            </ul>
+                            <ul class="listVertical">
+                                <li>
+                                    <div class="cmpLabel">Complemento</div>
+                                    <div class="cmpValue">{complemento}</div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="pb-15">
+                            <ul class="listVertical">
+                                <li>
+                                    <div class="cmpLabel">Telefone celular</div>
+                                    <div class="cmpValue">{telefone}</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div if:true={stepTwo}>
+                    <div class="separator pb-15">
+                        <div class="subTitle">Confirme os dados</div>
+                        <p>Antes de finalizar, confirme com o cliente se os dados estão corretos</p>
+                        
+                        <div class="boxDadosConta mt-30">
+                            <ul class="listInformacoesConf mt-10">
+                                <li>
+                                    <div class="cmpLabel">CPF</div>
+                                    <div class="cmpValue">{cpfAdicional}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">Data de nascimento</div>
+                                    <div class="cmpValue">{dataNascimentoAdicionalDesc}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Nome do adicional</div>
+                                    <div class="cmpValue">{nomeAdicional}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Sexo</div>
+                                    <div class="cmpValue">{sexoAdicionalDesc}</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-20">
+                        <label class="subTitle-3">Preenchimento de caso</label>
+                        <div class="mt-5 boxCaso">
+                            <lightning-record-edit-form object-api-name="Case">
+                                <ul>
+                                    <li>
+                                        <label>Origem</label>
+                                        <lightning-input-field 
+                                            language=""
+                                            value={origemValue}
+                                            field-name="Origin" 
+                                            class="lightningInput mt-5" 
+                                            placeholder="--Nenhuma--"
+                                            onchange={handleChangeOrigem} 
+                                            variant="label-hidden"> 
+                                        </lightning-input-field>
+                                    </li>
+                                    <li>
+                                        <label>Canal</label>
+                                        <lightning-input-field
+                                            value={canalValue}
+                                            field-name="CanalEntrada__c" 
+                                            class="lightningInput mt-5" 
+                                            placeholder="--Nenhuma--"
+                                            onchange={handleChangeCanal} 
+                                            variant="label-hidden"> 
+                                        </lightning-input-field>
+                                    </li>
+                                </ul>    
+                            </lightning-record-edit-form>   
+                        </div>
+                    </div>
+                </div>
+                <div if:true={stepThree}>
+                    
+                    <h1 class="subTitle-2"><lightning-icon icon-name="utility:success" class="pr-10" alternative-text="Success!" variant="success" title="success variant" size="small"></lightning-icon>A inclusão de adicional foi realizada!</h1> <br>
+                        
+                    <div class="pl-30">
+                        <h2>Protocolo: <b>{numeroCaso}</b></h2>
+                        <p class="mt-5">{dateToday}</p>
+                        <div class="separator pb-20"></div>
+                        <div>
+                            <h2 class="slds-text-heading_small slds-m-vertical_medium subTitle">Informações do caso:</h2>
+                            <ul class="listInformacoesConf">
+                                <li>
+                                    <div class="cmpName">Origem</div>
+                                    <div class="cmpValue">{origemValue}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">Canal</div>
+                                    <div class="cmpValue">{canalValue}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">Motivo</div>
+                                    <div class="cmpValue">Cartão</span></div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">Evento</div>
+                                    <div class="cmpValue">Inclusão de cartão adicional</span></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="boxFooter">
+                <div if:true={stepOne}>
+                    <ul>
+                        <li>
+                            <lightning-button label="Voltar" onclick={handleButtonCancelar}></lightning-button>
+                        </li>
+                        <li>
+                            <lightning-button label="Prosseguir" variant="brand" onclick={irParaConfirmacao} disabled={disableButtonProsseguir}></lightning-button>
+                        </li>
+                    </ul>
+                </div>
+                <div if:true={stepTwo}>
+                    <ul>
+                        <li>
+                            <lightning-button label="Voltar" onclick={handleButtonVoltar}></lightning-button>
+                        </li>
+                        <li>
+                            <lightning-button label="Finalizar" variant="brand" onclick={handleButtonSalvar} disabled={disableButtonSalvar}></lightning-button>
+                        </li>
+                    </ul>
+                </div>
+                <div if:true={stepThree}>
+                    <ul>
+                        <li>
+                            <lightning-button label="Incluir mais um adicional" onclick={handleButtonReiniciar}></lightning-button>
+                        </li>
+                        <li>
+                            <lightning-button label="Ir para o caso" variant="brand" onclick={handleButtonIrCaso}></lightning-button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </template>
+    <template if:true={abrirAlteracaoCadastral}>
+        <c-bcsf_-alteracao-cadastral
+            record-id={recordId}
+            close-parent-component={closeModalComponent}
+            oncloseparentmodal={closeQuickAction}>
+        ></c-bcsf_-alteracao-cadastral>   
+    </template>
+</template>

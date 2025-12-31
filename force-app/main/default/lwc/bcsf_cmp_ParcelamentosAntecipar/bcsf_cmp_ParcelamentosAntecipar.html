@@ -1,0 +1,267 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Carregando..." size="large" variant="brand"></lightning-spinner>
+    </div>
+    <template if:true={exibirModalAntecipacao}>
+        <div class="header-modal">
+            <h1 class="titulo-modal">Parcelados</h1>
+        </div>
+        <div class="conteudo-modal">
+            <div if:true={step01}>
+                <div class="dados-titular">
+                    <div class="informacao-titular">
+                        <div class="informacao-label">Titular da conta</div>
+                        <div class="informacao-valor">{titularConta}</div>
+                    </div>
+                    <div class="informacao-titular-tipo-conta">
+                        <img src={logoTipo}>
+                        <div class="informacao-titular">
+                            <div class="informacao-label">Tipo de Conta</div>
+                            <div class="informacao-valor">{tipoConta}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="resumo-simulacao">
+                    <div class="alerta-yellow" if:true={exibirAlertaSimulacoesComErro}>
+                        <lightning-icon class="slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="aviso"></lightning-icon>
+                        <p>Algumas compras na simulação apresentaram erro. O valor do desconto foi atualizado. <br> Confira o detalhamento abaixo para mais informações.</p>
+                    </div>
+                    <div class="alerta-yellow" if:true={exibirAlertaAntecipacaoCredito}>
+                        <lightning-icon class="slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="aviso"></lightning-icon>
+                        <p>Antecipação de empréstimo não libera o limite do cartão.</p>
+                    </div>
+                    <div class="copiar-resumo">
+                        <h1>Resumo total da simulação</h1>
+                        <lightning-button variant="base" label="Copiar resumo" title="Copiar resumo" icon-name="utility:copy" onclick={handleCopiarResumoSimulacao}></lightning-button>        
+                    </div>
+                    <div class="detalhes-resumo">
+                        <table class="tabela-detalhes-resumo">
+                            <tbody>
+                                <tr>
+                                    <td class="label-detalhes-parcelamento">Quantidade total de parcelas antecipadas</td>
+                                    <td class="valor-detalhes-parcelamento">{quantidadeParcelasAntecipadas}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-detalhes-parcelamento">Valor total antecipado</td>
+                                    <td class="valor-detalhes-parcelamento">{valorTotalAntecipado.moeda} {valorTotalAntecipado.valor}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-detalhes-parcelamento">Desconto total</td>
+                                    <td class="valor-detalhes-parcelamento">{descontoTotal.moeda} {descontoTotal.valor}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-detalhes-parcelamento">{labelValorTotalAntecipacaoComDesconto}</td>
+                                    <td class="valor-detalhes-parcelamento cor-valor">{valorTotalComDesconto.moeda} {valorTotalComDesconto.valor}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <lightning-accordion allow-multiple-sections-open active-section-name={activeSection} class="accordion-parcelamentos">
+                        <lightning-accordion-section name="sectionSimulacoes" label="Detalhes de todas as parcelas simuladas">
+                            <c-bcsf_cmp_-parcelamentos-detalhes-antecipacao 
+                                lista-simulacoes-realizadas={listaSimulacoesRealizadas}
+                                lista-simulacoes-com-falha={listaSimulacoesComFalha}
+                                label-erro='Erro'
+                                label-sucesso='Sucesso na simulação'> 
+                            </c-bcsf_cmp_-parcelamentos-detalhes-antecipacao>
+                        </lightning-accordion-section>
+                    </lightning-accordion>
+                    <div class="parcela-postada-existente" if:true={temParcelaPostada}>
+                        <h1>Já existe uma parcela postada na fatura atual, deseja continuar com antecipação?</h1>
+                        <div class="box-radio">
+                            <template for:each={opcoesParcelaPostada} for:item="item">
+                                <span key={item.label} class="item-radio-button">
+                                    <lightning-input type="radio" name="ContinuarComParcelasPostadas" id={item.value} value={item.value} label={item.label} onchange={hadleProsseguirComParcelaPostada} disabled={item.disabled} checked={item.checked}></lightning-input>
+                                </span>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="escolher-forma-pagamento">
+                        <h1>Escolha a forma de pagamento</h1>
+                        <div class="box-radio">
+                            <template for:each={opcoesFormaPagamento} for:item="item">
+                                <span key={item.label} class="item-radio-button">
+                                    <lightning-input type="radio" name="FormaPagamento" id={item.value} value={item.value} label={item.label} onchange={hadleSelecionarFormaPagamento} disabled={item.disabled} checked={item.checked}></lightning-input>
+                                </span>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="preenchimento-do-caso">
+                        <h1>Preenchimento de caso</h1>
+                        <lightning-record-edit-form object-api-name="Case">
+                            <ul>
+                                <li>
+                                    <div class="informacao-label">Origem</div>
+                                    <lightning-input-field 
+                                        value={origemCaso}
+                                        field-name="Origin" 
+                                        placeholder="Selecione"
+                                        onchange={handleOrigemAlterada} 
+                                        variant="label-hidden"
+                                        disabled={origemCasoDisabled}> 
+                                    </lightning-input-field>
+                                </li>
+                                <li>
+                                    <div class="informacao-label">Canal</div>
+                                    <lightning-input-field
+                                        value={canalCaso}
+                                        field-name="CanalEntrada__c" 
+                                        placeholder="Selecione"
+                                        onchange={handleCanalAlterado} 
+                                        variant="label-hidden"
+                                        disabled={canalCasoDisabled}> 
+                                    </lightning-input-field>
+                                </li>
+                            </ul> 
+                        </lightning-record-edit-form>   
+                    </div>       
+                </div>
+            </div>
+            <div if:true={step02}>
+                <div class="alerta-yellow" if:true={exibirAlertaPagamento}>
+                    <lightning-icon class="slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="aviso"></lightning-icon>
+                    <p>{mensagemAlertaRealizarPagamento}</p>
+                </div>
+                <div class="alerta-yellow" if:true={erroAoGerarDadosPagamento}>
+                    <lightning-icon class="slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="aviso"></lightning-icon>
+                    <p><strong>A antecipação foi contratada</strong>, mas houve erro ao gerar o {formaPagamentoErroMsg}. Tente novamente ou altere a forma de pagamento.</p>
+                </div>
+                <div class="alerta-yellow" if:true={exibirAlertaAdesoesComErro}>
+                    <lightning-icon class="slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="aviso"></lightning-icon>
+                    <p>Algumas compras na contratação apresentaram erro. O valor do desconto foi atualizado. <br> Confira o detalhamento abaixo para mais informações.</p>
+                </div>
+                <div class="alerta-red" if:true={exibirEroAntecipar}>
+                    <lightning-icon class="slds-m-right_small" icon-name="utility:error" size="small" alternative-text="aviso"></lightning-icon>
+                    <p>Falha ao realizar solicitação de antecipação. Deseja tentar novamente? <button class="slds-button" onclick={handleTentarNovamenteAnteciparParcelas}>Tentar novamente</button></lightning-button></p>
+                </div>
+                <div class="solicitacao-finalizada-titulo">
+                    <lightning-icon class="slds-m-right_small" icon-name="utility:success" size="small" alternative-text="sucesso" if:true={exibirIconeSucesso}></lightning-icon>
+                    <h1>{tituloSolicitacao}</h1>
+                </div>
+                <p class="protocolo">Protocolo: <strong>{numeroProtocolo}</strong></p>
+                <p class="data-protocolo">{dataProtocolo}</p>
+                <div class="box-dados-para-pagamento">
+                    <lightning-accordion allow-multiple-sections-open active-section-name={activeSection} class="accordion-parcelamentos">
+                        <lightning-accordion-section name="sectionAdesoes" label={tituloAccordionAntecipacoes}>
+                            <c-bcsf_cmp_-parcelamentos-detalhes-antecipacao 
+                                lista-simulacoes-realizadas={listaAdesoesRealizadas}
+                                lista-simulacoes-com-falha={listaAdesoesComFalha}
+                                label-erro='Erro'
+                                label-sucesso='Antecipado'> 
+                            </c-bcsf_cmp_-parcelamentos-detalhes-antecipacao>
+                        </lightning-accordion-section>
+                    </lightning-accordion>
+                    <div if:true={exibirDadosParaPagamento}>
+                        <div class="titulo-pagamentos">
+                            <h1>{tituloPagamento}</h1>
+                            <lightning-button 
+                            if:true={pagamentoPorBoleto}
+                            variant="base" 
+                            label="Ver boleto" 
+                            title="Ver boleto" 
+                            icon-name="utility:new_window"
+                            onclick={handleOpenPdf}>
+                        </lightning-button>
+                        </div>
+                        <div class="dados-boleto-pix">
+                            <ul>
+                                <li class="codigo-pagamento">
+                                    <p class="informacao-label">{codigoPagamentoTitulo}</p>
+                                    <p class="informacao-valor">{codigoPagamento}</p>
+                                </li>
+                                <li>
+                                    <p class="informacao-label">Valor</p>
+                                    <p class="informacao-valor">{valorPagamentoFormatado}</p>
+                                </li>
+                                <li>
+                                    <p class="informacao-label">Vencimento</p>
+                                    <p class="informacao-valor">{vencimentoPagamento}</p>
+                                </li>
+                                <lightning-button 
+                                    variant="base" 
+                                    label={labelBotaoCopiar}
+                                    title={labelBotaoCopiar}
+                                    icon-name="utility:copy"
+                                    onclick={handleCopiarDadosDePagamento}>
+                                </lightning-button>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-email" if:true={exibirBoxEmail}>
+                    <div class="box-email-detalhes-envio">
+                        <h1>{tituloEnvioDoEmail}</h1>
+                        <ul>
+                            <li>
+                                <p class="informacao-label">Modo de envio</p>
+                                <p class="informacao-valor">{modoEnvio}</p>
+                            </li>
+                            <li>
+                                <p class="informacao-label">Prazo de envio</p>
+                                <p class="informacao-valor">{prazoEnvio}</p>
+                            </li>
+                            <li>
+                                <p class="informacao-label">Endereço de e-mail</p>
+                                <p class="informacao-valor">{dadosCliente.email}</p>
+                            </li>
+                        </ul>
+                        <lightning-input type="checkbox" class="box-email-checkbox" label={fraseEnviarEmailAlternativo} onchange={handleEnviarEmailAlternativo} checked={enviarEmailAlternativo}></lightning-input>
+                    </div>
+                    <div class="preenchimento-email" if:true={enviarEmailAlternativo}>
+                        <lightning-input class="lightningInput" label="E-mail" type="email" value={emailAlternativo} placeholder="Digite o e-mail" onchange={handleAlterarEmailEnvio}></lightning-input>
+                        <button class="slds-button slds-button_neutral" onclick={handleEnviarEmail} disabled={desativarBotaoEnviarEmail}>Enviar</button>
+                    </div>
+                    <div class="botao-gerar-dados-pagamento" if:true={erroAoGerarDadosPagamento}>
+                        <lightning-button-group>
+                            <lightning-button label={labelGerarFormaPagamentoNovamente} onclick={handleGerarDadosPagamentoNovamente}></lightning-button>
+                            <lightning-button label={labelAlterarFormaPagamento} onclick={handleAlterarPagamento}></lightning-button>
+                        </lightning-button-group>
+                    </div>
+                </div>
+                <div class="box-detalhes-caso">
+                    <h1>Informações do caso:</h1>
+                    <ul>
+                        <li>
+                            <p class="informacao-label">Origem</p>
+                            <p class="informacao-valor">{origemCaso}</p>
+                        </li>
+                        <li>
+                            <p class="informacao-label">Canal</p>
+                            <p class="informacao-valor">{canalCaso}</p>
+                        </li>
+                        <li>
+                            <p class="informacao-label">Assunto</p>
+                            <p class="informacao-valor">{assuntoCaso}</p>
+                        </li>
+                        <li>
+                            <p class="informacao-label">Evento</p>
+                            <p class="informacao-valor">{eventoCaso}</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div if:true={erroTodasAsParcelasSimuladas}>
+                <div class="alerta-red">
+                    <lightning-icon class="slds-m-right_small" icon-name="utility:error" size="small" alternative-text="aviso"></lightning-icon>
+                    <p>Falha ao realizar solicitação de antecipação. Confira o detalhamento para maiores informações.</p>
+                </div>
+                <lightning-accordion allow-multiple-sections-open active-section-name="sectionComErros" class="accordion-parcelamentos">
+                    <lightning-accordion-section name="sectionComErros" label="Detalhe de todas as parcelas simuladas">
+                        <c-bcsf_cmp_-parcelamentos-detalhes-antecipacao 
+                            lista-simulacoes-realizadas={listaSimulacoesRealizadas}
+                            lista-simulacoes-com-falha={listaSimulacoesComFalha}
+                            label-erro='Erro'
+                            label-sucesso='Antecipado'> 
+                        </c-bcsf_cmp_-parcelamentos-detalhes-antecipacao>
+                    </lightning-accordion-section>
+                </lightning-accordion>
+            </div>
+        </div>
+        <div class="footer-modal">
+            <ul>
+                <li><lightning-button variant="Neutral" label={labelBotaoVoltar} onclick={handleVoltarModal} disabled={desativarBotaoVoltar}></lightning-button></li>
+                <li if:true={exibirBotaoProsseguir}><lightning-button variant="brand" label={labelBotaoAvancar}  onclick={handleProsseguir} disabled={desativarBotaoProsseguir}></lightning-button></li>
+            </ul>
+        </div>
+    </template>
+</template>

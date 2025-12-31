@@ -1,0 +1,17 @@
+.slds-page-header{
+    --slds-c-card-color-heading-background: red;
+    background: red;
+}
+.contentScript p{
+    margin: 15px 0px;
+}
+.contentScript h2{
+    font-size: 14px;
+    font-weight: 700;
+}
+.contentScript div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}

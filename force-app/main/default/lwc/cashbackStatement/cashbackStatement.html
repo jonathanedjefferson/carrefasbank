@@ -1,0 +1,21 @@
+<template>
+    <lightning-card>
+        <!-- Detalhes -->
+        <template if:true={showCard}>
+            <c-cashback-balance cpf={cpf} contract-status={contractStatus} onerror={handleError}></c-cashback-balance>
+        </template>
+        <!-- Lançamentos Futuros -->
+        <div>
+            <template if:true={showCard}>
+                <c-cashback-future-releases cpf={cpf} contract-status={contractStatus} onerror={handleError}></c-cashback-future-releases>
+            </template>
+        </div>
+        <!-- Extrato da Conta e Movimentações -->
+        <div>
+            <template if:true={showCard}>
+                <h1 class="title">Extrato da Conta e Movimentações</h1>
+                <c-cashback-account-statement cpf={cpf} contract-status={contractStatus} onerror={handleError}></c-cashback-account-statement>
+            </template>
+        </div>
+    </lightning-card>
+</template>

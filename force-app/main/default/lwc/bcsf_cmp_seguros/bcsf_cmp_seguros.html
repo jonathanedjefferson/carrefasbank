@@ -1,0 +1,130 @@
+<template>
+    <div if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <!-- <div class="slds-box slds-box_small slds-p-around_xx-large cardInfo">
+        <div  class="slds-border_right">
+            <lightning-icon 
+                icon-name="standard:high_velocity_sales" 
+                size="medium" 
+                class="slds-m-around_medium">
+            </lightning-icon>
+        </div>
+        <div class="slds-m-left_medium">
+            <h1><strong>Venda certa!</strong></h1>
+            <p>Este cliente tem <strong>95% </strong>de chance de aceitar o seguro <strong>Fatura Protegida.</strong></p>
+            <p>Este cliente tem <strong>80%</strong> de chance de aceitar o seguro <strong>Acidente Pessoal com Sorteio.</strong></p>
+        </div>
+    </div> -->
+    <lightning-tabset class="slds-p-top_large tab-seguros">
+        <lightning-tab label="Contratados" class="slds-p-bottom_none" value="contratados" onactive={handleActive}>
+            <div class="contratados-fields">
+                <lightning-input
+                    name="buscar"
+                    label="Nome do seguro"
+                    placeholder="Buscar"
+                    type="search"
+                    onchange={handleBuscaContratadosChange}
+                    class="slds-m-right_medium">
+                </lightning-input>
+                <lightning-combobox
+                    name="Status"
+                    label="Status"
+                    value={valueStatusContratados}
+                    placeholder="Selecione o status"
+                    options={optionsStatusContratados}
+                    class="field-statusCancelados"
+                    onchange={handleStatuCancelamento} >
+                </lightning-combobox> 
+            </div>
+            <div class="corte">
+                <lightning-accordion allow-multiple-sections-open>
+                    <template for:each={segurosContratados} for:item="seguro" for:index="index">
+                        <lightning-accordion-section class="accordionItem slds-m-bottom_medium slds-button accordionBorder" label={seguro.nomeProduto} key={seguro.key}>
+                            <span lwc:if={seguro.ativo} slot="actions" class="badge slds-badge slds-theme_success">{seguro.status}</span>
+                            <span lwc:else slot="actions" class="badge slds-badge slds-badge_inverse">{seguro.status}</span>
+                            <div class="acccordionContentCancelado">
+                                <c-bcsf_-seguros-cancelamento
+                                    seguro={seguro}
+                                    record-id={recordId}
+                                    dados-cliente={dadosCliente}>
+                                </c-bcsf_-seguros-cancelamento>
+                            </div>
+                        </lightning-accordion-section>
+                    </template>    
+                </lightning-accordion>
+            </div>
+            
+        </lightning-tab>
+
+        <lightning-tab label="Disponíveis" class="slds-p-bottom_none" value="disponivel" onactive={handleActive}>
+            <div class="accordionFields">
+               <!--<lightning-combobox
+                    name="Unidade Atendimento"
+                    label="Unidade de atendimento"
+                    value={valueUnidade}
+                    placeholder="Selecione uma unidade"
+                    options={optionsUnidade}
+                    class="slds-m-right_large"
+                    onchange={handleUnidadeAtendimento} >
+                </lightning-combobox>--> 
+
+                <lightning-input
+                    name="buscar"
+                    label="Nome do seguro"
+                    placeholder="Buscar"
+                    type="search"
+                    onchange={handleBuscaChange}
+                    class="slds-m-right_large"
+                ></lightning-input>
+            
+            </div>
+            <div if:true={listViewRecomendados}>
+                <h1 class="accordionTitle">Recomendados</h1>
+                <div class="corte">
+                    <lightning-accordion allow-multiple-sections-open>
+                        <template for:each={seguros} for:item="seguro" for:index="index">
+                            <lightning-accordion-section class="accordionItem slds-m-bottom_medium slds-button" label={seguro.nomeProduto} key={seguro.codigoProduto}>
+                                <div class="acccordionContent">
+                                    <c-bcsf_-seguros-adesao
+                                        seguro={seguro}
+                                        dados-cliente={dadosCliente}>
+                                    </c-bcsf_-seguros-adesao>
+                                </div>
+                            </lightning-accordion-section>
+                        </template>    
+                    </lightning-accordion>
+                </div>
+            </div>
+
+            <div if:true={listViewOutros} class="div-outros-seguros">
+                <h1 class="accordionTitle">Outros Seguros</h1>
+                <div class="corte outros_seguros">
+                    <lightning-accordion allow-multiple-sections-open>
+                        <template for:each={segurosOutros} for:item="seguro" for:index="index">
+                            <lightning-accordion-section class="accordionItem slds-m-bottom_medium slds-button" label={seguro.nomeProduto} key={seguro.codigoProduto}>
+                                <div class="acccordionContent">
+                                    <c-bcsf_-seguros-adesao
+                                        seguro={seguro}
+                                        dados-cliente={dadosCliente}>
+                                    </c-bcsf_-seguros-adesao>
+                                </div>
+                            </lightning-accordion-section>
+                        </template>    
+                    </lightning-accordion>
+                </div>
+            </div>
+
+        </lightning-tab>
+
+        <lightning-tab label="Contestar" value="contestar" onactive={handleActive}>
+            <template lwc:if={showCmpContestar}>
+                <c-bcsf_-seguros-contestar
+                    seguros={segurosContestar}
+                    record-id={recordId}
+                    dados-cliente={dadosCliente}>
+                </c-bcsf_-seguros-contestar>
+            </template>
+        </lightning-tab>
+    </lightning-tabset>
+</template>

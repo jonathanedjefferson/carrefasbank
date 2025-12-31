@@ -1,0 +1,196 @@
+.aviso{
+    background-color: #f89807;
+    opacity: 1;
+    background: repeating-linear-gradient( 45deg, #f8ae54, #f8ae54 50px, #ffbb67 50px, #ffbb67 100px );
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.avisoTexto{
+    color: black;
+    font-weight: 500;
+}
+.avisoTexto span{
+    margin-top: 12px;
+}
+.c-container {
+   padding: 20px 40px;
+}
+
+.title {
+   font-size: 20px;
+   color:#080707;
+   text-align:center;
+   padding: 20px 0;
+   font-weight: 400;
+   line-height: 30px;
+   box-shadow: 0px 1px 0px #DDDBDA;
+}
+
+.logo > img {
+   max-width: 100%;
+   height: 45px;
+}
+
+.cmpName {
+   margin-bottom: 8px;
+}
+
+.cmpLabel {
+   font-size: 14px;
+   font-weight: 400;
+   line-height: 21px;
+   margin-bottom: 3px;
+}
+
+.cmpValue {
+   font-size: 16px;
+   font-weight: 600;
+   line-height: 24px;
+}
+
+.color-icon {
+   --sds-c-icon-color-foreground-default: #181818;
+}
+
+.boxListaCartoes {
+   width: max-content;
+}
+
+.separator {
+   box-shadow: 0px 1px 0px #DDDBDA;
+}
+
+.listInformacoes {
+   display: flex;
+   margin: 20px "spacingNone";
+}
+
+.listInformacoes li {
+   width: 50%;
+   margin-bottom: 10px;
+}
+
+.listInformacoes li.tipoConta {
+   display: inline-flex;
+}
+
+.listInformacoes li .texts {
+   margin-left: 20px;
+}
+
+.listDadosCartoes {
+   display: flex;
+   justify-content: space-between;
+}
+
+.mt-5 {
+   margin-top: 5px;
+}
+
+footer {
+   box-shadow: 0px -1px 0px #DDDBDA;
+   background-color: #F3F2F2;
+}
+.boxFooter {
+   padding:20px;
+}
+.boxFooter ul {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+.boxFooter ul li {
+   width: 76%;
+}
+.boxFooter ul li:first-child {
+   width: 12%;
+   text-align: center;
+}
+.boxFooter ul li:last-child {
+   width: auto;
+   text-align: center;
+}
+
+.boxFooter ul li.liBtnCaso {
+   width: 15%;
+}
+
+.boxFooter ul li.liBtnReimprimirSenha {
+   width:52%;
+}
+
+.boxFooter ul li.liBtnDesbloquearMais {
+   width:30%;
+}
+
+.dadosCartao {
+   min-width: 30%;
+}
+
+.texto-label {
+   font-size: 18px;
+   font-weight: 600;
+   line-height: 27px;
+}
+
+.label-text {
+   font-size: 12px;
+}
+
+.statusCartao {
+   margin-top: 10px;
+}
+
+.alert{
+   background-color: #FFB75D;
+   padding: 10px;
+   display: flex;
+   align-items: center;
+}
+
+.mt-20 {
+   margin-top: 20px;
+}
+
+.mt-30 {
+   margin-top: 30px;
+}
+
+.ml-10 {
+   margin-left: 10px;
+}
+
+.pr-10 {
+   padding-right: 10px;
+}
+
+.pb-15 {
+   padding-bottom: 15px;
+}
+
+.label-caso {
+   font-size: 18px;
+   font-weight: 400;
+   line-height: 20px;
+}
+
+.label-info-caso {
+   font-size: 16px;
+   font-weight: 600;
+   line-height: 21px;
+}
+
+.boxCaso ul {
+   display: flex;
+    justify-content: space-between;
+    max-width: 65%;
+    flex-wrap: wrap-reverse;
+}
+
+.boxCaso ul li {
+   width: 48%;
+   margin-bottom: 10px;
+}

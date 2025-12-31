@@ -1,0 +1,111 @@
+.botao_fechar{
+    background-color: transparent;
+}
+.icon_botao_fechar{
+    --slds-c-icon-color-foreground-default: #FFFFFF;
+}
+.container-modal{
+    padding: 0;
+    margin: 0;
+}
+.header-modal{
+    padding: 16px;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 30px;
+    letter-spacing: 0px;
+    text-align: center;
+    border-bottom: 1px solid #C9C9C9;
+}
+.conteudo-modal{
+    padding: 0px 32px;
+}
+.footer-modal{
+    width: 100%;
+    display: flex;
+    background-color: #F3F2F2;
+    padding: 16px 24px;
+    border-top: 1px solid #C9C9C9;
+}
+.btnVoltar{
+    margin-right: auto;
+}
+.btnAvancar{
+    margin-left: auto;
+}
+.subtitulo-modal{
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 20px;
+    letter-spacing: 0px;
+    color: #000000;
+}
+.box-modalidade-envio {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; 
+    padding: 16px 0px;
+    border-bottom: 1px solid #C9C9C9;
+}
+.input-email{
+    max-width: 300px;
+}
+.box-preenchimento-caso {
+    display: flex;
+    flex-direction: column;
+    gap: 16px; 
+    padding: 16px 0px;
+}
+.detalhes-caso{
+    width: 100%;
+    display: flex;
+    gap: 24px;
+}
+.label-detalhe{
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 100%;
+    letter-spacing: 0px;
+    color: #000000;
+    padding: 5px 0px;
+}
+.valor-detalhe{
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0px;
+    color: #000000;
+}
+.input-origem-canal{
+    width: 264px;
+}
+.box-resumo-solicitacao{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 0px;
+    border-bottom: 1px solid #ECEBEA;
+}
+.finalizado-sucesso{
+    display: flex;
+    --slds-c-icon-color-foreground-default: #027E46;
+}
+.resumo-operacao{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.box-resumo-caso{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px 0px;
+}
+.resumo-caso{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.resumo-caso li{
+    width: fit-content;
+}

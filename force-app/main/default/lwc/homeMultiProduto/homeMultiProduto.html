@@ -1,0 +1,64 @@
+<template>
+    <lightning-card>
+        <lightning-spinner lwc:if={spinner} alternative-text="Loading..." variant="brand"></lightning-spinner>
+        
+        <header>
+            <div>
+                <lightning-icon icon-name="standard:proposition" alternative-text="Produtos" title="Produtos"></lightning-icon>
+                <h1>Produtos</h1>
+            </div>
+            <lightning-button-icon icon-name="utility:refresh" onclick={refreshComponent}></lightning-button-icon>
+        </header> 
+   
+        <div class="body">
+            <lightning-tabset>
+                <div lwc:if={showCartaoCredito}> 
+                    <lightning-tab value="Cartões de Crédito" label="Cartões de Crédito"> 
+                        <c-custom-data-table
+                            key-field="id"
+                            show-row-number-column
+                            hide-checkbox-column
+                            data={listCartoesCredito}
+                            columns={columnsCartaoCredito}>
+                        </c-custom-data-table>
+                    </lightning-tab>
+                </div>
+
+                <div lwc:if={showConsignado}>
+                    <lightning-tab value="Crédito Consignado" label="Crédito Consignado"> 
+                        <c-custom-data-table
+                            key-field="id"
+                            show-row-number-column
+                            hide-checkbox-column
+                            data={listConsignado}
+                            columns={columnsConsignado}>
+                        </c-custom-data-table>
+                    </lightning-tab>
+                </div>
+                <!-- Comprou Voltou -->
+                <div lwc:if={showCashback}>
+                    <lightning-tab value="Comprou Voltou" label="Comprou Voltou"> 
+                        <c-custom-data-table
+                            key-field="id"
+                            show-row-number-column
+                            hide-checkbox-column
+                            data={listCashback}
+                            columns={columnsCashback}>
+                        </c-custom-data-table>
+                    </lightning-tab>
+                </div>
+                <div lwc:if={showContaDigital}>
+                    <lightning-tab value="Conta Digital" label="Conta Digital"> 
+                        <c-custom-data-table
+                            key-field="id"
+                            show-row-number-column
+                            hide-checkbox-column
+                            data={listContaDigital}
+                            columns={columnsContaDigital}>
+                        </c-custom-data-table>
+                    </lightning-tab>
+                </div>
+            </lightning-tabset>
+        </div>       
+    </lightning-card>  
+</template>

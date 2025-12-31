@@ -1,0 +1,251 @@
+:host{
+    --font-size-small: 10px;
+    --font-size-medium: 12px;
+    --font-size-large: 14px;
+    --font-size-xlarge: 16px;
+    --font-size-xxlarge: 18px;
+}
+.icon-Alert {
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+.alertValores{
+    display: flex;
+    align-items: end;
+    width: 80%;
+}
+.coberturasHead{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 16px;
+}
+.coberturasHead h2{
+    font-size: var(--font-size-xlarge);
+    font-weight : bold;
+}
+.contentSorteios{
+    background-color: #EAF5FE;
+    display: flex;
+    flex-direction : row; 
+    align-items: center;
+}
+.sorteioTitle{
+    font-size: var(--font-size-large);
+    line-height: 1.2em;
+    padding-right: 10px;
+}
+.sorteioSubtitle{
+    font-size: 12px;
+}
+.contentCoberturas{
+    display: flex;
+    flex-direction: row;
+    height: 100px;
+    align-items: center;
+    justify-content: space-around;
+}
+.contentCoberturas div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 80%;
+    width: 100%;
+    padding: 0px ;
+}
+.valorSeguro{
+    display: flex;
+    align-items: center;
+    font-size: var(--font-size-large);
+    background-color: #f9f9f9;
+    height: 30px;
+    padding: 8px;
+}
+.valorSeguro span{
+    font-weight: bold;
+    color: #E3066A;
+}
+
+.buttonContratar {
+    margin-top: 16px;
+}
+
+.titleAddres{
+    font-weight: 600;
+    font-size: 16px;
+}
+.listAddres{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.listAddres li:first-child{
+    width: 18%;
+}
+.listAddres li:last-child{
+    width: 9%;
+}
+.semNumero{
+    font-size: .7225rem;
+    width: 11%;
+}
+.listAddres li:last-child div{
+    width: 80%;
+}
+.listAddres li:nth-child(2){
+    width: 55%;
+}
+.listAddresAlternative{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.listAddresAlternative li{
+    width: 25%;
+}
+.listAddresAlternative li:first-child{
+    width: 20%;
+}
+.listAddresAlternative li:last-child{
+    width: 12rem;
+}
+
+/* footer modal */
+footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.progressBar {
+    width: 65%;
+}
+.infoModal h2{
+    margin-bottom: 15px;
+    font-size: 24px;
+    font-weight: 700;
+}
+.infoModal p{
+    margin: 10px 0px;
+    font-size: var(--font-size-xlarge);
+}
+.infoModal span{
+    display: block;
+    margin: 12px 0px;
+    font-size: var(--font-size-xlarge);
+    font-weight: 700;
+}
+.cmpName {
+    font-size: var(--font-size-large);
+    margin: 0; 
+}
+.cmpValue {
+    font-size: var(--font-size-xlarge);
+    font-weight: bold;
+    margin: 0; 
+}
+
+/*Endereço*/
+.boxCardEndereco {
+    box-shadow: 0px 1px 0px #DDDBDA;
+    padding-bottom: 10px;
+    margin-top: 10px;
+}
+.cmpNameCase {
+    font-size: var(--font-size-medium);
+    height: 20px;
+    padding:0;
+    margin:0;
+}
+.cmpValueCase {
+    font-size: var(--font-size-xlarge);
+    font-weight: 600;
+    padding:0;
+    margin:0;
+}
+.boxCardEndereco ul li{
+    margin-right: 20px;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.boxCardEndereco ul {
+    display: flex;
+    justify-content: start;
+    align-items: flex-start;
+}
+.boxInputs ul {
+    display:flex;
+    justify-content: start;
+    width: 90%;
+}
+.boxInputs ul li {
+    width: 40%;
+    height: 80px;
+    margin: 10px;
+    line-height: 1.5rem;
+}
+.lightningInput{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    padding: 0;
+    margin: 0;
+    line-height: 1rem;
+}
+
+.customCheck{
+    display: flex;
+    height: 32px;
+}
+/* tela final caso criado */
+.caseNumber h1{
+    font-size: var(--font-size-xlarge);
+    font-weight: 700;
+}
+.caseNumber p{
+    font-size: var(--font-size-medium);
+}
+.success-message {
+    display: flex;
+    align-items: center;
+    height: 18px;
+}
+.success-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    padding: 5px;
+    height: 18px;
+    width: 18px;
+}
+.success-text {
+    font-size: var(--font-size-xxlarge);
+}
+
+/* Cobertura alternativa */
+.coberturas{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 95%;
+    padding: 10px 0px;
+    transition: 1s;
+}
+.coberturas p{
+    font-size: var(--font-size-large);
+    margin: 0px 0px 10px 0px;
+    line-height: 1.1;
+}
+.coberturas strong{
+    color: #747474;
+    font-weight: 700;
+}
+.coberturas span{
+    display: block;
+    font-weight: 600;
+}
+.custom-line {
+    line-height: 1.1rem;
+}

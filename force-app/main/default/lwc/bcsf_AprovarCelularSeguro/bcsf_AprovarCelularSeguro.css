@@ -1,0 +1,190 @@
+.container{
+    background-color: #ffffff;
+}
+
+.header{
+    font-size: 14px;
+    background-color: #F3F2F2;
+    color: black;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #DDDBDA;
+    --slds-c-icon-color-background: #50CC7A;
+}
+
+.header h1{
+    margin-left: 10px;
+}
+
+.recordEditForm{
+    display: flex;
+    width: 100%;
+}
+
+.columEditForm{
+    width: 48%;
+}
+
+.saveEditForm{
+    float: right;
+}
+
+.informacoes{
+    display: flex;
+    width: 100%;
+    margin-left: 5px;
+}
+
+.columInformacoes{
+    width: 48%;
+    margin: 1%;
+}
+
+.columInformacoes ul{
+    border-bottom: 1px solid #E5E5E5;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 4px;
+    display: flex;
+    width: 100%;
+    color: #4D4D4D;
+    font-size: 13px;
+}
+
+.columInformacoes ul li{
+    width: 50%;
+}
+.columInformacoes ul li:first-child{
+    width: 45%;
+}
+.columInformacoes ul li:last-child{
+    width: 5%;
+}
+
+.btnEdit{
+    cursor: pointer;
+}
+
+.container-btn{
+    padding: 10px 20px;
+    border-top: 1px solid #E5E5E5;
+}
+
+footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid #E5E5E5;
+    padding: 10px 0px;
+    gap: 20px;
+}
+
+/* Modal */
+.avisoAlert{
+    height: 36px;
+    background-color: #FFB75D;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0px 0px 8px;
+    font-size: 14px;
+    --slds-c-icon-color-foreground-default: #3E3E3C;
+}
+
+.text-name{
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.text-value{
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 600;
+}
+
+.container-detalhes{
+    border-bottom: 1px solid #DDDBDA;
+    padding: 16px 0px 20px;
+    margin-bottom: 20px;
+}
+
+.container-detalhes h1{
+    font-size: 18px;
+    line-height: 20px;
+    margin-bottom: 8px;
+}
+
+.container-info ul{
+    margin-bottom: 18px;
+}
+
+.options-item{
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.options-item span{
+    color: #A61A14;
+    margin-right: 6px;
+    font-weight: 400;
+}
+
+.options-item p{
+    font-size: 14px;
+    line-height: 18px;
+    color: #3E3E3C;
+    font-weight: 400;
+    margin-bottom: 4px;
+}
+
+.info-title{
+    font-size: 16px;
+    font-weight: 600;
+    margin: 16px 0px;
+}
+
+.info-itens{
+    display: flex;
+    justify-content: space-between;
+}
+
+.success-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    --slds-c-icon-color-background: #087C2B;
+    margin: 2px 10px 0px 0px;
+    padding: 5px;
+    height: 20px;
+    width: 20px;
+}
+
+.caso-gerado{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.caso-gerado h1{
+    font-size: 18px;
+}
+
+.caso-gerado p{
+    font-size: 14px;
+}
+
+.dados-casoGerado h2{
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.field-title {
+    padding: 5px;
+}
+
+.field-value {
+    font-weight: bold;
+    padding: 5px;
+}

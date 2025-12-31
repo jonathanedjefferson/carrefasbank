@@ -1,0 +1,383 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Carregando..." size="large" variant="brand"></lightning-spinner>
+    </div>
+    <template lwc:if={modalCancelar}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={closeQuickAction}>
+                        <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close" title="Close"></lightning-icon>
+                        <span class="slds-assistive-text">Cancelar e fechar</span>
+                </button>
+                <div class="slds-modal__header">
+                    <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate" tabindex="-1">{titleModalCancelar}</h1>
+                </div>
+                <div class="slds-modal__content slds-p-horizontal_medium" id="modal-content-id-1">
+                    <div lwc:if={spinner}>
+                        <lightning-spinner alternative-text="Carregando..." size="large" variant="brand"></lightning-spinner>
+                    </div>
+                    <div lwc:if={pageOneCancelar} class="modal-cancelar-preencher">
+                        <div class="alert-Info slds-notify slds-notify_alert slds-alert_warning" role="alert">
+                            <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="Ícone de Aviso">
+                                <lightning-icon icon-name="utility:warning" size="x-small" alternative-text="Ícone de Aviso"></lightning-icon>
+                            </span>
+                            <h2>Ao cancelar o empréstimo, o contratante não poderá contratar um novo empréstimo</h2>
+                        </div>
+                        <h3>Selecione o motivo do cancelamento</h3>
+                        <lightning-textarea 
+                            name="descricaoField" 
+                            label="Descrição" 
+                            value={descricaoField}
+                            onchange={handleFieldCaseCancelar}
+                            placeholder="Insira seu comentário aqui.">
+                        </lightning-textarea>
+                        <div class="preenchimento-caso">
+                            <h2>Preenchimento de caso</h2>
+                            <ul class="dados-itens">
+                                <li class="slds-m-right_xx-large">
+                                    <p class="text-name">Assunto</p>
+                                    <p class="text-value">Empréstimo Pessoal</p>
+                                </li>
+                                <li class="slds-m-right_xx-large">
+                                    <p class="text-name">Evento</p>
+                                    <p class="text-value">Cancelamento</p>
+                                </li>
+                            </ul>
+                            <lightning-record-edit-form object-api-name="Case">
+                                <ul class="fields-caso">
+                                    <li class="field-caso" >
+                                        <label class="field-label">Origem</label>
+                                        <lightning-input-field 
+                                            language=""
+                                            name="origemCaso" 
+                                            value={origemCaso}
+                                            field-name="Origin" 
+                                            placeholder="--Nenhuma--"
+                                            onchange={handleFieldCaseCancelar} 
+                                            variant="label-hidden"> 
+                                        </lightning-input-field>
+                                    </li>
+                                    <li class="field-caso">
+                                        <label class="field-label">Canal</label>
+                                        <lightning-input-field
+                                            value={canalCaso}
+                                            name="canalCaso" 
+                                            field-name="CanalEntrada__c" 
+                                            placeholder="--Nenhuma--"
+                                            onchange={handleFieldCaseCancelar} 
+                                            variant="label-hidden"> 
+                                        </lightning-input-field>
+                                    </li>
+                                </ul>    
+                            </lightning-record-edit-form> 
+                        </div>
+                    </div>
+                    <div lwc:if={pageTwoCancelar} class="container-casoGerado">
+                        <lightning-icon icon-name="action:approval" size="xx-small" alternative-text="Sucesso" title="Sucesso" class="success-icon"></lightning-icon>
+                        <div class="casoGerado">
+                            <h1>Crédito Pessoal cancelado!</h1>
+                            <div class="dados-casoGerado">
+                                <h2>Caso: <span>{numProtocolo}</span></h2>
+                                <p>{dataAtualFormatada}</p>
+                            </div>
+                            <h2 class="slds-border_top">Informações do caso:</h2>
+                            <ul >
+                                <li>
+                                    <p class="casoGeradoName text-cinza-1">Origem</p>
+                                    <p class="casoGeradoValue">{origemCaso}</p>
+                                </li>
+                                <li>
+                                    <p class="casoGeradoName text-cinza-1">Canal</p>
+                                    <p class="casoGeradoValue">{canalCaso}</p>
+                                </li>
+                                <li>
+                                    <p class="casoGeradoName text-cinza-1">Assunto</p>
+                                    <p class="casoGeradoValue">Crédito Pessoal</p>
+                                </li>
+                                <li>
+                                    <p class="casoGeradoName text-cinza-1">Evento</p>
+                                    <p class="casoGeradoValue">Cancelamento</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div lwc:if={pageOneCancelar} class="slds-modal__footer slds-modal__footer_directional">
+                    <lightning-button class="slds-button" variant="neutral" label="Fechar" title="Fechar" onclick={closeQuickAction}></lightning-button>
+                    <lightning-button class="slds-button" variant="brand" label="Confirmar cancelamento" title="Confirmar cancelamento" onclick={handleBtnCancelar} disabled={disabledBtnCancelar}></lightning-button>
+                </div>
+                <div lwc:else class="slds-modal__footer ">
+                    <lightning-button class="slds-button" variant="brand" label="Ir para o caso" title="Ir para o caso" onclick={handleBtnCancelar}></lightning-button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+    <template if:true={step01}>
+        <template lwc:if={contratosObtidosComSuceso}>
+            <template lwc:if={contratosLocalizados}>
+                <h1 class="titulo">Contratações</h1>
+                <div class="tabela-contratos">
+                    <table class="slds-table slds-table_cell-buffer">
+                        <thead>
+                            <tr>
+                                <th title="Contrato">Contrato</th>
+                                <th title="Canal">Canal</th>
+                                <th title="Data">Data</th>
+                                <th title="Valor (R$)">Valor (R$)</th>
+                                <th title="Status">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={listaContratos} for:item="item">
+                                <tr key={item.numeroContrato}>
+                                    <td class="slds-trucate" title={item.numeroContrato}>
+                                        <lightning-button 
+                                            class="slds-trucate"
+                                            name={item.id} 
+                                            variant="base" 
+                                            label={item.numeroContrato} 
+                                            onclick={handleAbrirContrato} >
+                                        </lightning-button>
+                                    </td>
+                                    <td class="slds-trucate" style="overflow:hidden;" title={item.origem}>{item.origem}</td>
+                                    <td class="slds-trucate" title={item.dataInclusao}>{item.dataInclusao}</td>
+                                    <td class="slds-trucate" title={item.valorSolicitado}>{item.valorSolicitado}</td>
+                                    <td class="status-col">
+                                        <span 
+                                            class={item.statusClass} 
+                                            data-id={item.id} 
+                                            onmouseover={mostrarTooltip} 
+                                            onmouseout={ocultarTooltip}>{item.status}
+                                        </span>
+                                        <div if:true={item.showTooltip} 
+                                            class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left" 
+                                            role="tooltip" 
+                                            style="position:absolute;left:45px;bottom:45px;z-index: 9999;">
+                                            <div class="slds-popover__body">{item.status}</div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>  
+                </div>
+            </template>
+            <template lwc:else>
+                <div class="ilustracao-itens-nao-retornados">
+                    <c-bcsf_cmp_illustration
+                    style="white-space: pre-line;"
+                    illustration-type='NO_DATA_DESERT'
+                    heading-message='Não localizamos contratos'
+                    body-message='Quando houverem contratos disponíveis para &#10; consulta, eles aparecerão aqui.'>
+                    ></c-bcsf_cmp_illustration>  
+                </div> 
+            </template>
+        </template>
+        <template lwc:else>
+            <c-bcsf_cmp_illustration
+                style="white-space: pre-line;"
+                heading-message='Falha ao realizar a busca'
+                body-message='Houve um comportamento inesperado do sistema, &#10; tente novamente.'
+                >
+            ></c-bcsf_cmp_illustration>
+        </template>
+    </template>
+    <template if:true={step02}>
+        <h1 class="titulo">Crédito Pessoal</h1>
+        <div class="contratacao-header">
+            <div class="box-contratado">
+                <div class="label-campo">Contratado em</div>
+                <div class="valor-campo data-contrato">{detalhesProposta.dataInclusao}</div>
+                <button if:true={exibirEnviarTermo} 
+                    class="slds-button slds-button_neutral botao-adesao" 
+                    onclick={handleEnviarTermo}
+                    disabled={desabilitarBotaoEnviarEmail}>
+                    Enviar termo de adesão
+                </button>
+            </div>
+            <div class="box-status">
+                <span class={detalhesProposta.statusClass}>{detalhesProposta.statusNome}</span>
+                <p class="envie-novamente">{detalhesProposta.statusDescricao} </p>
+                <button if:true={exibirRevisarDadosBanco} 
+                    class="slds-button slds-button_neutral botao-dados-bancarios" 
+                    onclick={handleAlterarDadosBancarios}
+                    disabled={desabilitarBotaoDadosBancarios}>
+                    Revisar dados bancários
+                </button>
+            </div>
+        </div>
+        <template if:true={modalEnviarTermo}>
+            <c-bcsf_cmp_-credito-pessoal-enviar-termo
+                id-proposta={idPropostaSelecionada}
+                detalhes-proposta={detalhesProposta}
+                dados-cliente={dadosCliente} 
+                onclosemodal={closeQuickAction}>
+            </c-bcsf_cmp_-credito-pessoal-enviar-termo>  
+        </template>
+        <template if:true={modalAlterarDadosPagamento}>
+            <c-bcsf_cmp_-credito-pessoal-dados-bancarios 
+                detalhes-proposta={detalhesProposta}
+                bancos={bancos} 
+                dados-cliente={dadosCliente} 
+                onclosemodal={closeQuickAction}
+                onreloadparent={handleRecarregarComponente}>
+            </c-bcsf_cmp_-credito-pessoal-dados-bancarios>  
+        </template>
+        <div class="slds-tabs_default tabset-detalhes">
+            <ul class="slds-tabs_default__nav" role="tablist">
+                <li class="slds-tabs_default__item slds-is-active" role="presentation">
+                    <a onclick={handleTabClick} data-value="detalhesContratacao" data-tab="1" class="slds-tabs_default__link" href="#">Detalhes da contratação</a>
+                </li>
+                <!-- <li class="slds-tabs_default__item" role="presentation">
+                    <a onclick={handleTabClick} data-value="detalhesSeguro" data-tab="2" class="slds-tabs_default__link" href="#">Detalhes do seguro contratado</a>
+                </li> -->
+            </ul>
+        </div>
+        <template if:true={exibirDetalhesContratacao}>
+            <div class="container-detalhes-contratacao">
+                <div class="destaques-contratacao">
+                    <h1>Destaques da contratação</h1>
+                    <ul>
+                        <li>
+                            <div class="label-campo">Valor total a pagar</div>
+                            <span class="valor-campo">{detalhesProposta.valorFinanciado}</span>
+                        </li>
+                        <li>
+                            <div class="label-campo">Valor total a receber</div>
+                            <span class="valor-campo">{detalhesProposta.valorSolicitadoFormatado}</span>
+                        </li>
+                        <li>
+                            <div class="label-campo">CET ao ano</div>
+                            <span class="valor-campo">{detalhesProposta.cet} ao ano</span>
+                        </li>
+                        <li>
+                            <div class="label-campo">Número de parcelas</div>
+                            <span class="valor-campo">{detalhesProposta.qtdParcelas}</span>
+                        </li>
+                        <li>
+                            <div class="label-campo">Valor da parcela</div>
+                            <span class="valor-campo">{detalhesProposta.valorParcela}</span>
+                        </li>
+                        <li>
+                            <div class="label-campo">Taxa de juros ao mês</div>
+                            <span class="valor-campo">{detalhesProposta.juros}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="conta-de-destino">
+                    <h1>Conta de destino</h1>
+                    <div class="linha">
+                        <span class="label-linha">Banco</span>
+                        <span class="valor-linha">{detalhesProposta.codBanco} - {detalhesProposta.nomeBanco}</span>
+                    </div>
+                    <div class="linha">
+                        <span class="label-linha">Agência</span>
+                        <span class="valor-linha">{detalhesProposta.agencia}</span>
+                    </div>
+                    <div class="linha">
+                        <span class="label-linha">Conta</span>
+                        <span class="valor-linha">{detalhesProposta.numeroConta}-{detalhesProposta.digitoConta}</span>
+                    </div>
+                    <div class="linha">
+                        <span class="label-linha">Tipo de conta</span>
+                        <span class="valor-linha">{detalhesProposta.labelTipoConta}</span>
+                    </div>
+                </div>
+                <lightning-accordion allow-multiple-sections-open class="accordion-detalhes">
+                    <lightning-accordion-section name="sobre" label="Sobre o empréstimo">
+                        <div class="detalhes-contrato">
+                            <div class="linha">
+                                <span class="label-linha">Nome</span>
+                                <span class="valor-linha">{detalhesProposta.nomeCliente}</span>
+                            </div>
+                            <div class="linha">
+                                <span class="label-linha">CPF</span>
+                                <span class="valor-linha">{detalhesProposta.cpfFormatado}</span>
+                            </div>
+                            <div class="linha">
+                                <span class="label-linha">Final do cartão</span>
+                                <span class="valor-linha">{detalhesProposta.finalCartao}</span>
+                            </div>
+                            <div class="linha">
+                                <span class="label-linha">Nº do contrato</span>
+                                <span class="valor-linha">{detalhesProposta.numeroContrato}</span>
+                            </div>
+                            <div class="linha">
+                                <span class="label-linha">Realizado em</span>
+                                <span class="valor-linha">{detalhesProposta.realizadoEm}</span>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                </lightning-accordion>
+                <lightning-accordion allow-multiple-sections-open class="accordion-detalhes">
+                    <lightning-accordion-section name="valores" label="Confira valores do empréstimo">
+                        <div class="detalhes-contrato">
+                            <div class="linha">
+                                <span class="label-linha">Valor total a pagar</span>
+                                <span class="valor-linha">{detalhesProposta.valorFinanciado}</span>
+                            </div>
+                            <div class="linha">
+                                <span class="label-linha">Valor total a receber</span>
+                                <span class="valor-linha">{detalhesProposta.valorSolicitadoFormatado}</span>
+                            </div>
+                            <div class="linha">
+                                <span class="label-linha">Custo Efetivo Total (CET) ao ano</span>
+                                <span class="valor-linha">{detalhesProposta.cet} ao ano</span>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                </lightning-accordion>
+                <lightning-accordion allow-multiple-sections-open class="accordion-detalhes">
+                    <lightning-accordion-section name="calculo" label="Cálculo das despesas vinculadas">
+                        <div class="detalhes-contrato">
+                            <div class="linha">
+                                <span class="label-linha">IOF diário</span>
+                                <span class="valor-linha">{detalhesProposta.iof}</span>
+                            </div>
+                            <div class="linha">
+                                <span class="label-linha">Juros total</span>
+                                <span class="valor-linha">{detalhesProposta.jurosTotal}</span>
+                            </div>
+                            <div class="linha">
+                                <span class="label-linha">Seguro</span>
+                                <span class="valor-linha">{detalhesProposta.possuiSeguro}</span>
+                            </div>
+                            <div class="linha">
+                                <span class="label-linha">Valor do Seguro</span>
+                                <span class="valor-linha">{detalhesProposta.valorSeguro}</span>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                </lightning-accordion>
+                <lightning-accordion allow-multiple-sections-open class="accordion-detalhes">
+                    <lightning-accordion-section name="informacoes" label="Informações do parcelamento">
+                        <div class="detalhes-contrato">
+                            <div class="linha">
+                                <span class="label-linha">Número de parcelas</span>
+                                <span class="valor-linha">{detalhesProposta.qtdParcelas}</span>
+                            </div>
+                            <div class="linha">
+                                <span class="label-linha">Valor da parcela</span>
+                                <span class="valor-linha">{detalhesProposta.valorParcela}</span>
+                            </div>
+                            <div class="linha">
+                                <span class="label-linha">Taxa de juros ao mês</span>
+                                <span class="valor-linha">{detalhesProposta.juros}</span>
+                            </div>
+                        </div> 
+                    </lightning-accordion-section>
+                </lightning-accordion>
+            </div>
+            <div class="slds-p-around_medium">
+                <lightning-button
+                    stretch 
+                    variant="destructive-text" 
+                    label="Solicitar cancelamento" 
+                    title="Solicitar cancelamento" 
+                    onclick={handleBtnCancelar}>
+                </lightning-button>
+            </div>
+        </template>
+    </template>
+</template>

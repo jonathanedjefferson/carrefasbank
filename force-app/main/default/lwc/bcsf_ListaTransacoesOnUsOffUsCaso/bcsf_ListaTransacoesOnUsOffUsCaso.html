@@ -1,0 +1,581 @@
+<template>
+    <div if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <div if:true={stepOne} class="title">Detalhes da Compra</div>
+    <div if:true={stepTwo} class="subtitle">Criar Caso
+        <div if:true={stepTwo} class="subtitle02">{estabelecimento}</div>
+    </div>
+    <div class="c-container">
+
+        <div class="boxSteps">
+            <!-- Primeiro bloco -->
+            <template if:true={stepOne}>
+                <template if:true={showCardPrincipal}>
+                    <div class="boxCardPrincipal">
+                        <div class="cmpValueTitulo"> Cartão
+                            <div class="cmpCopyDados">
+                                <lightning-button variant="base" icon-name="utility:copy" label="Copiar dados do cartão" value={copyCartao}
+                                    onclick={handleCopy}></lightning-button>
+                            </div>
+                        </div>
+                        <ul class="firstUl">
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Cartão</div>
+                                    <div class="cmpValue">{numeroCartaoOfuscado}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Nome Reduzido</div>
+                                    <div class="cmpValue">{nomeCartao}</div>
+                                    <div>
+                                        <p>{titularApresentar}</p>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Status cartão</div>
+                                    <div class="cmpValue">{statusCartao}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="logo"><img src={logoTipo}></div>
+                                <div class="texts">
+                                    <div class="cmpName">Tipo de conta</div>
+                                    <div class="cmpValue">{tipoConta}</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </template>
+            </template>
+
+            <!-- Segundo bloco -->
+            <template if:true={stepOne}>
+                <template if:true={showCardPrincipal}>
+                    <div class="boxCardPrincipal">
+                        <div class="cmpValueTitulo"> Pagamento 
+                            <div class="cmpCopyDados">
+                                <lightning-button variant="base" icon-name="utility:copy" label="Copiar dados de pagamento" value={copyPagamento}
+                                    onclick={handleCopy}></lightning-button>
+                            </div>
+                        </div>
+                        <ul class="firstUl">
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Data/Hora</div>
+                                    <div class="cmpValue">{dateTransacao}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Estabelecimento</div>
+                                    <div class="cmpValue">{estabelecimento}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Valor total</div>
+                                    <div class="cmpValue">{valor}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Cód. Autorização</div>
+                                    <div class="cmpValue">
+                                        <span>{codigo}</span>
+                                        <template if:true={stepTransacaoDuplicada}>
+                                            <lightning-icon class="iconDup slds-m-left_small" size="x-small" icon-name="utility:warning" title="Compra duplicada"></lightning-icon>
+                                        </template>
+                                    </div>
+                                    <div class="cmpCopy">
+                                        <lightning-button variant="base" label="Copiar" value={codigo}
+                                            onclick={handleCopy}></lightning-button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="firstUl">
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Status Transação</div>
+                                    <div if:true={transacaoNegada} class="cmpNameNegada">{statusTransacao}</div>
+                                    <div if:false={transacaoNegada} class="cmpValue">{statusTransacao}</div>
+
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Detalhe de recusa</div>
+                                    <div class="cmpValue">{codigoRecusa} {traducaoRecusa}</div>
+                                    <div class="cmpCopy" if:true={apresentarTabela}>
+                                        <lightning-button variant="base" label="Ver lista de recusas" value={codigo}
+                                            onclick={redirecionarTabelaRecusa}></lightning-button>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName"></div>
+                                    <div class="cmpValue"></div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName"></div>
+                                    <div class="cmpValue"></div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="cmpNameTitulo">Mais detalhes do pagamento</div>
+                        <ul class="firstUl2">
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Ramo de atividade</div>
+                                    <div class="cmpValue">{ramoAtividade}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Cidade</div>
+                                    <div class="cmpValue">{cidade}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">País</div>
+                                    <div class="cmpValue">{pais}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Meio de pagamento</div>
+                                    <div class="cmpValue">{meioPagamento}</div>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="firstUl">
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Entrada</div>
+                                    <div class="cmpValue">{codigoEntrada} {detalheEntrada}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Tipo</div>
+                                    <div class="cmpValue">{tipoPagamento}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Parcelas</div>
+                                    <div class="cmpValue">{quantidadeParcelas}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Tipo de transação</div>
+                                    <div class="cmpValue">{tipoTransacao}</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </template>
+
+            </template>
+
+
+            <template if:true={stepOne}>
+                <template if:true={showCardPrincipal}>
+                    <div class="boxCardSecundario">
+                        <div class="cmpValueTitulo"> Financeiro 
+                            <div class="cmpCopyDados">
+                                <lightning-button variant="base" icon-name="utility:copy" label="Copiar dados financeiros" value={copyFinanceiro}
+                                    onclick={handleCopy}></lightning-button>
+                            </div>
+                        </div>
+                        <ul class="firstUl">
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Limite total</div>
+                                    <div class="cmpValue">R$ {limiteTotal}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Limite disponível</div>
+                                    <div class="cmpValue">R$ {limiteDisponivel}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName"></div>
+                                    <div class="cmpValue"></div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName"></div>
+                                    <div class="cmpValue"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </template>
+            </template>
+
+        </div>
+    </div>
+ 
+    <div class="c-container">
+        <template if:true={stepTwo}>
+            <div class="h2">Preenchimento de caso</div>
+            <div class="boxInputs">
+                <lightning-record-edit-form object-api-name="Case">
+                    <ul>
+                        <li>
+                            <label>Origem</label>
+                            <lightning-input-field language="" value={valueOrigem} field-name="Origin"
+                                class="lightningInput" placeholder="--Nenhuma--" onchange={handleChangeOrigem}
+                                variant="label-hidden">
+                            </lightning-input-field>
+                        </li>
+                        <li>
+                            <label>Canal</label>
+                            <lightning-input-field value={valueCanal} field-name="CanalEntrada__c"
+                                class="lightningInput" placeholder="--Nenhuma--" onchange={handleChangeCanal}
+                                variant="label-hidden">
+                            </lightning-input-field>
+                        </li>
+                        <li>
+                            <label>Assunto</label>
+                            <lightning-input-field value={assunto} field-name="Assunto__c"
+                                class="lightningInput" placeholder={assunto}  onchange={handleChangeAssunto}
+                                variant="label-hidden" disabled>
+                            </lightning-input-field>
+                        </li>
+                        <li>
+                            <label>Evento</label>
+                            <lightning-input-field value={valueEvento} field-name="Evento__c"
+                                class="lightningInput" placeholder="--Nenhuma--" onchange={handleChangeEvento}
+                                variant="label-hidden">
+                            </lightning-input-field>
+                        </li>
+                    </ul>
+                    <template if:true={eventoCancelamento}>
+                        <ul class="slds-m-top_medium">
+                            <li>
+                                <label>Motivo de cancelamento</label>
+                                <lightning-input-field field-name="MotivoCancelamento__c" id="MotivoCancelamento__c"
+                                    class="lightningInput" onchange={handleChangeCaseField}
+                                    variant="label-hidden">
+                                </lightning-input-field>
+                            </li>
+                            <li>
+                                <label>Número da Autorização</label>
+                                <lightning-input field-name="NumeroAutorizacao__c"
+                                    class="lightningInput" value={codigo}
+                                    variant="label-hidden" disabled>
+                                </lightning-input>
+                            </li>
+                            <li>
+                                <label>Data da transação</label>
+                                <lightning-input field-name="DataTransacao__c"
+                                    class="lightningInput" value={dateTransacao}
+                                    variant="label-hidden" disabled>
+                                </lightning-input>
+                            </li>
+                            <li>
+                                <label>Valor da compra</label>
+                                <lightning-input field-name="Valor__c"
+                                    class="lightningInput" value={valorNumerico}
+                                    variant="label-hidden" disabled>
+                                </lightning-input>
+                            </li>
+                            <template if:true={eventoCancelamentoOffUs}>
+                                <li>
+                                    <label>Classificar e Relatar</label>
+                                    <lightning-input-field field-name="ClassificarRelatar__c" id="ClassificarRelatar__c"
+                                        class="lightningInput" onchange={handleChangeCaseField}
+                                        variant="label-hidden">
+                                    </lightning-input-field>
+                                </li>
+                                <li>
+                                    <label>Recebeu o produto</label>
+                                    <lightning-input-field field-name="RecebeuProduto__c"
+                                        class="lightningInput" onchange={handleChangeRecebeuProduto}
+                                        variant="label-hidden">
+                                    </lightning-input-field>
+                                </li>
+                                <template lwc:if={isProdutoNaoEntregue}>
+                                    <li>
+                                        <label>Endereço de entrega</label>
+                                        <lightning-input-field field-name="EnderecoEntrega__c" id="EnderecoEntrega__c"
+                                            class="lightningInput" onchange={handleChangeCaseField}
+                                            variant="label-hidden">
+                                        </lightning-input-field>
+                                    </li>
+                                    <li>
+                                        <label>Data de entrega prometida</label>
+                                        <lightning-input-field field-name="DataPrometidaEntrega__c" id="DataPrometidaEntrega__c"
+                                            class="lightningInput" onchange={handleChangeCaseField}
+                                            variant="label-hidden">
+                                        </lightning-input-field>
+                                    </li>
+                                </template>
+                                <template lwc:else>
+                                    <li>
+                                        <label>Mercadoria foi devolvida</label>
+                                        <lightning-input-field field-name="MercadoriaDevolvida__c"
+                                            class="lightningInput" onchange={handleChangeMercadoriaDevolvida}
+                                            variant="label-hidden">
+                                        </lightning-input-field>
+                                    </li>
+                                    <template if:true={isMercadoriaDevolvida}>
+                                        <li>
+                                            <label>Data de devolução do produto</label>
+                                            <lightning-input-field field-name="DataDevolucao__c" id="DataDevolucao__c"
+                                                class="lightningInput" onchange={handleChangeCaseField}
+                                                variant="label-hidden">
+                                            </lightning-input-field>
+                                        </li>
+                                    </template>
+                                </template>
+                            </template>
+                        </ul>
+                        <ul class="slds-m-top_medium">
+                            <template if:true={eventoCancelamentoOffUs}>
+                                <li>
+                                    <label>Possui Voucher</label>
+                                    <lightning-input-field field-name="PossuiVoucher__c" id="PossuiVoucher__c"
+                                        class="lightningInput" onchange={handleChangeCaseField}
+                                        variant="label-hidden">
+                                    </lightning-input-field>
+                                </li> 
+                                <li>
+                                    <label>Estabelecimento fez estorno há mais 15 dias</label>
+                                    <lightning-input-field field-name="EstornoMais15Dias__c" id="EstornoMais15Dias__c"
+                                        class="lightningInput" onchange={handleChangeCaseField}
+                                        variant="label-hidden">
+                                    </lightning-input-field>
+                                </li>
+                                <li>
+                                    <label>Estabelecimento fechou?</label>
+                                    <lightning-input-field field-name="EstabelecimentoFechou__c" id="EstabelecimentoFechou__c"
+                                        class="lightningInput" onchange={handleChangeEstabelecimentoFechou}
+                                        variant="label-hidden">
+                                    </lightning-input-field>
+                                </li>
+                                <template if:true={isEstabelecimentoAberto}>
+                                    <li>
+                                        <label>Contato com estabelecimento?</label>
+                                        <lightning-input-field field-name="ContatoRealizado__c" id="ContatoRealizado__c"
+                                            class="lightningInput" onchange={handleChangeContatoComEstabelecimento}
+                                            variant="label-hidden">
+                                        </lightning-input-field>
+                                    </li>
+                                    <template if:true={isContatoEstabelecimento}>
+                                        <li>
+                                            <label>Qual canal?</label>
+                                            <lightning-input-field field-name="QualCanal__c" id="QualCanal__c"
+                                                class="lightningInput" onchange={handleChangeCaseField}
+                                                variant="label-hidden">
+                                            </lightning-input-field>
+                                        </li>
+                                        <li>
+                                            <label>Data do contato com o estabelcimento</label>
+                                            <lightning-input-field field-name="DataContatoComEstabelecimento__c" id="DataContatoComEstabelecimento__c"
+                                                class="lightningInput" onchange={handleChangeCaseField}
+                                                variant="label-hidden">
+                                            </lightning-input-field>
+                                        </li>
+                                        <li>
+                                            <label>Protocolo do estabelecimento e atendente</label>
+                                            <lightning-input-field field-name="ProtocoloNomeAtendente__c" id="ProtocoloNomeAtendente__c"
+                                                class="lightningInput" onchange={handleChangeCaseField}
+                                                variant="label-hidden">
+                                            </lightning-input-field>
+                                        </li>
+                                    </template>
+                                </template>
+                            </template>
+                            <template if:true={eventoCancelamentoOnUs}>
+                                <li>
+                                    <label>Valor do cancelamento</label>
+                                    <lightning-input-field field-name="ValorCancelamento__c" id="ValorCancelamento__c"
+                                        class="lightningInput" onchange={handleChangeCaseField}
+                                        variant="label-hidden">
+                                    </lightning-input-field>
+                                </li>
+                                <li>
+                                    <label>Quantidade de parcela</label>
+                                    <lightning-input field-name="QuantidadeParcelas__c"
+                                        class="lightningInput" value={quantidadeParcelas}
+                                        variant="label-hidden" disabled>
+                                    </lightning-input>
+                                </li>
+                                <li>
+                                    <label>Data do ajuste</label>
+                                    <lightning-input-field field-name="DataAjuste__c" id="DataAjuste__c"
+                                        class="lightningInput" onchange={handleChangeCaseField}
+                                        variant="label-hidden">
+                                    </lightning-input-field>
+                                </li>
+                                <li>
+                                    <label>Qual loja?</label>
+                                    <lightning-input field-name="QualLoja__c"
+                                        class="lightningInput" value={estabelecimento}
+                                        variant="label-hidden" disabled>
+                                    </lightning-input>
+                                </li>
+                                <li>
+                                    <label>Código do plano</label>
+                                    <lightning-input field-name="CodigoPlano__c"
+                                        class="lightningInput" value={quantidadeParcelas}
+                                        variant="label-hidden" disabled>
+                                    </lightning-input>
+                                </li>
+                                <li>
+                                    <label>Número do cartão</label>
+                                    <lightning-input field-name="NumeroCartao__c"
+                                        class="lightningInput" value={numeroCartaoOfuscado}
+                                        variant="label-hidden" disabled>
+                                    </lightning-input>
+                                </li>
+                                <template if:true={mostrarNomeFila}>
+                                    <li>
+                                        <label>Nome da Fila</label>
+                                        <lightning-input-field 
+                                            value={valueNomeFila} 
+                                            field-name="NomeFila__c"
+                                            class="lightningInput" 
+                                            onchange={handleChangeNomeFila}
+                                            variant="label-hidden">
+                                        </lightning-input-field>
+                                    </li>
+                                </template>
+
+                            </template>
+                        </ul>
+                            <ul class="slds-m-top_medium">
+                                <li class="description">
+                                    <label>Descrição</label>
+                                    <lightning-input-field field-name="Description" id="Description"
+                                    class="lightningInput" onchange={handleChangeCaseField}
+                                    variant="label-hidden">
+                                </lightning-input-field>
+                            </li>
+                        </ul>
+                    </template>
+                </lightning-record-edit-form>
+            </div>
+        </template>
+        <template if:true={stepThree}>
+            <div class="subtitle">Criar Caso
+                <div class="subtitle02">{estabelecimento}</div>
+            </div>
+            <div class="h1">
+                <lightning-icon icon-name="utility:success" alternative-text="Success!" variant="success"
+                    title="success variant" size="small"></lightning-icon>
+                <label class="texto-label ml-10">&nbsp;&nbsp;&nbsp;Caso criado!</label>
+            </div>
+            <div class="boxCardCentral">
+                <div class="boxCardPrincipal">
+                    <div class="boxSaida">
+                        <lightning-record-edit-form object-api-name="Case">
+                            <p class = "protocolo" style="font-size: 16px">Protocolo: <strong>{numProtocolo}</strong></p>
+                            <p>{dataAtual}</p><br>
+        
+                        </lightning-record-edit-form>
+                    </div>
+                    
+                </div>
+                <div class="boxSaida">
+                    <lightning-record-edit-form object-api-name="Case">
+                        <div class="cmpValueTitulo">Informações do caso:</div>
+                        <ul>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Origem</div>
+                                    <div class="cmpValue">{valueOrigem}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Canal</div>
+                                    <div class="cmpValue">{valueCanal}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Assunto</div>
+                                    <div class="cmpValue">{valueAssunto}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpName">Evento</div>
+                                    <div class="cmpValue">{valueEvento}</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </lightning-record-edit-form>
+                </div>
+            </div>
+        </template>
+    </div>
+    <footer>
+        <div class="boxFooter">
+            <ul>
+                <template if:true={stepOne}>
+                    <li class="liBtnBotao">
+                        <lightning-button label="Fechar" onclick={closeQuickAction}
+                            class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                </template>
+                <template if:true={stepOne}>
+                    <li class="liBtnBotao">
+                        <lightning-button style='text-align:right' variant="brand" label="Criar caso"
+                            onclick={handleCriarCaso}
+                            class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                </template>
+                <template if:true={stepTransacaoTwo}>
+                    <li class="liBtnBotao">
+                        <lightning-button label="Voltar" onclick={handleVoltar}
+                            class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                </template>
+                <template if:true={stepCaseTwo}>
+                    <li class="liBtnBotao">
+                        <lightning-button label="Voltar" onclick={closeQuickAction}
+                            class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                </template>
+                <template if:true={stepTwo}>
+                    <li class="liBtnBotao">
+                        <lightning-button style='text-align:right' variant="brand" label="Finalizar"
+                            onclick={handleFinalizarCaso} disabled={disableBtnFinalizar}
+                            class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                </template>
+                <template if:true={stepThree}>
+                    <li class="liBtVoltar">
+                        <lightning-button label="Fechar" onclick={closeQuickAction}
+                            class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                </template>
+                <template if:true={stepThree}>
+                    <li class="liBtnCaso">
+                        <lightning-button variant="brand" label="Ir para o caso" onclick={irCase}
+                            class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </footer>
+</template>

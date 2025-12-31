@@ -1,0 +1,115 @@
+<template>
+    <div class="lwc-header">
+        <div class="top-header">
+            <div class="header-name">
+                <lightning-icon icon-name="standard:asset_object" alternative-text="Ativos" title="Ativos" class="slds-avatar_small"></lightning-icon>
+                <label class="title">Ativos ({quantidadeAtivos})</label>
+            </div>
+            <div class="buttons-list slds-text-align_right">
+                <template lwc:if={moreThanTwoButtons}>
+                    <lightning-button-menu
+                        alternative-text="Action"
+                        onselect={handleMenuSelectButton} 
+                        variant="border-filled"
+                        menu-alignment="auto"
+                        class="options"
+                        >
+                            <template for:each={menu} for:item="button">
+                                <lightning-menu-item
+                                if:true={button.isLigadoButton}
+                                id={button.developerName}
+                                label={button.label}
+                                value={button.developerName}
+                                key={button.label}
+                                >
+                            </lightning-menu-item>  
+                        </template>
+                    </lightning-button-menu>
+                    <template for:each={buttons} for:item="button">
+                        <lightning-button class="options" if:true={button.isLigadoButton} name={button.developerName} key={button.label} label={button.label} onclick={buttonHandler}></lightning-button> 
+                    </template>
+                </template>
+                <template lwc:else>
+                    <template for:each={buttons} for:item="button">
+                        <lightning-button class="options" if:true={button.isLigadoButton} name={button.developerName} key={button.label} label={button.label} onclick={buttonHandler}></lightning-button> 
+                    </template>
+            </template>
+            </div>    
+        </div>
+        <div class="info">
+            <label>{quantidadeAtivos} {item}</label>
+        </div>
+    </div>
+    <div class="table-assets" style="">
+        <lightning-datatable
+                key-field="ativoId"
+                data={data}
+                columns={columns}
+                hide-checkbox-column>
+        </lightning-datatable>
+    </div>
+    <div class="lwc-footer">
+        <a href={urlViewAll}>Exibir tudo</a>
+    </div>
+
+    <template if:true={modalContacless}>
+        <!-- Modal/Popup Box LWC Contactles starts here -->
+    
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open  slds-modal_small">
+            <div id='modalContactless' class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" name="buttonAssets_contactless" onclick={fecharModal}>
+                    <!-- Ícone inline com classe de cor branca -->
+                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        <path class="slds-icon-text-white" fill="white" d="M17 6.4L15.6 5 12 8.6 8.4 5 7 6.4 10.6 10l-3.6 3.6L7 15.6 8.4 17l3.6-3.6 3.6 3.6 1.4-1.4L13.4 10 17 6.4z"></path>
+                    </svg>
+                    <span class="slds-assistive-text">Cancelar e fechar</span>
+                </button>
+                <div class="slds-modal__content" id="modal-content-id-1">
+                    <c-bcsf_-contactless record-id={recordId} close-parent-component={closeModalComponent} oncloseparentmodal={closeQuickAction}></c-bcsf_-contactless> 
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+    <template if:true={modalAtivarInativar}>
+        <!-- Modal/Popup Box LWC starts here -->
+    
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open  slds-modal_small">
+            <div id='modalAtivarInativar' class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" name="buttonAssets_ativarInativar" onclick={fecharModal}>
+                    <!-- Ícone inline com classe de cor branca -->
+                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        <path class="slds-icon-text-white" fill="white" d="M17 6.4L15.6 5 12 8.6 8.4 5 7 6.4 10.6 10l-3.6 3.6L7 15.6 8.4 17l3.6-3.6 3.6 3.6 1.4-1.4L13.4 10 17 6.4z"></path>
+                    </svg>
+                    <span class="slds-assistive-text">Cancelar e fechar</span>
+                </button>
+                <div class="slds-modal__content" id="modal-content-id-2">
+                    <c-bcsf_-ativar-inativar-cartao record-id={recordId} close-parent-component={closeModalComponent} oncloseparentmodal={closeQuickAction}></c-bcsf_-ativar-inativar-cartao> 
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+    <template if:true={modalCartaoPrimario}>
+        <!-- Modal/Popup Box LWC starts here -->
+        <p>OLLAAAA</p>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open  slds-modal_small">
+            <div id='modalCartaoPrimario' class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" name="buttonAssets_cartaoPrimario" onclick={fecharModal}>
+                    <!-- Ícone inline com classe de cor branca -->
+                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        <path class="slds-icon-text-white" fill="white" d="M17 6.4L15.6 5 12 8.6 8.4 5 7 6.4 10.6 10l-3.6 3.6L7 15.6 8.4 17l3.6-3.6 3.6 3.6 1.4-1.4L13.4 10 17 6.4z"></path>
+                    </svg>
+                    <span class="slds-assistive-text">Cancelar e fechar</span>
+                </button>
+                <div class="slds-modal__content" id="modal-content-id-3">
+                    <c-bcsf_-cartao-primario record-id={recordId} onrefreshpage={refreshPageAction} oncloseparentmodal={closeQuickAction}></c-bcsf_-cartao-primario> 
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+</template>

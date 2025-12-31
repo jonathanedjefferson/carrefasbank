@@ -1,0 +1,211 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <template lwc:if={showCardPrincipal}>
+        <div class="title">Consulta de histórico</div>
+        <div class="c-container">
+            <div class="boxCardPrincipal">
+
+                <template lwc:if={stepOne}>
+                    <div class="">
+                        <div class="subtitle">Dados da conta</div>
+                        <ul class="listInformacoes slds-p-top_x-small">
+                            <li>
+                                <div class="cmpLabel">Titular</div>
+                                <div class="cmpValue">{nomeTitular}</div>
+                            </li>
+                            <li class="tipoConta">
+                                <div class= "logo"><img src={logoTipo}></div>
+                                <div class="slds-p-left_small">
+                                    <div class="cmpName">Tipo de conta</div>
+                                    <div class="cmpValue">{unidadeDescricao}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="cmpLabel">CPF</div>
+                                <div class="cmpValue">{cpf}</div>
+                            </li>
+                        </ul>
+                        <ul class="listInformacoes slds-p-top_x-large">
+                            <li>
+                                <div class="cmpName">Produto</div>
+                                <div class="cmpValue">{produto}</div>
+                            </li>
+                            <li>
+                                <div class="cmpName">Conta</div>
+                                <div class="cmpValue">{numeroConta}</div>
+                            </li>
+                            <li>
+                                <div class="cmpLabel">Status Geral</div>
+                                <div class="cmpValue color-font-red">{statusConta}</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="table-assets slds-p-top_large" style="min-height:300px; max-height:500px;overflow-y: auto;">
+                        <lightning-datatable key-field="data"
+                            data={listaSolicitacoes} 
+                            hide-checkbox-column="true"
+                            columns={columns}
+                            wrap-text-max-lines="1"
+                            class="slds-scrollable slds-border_top">
+                        </lightning-datatable>
+                    </div>
+                    <div class="lwc-footer">
+                        <div class="cmpPagina slds-p-vertical_medium"> 
+                            <div class="cmpPaginaCenter">
+                                <lightning-button-icon icon-name="utility:chevronleft" size="small" alternative-text="Voltar página" onclick={pagVoltar} disabled={disablePagVoltar}></lightning-button-icon>
+                                    <span class="slds-p-horizontal_small">{pagina}</span>
+                                <lightning-button-icon icon-name="utility:chevronright" size="small" alternative-text="Ivançar página" onclick={pagIr} disabled={disablePagIr}></lightning-button-icon>
+                                <lightning-combobox 
+                                    variant="label-hidden" 
+                                    class = "cmpPaginaQuant"
+                                    name="paginacao"
+                                    value={value}
+                                    placeholder="10"
+                                    options={quantidadePag}
+                                    onchange={handleChangePagina} >
+                                </lightning-combobox>
+                            </div>
+                            <div class="cmpPaginaDireita">
+                                Ver {pagina} - {pagina} de {totalPaginas}
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <template lwc:if={stepTwo}>
+                    <div class="slds-m-top_large">
+                        <div class="subtitle">Dados da conta</div>
+                        <ul class="listInformacoes slds-p-top_x-small">
+                            <li>
+                                <div class="cmpLabel">Titular</div>
+                                <div class="cmpValue">{nomeTitular}</div>
+                            </li>
+                            <li class="tipoConta">
+                                <div class= "logo"><img src={logoTipo}></div>
+                                <div class="slds-p-left_small">
+                                    <div class="cmpName">Tipo de conta</div>
+                                    <div class="cmpValue">{unidadeDescricao}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="cmpLabel">CPF</div>
+                                <div class="cmpValue">{cpf}</div>
+                            </li>
+                        </ul>
+                        <ul class="listInformacoes slds-p-top_x-large separator slds-p-bottom_medium">
+                            <li>
+                                <div class="cmpName">Conta</div>
+                                <div class="cmpValue">{numeroConta}</div>
+                            </li>
+                            <li>
+                                <div class="cmpLabel">Status Geral</div>
+                                <div class="cmpValue color-font-red">{statusConta}</div>
+                            </li>
+                            <li></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="slds-m-top_large">
+                            <label class="subtitle">Preenchimento de caso</label>
+                            <ul class="listDados slds-p-vertical_medium">
+                                <li>
+                                    <div class="cmpLabel">Assunto</div>
+                                    <div class="cmpValue">Limites e Saldos</div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Evento</div>
+                                    <div class="cmpValue">Consulta de histórico</div>
+                                </li>
+                            </ul>
+                            <div class="boxCaso">
+                                <lightning-record-edit-form object-api-name="Case">
+                                    <ul>
+                                        <li>
+                                            <label>Origem</label>
+                                            <lightning-input-field 
+                                                language=""
+                                                value={origemValue}
+                                                field-name="Origin" 
+                                                class="lightningInput mt-5" 
+                                                placeholder="--Nenhuma--"
+                                                onchange={handleChangeOrigem} 
+                                                variant="label-hidden"> 
+                                            </lightning-input-field>
+                                        </li>
+                                        <li>
+                                            <label>Canal</label>
+                                            <lightning-input-field
+                                                value={canalValue}
+                                                field-name="CanalEntrada__c" 
+                                                class="lightningInput mt-5" 
+                                                placeholder="--Nenhuma--"
+                                                onchange={handleChangeCanal} 
+                                                variant="label-hidden"> 
+                                            </lightning-input-field>
+                                        </li>
+                                    </ul>    
+                                </lightning-record-edit-form>   
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <template lwc:if={stepThree}>
+                    <div class="listInformacoes">
+                        <lightning-icon icon-name="utility:success" class="slds-m-right_medium" alternative-text="Success!" variant="success" title="success variant" size="small"></lightning-icon>
+                        <h1 class="subtitle-2">Consulta de histórico realizada!</h1>
+                    </div>
+                    <div class="slds-m-top_medium slds-m-horizontal_x-large">
+                        <p class="subTitle-4">Caso: <strong>{numeroCaso}</strong></p>
+                        <p class="slds-m-top_small slds-p-bottom_x-large">{today}</p>
+                        <div>
+                            <h2 class="slds-text-heading_small slds-m-vertical_medium subTitle">Informações do caso:</h2>
+                            <ul class="listDadosCaso">
+                                <li>
+                                    <div class="cmpLabel">Origem</div>
+                                    <div class="cmpValue">{origemValue}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Canal</div>
+                                    <div class="cmpValue">{canalValue}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Assunto</div>
+                                    <div class="cmpValue">Limites e Saldos</span></div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Evento</div>
+                                    <div class="cmpValue">Consulta de histórico</span></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div> 
+        <footer>
+            <div class="boxFooter">
+                <ul>
+                    <li lwc:if={stepThree}>
+                        <lightning-button label="Fechar" onclick={handleButtonVoltar}></lightning-button>
+                    </li>
+                    <li lwc:else>
+                        <lightning-button label="Voltar" onclick={handleButtonVoltar}></lightning-button>
+                    </li>
+                    <li lwc:if={stepOne}>
+                        <lightning-button variant="brand" label="Criar caso" onclick={handleButtonProsseguir}></lightning-button>
+                    </li>
+                    <li lwc:elseif={stepTwo}>
+                        <lightning-button variant="brand" label="Finalizar" onclick={handleButtonProsseguir} disabled={disableButtonCriarCaso}></lightning-button>
+                    </li>
+                    <li lwc:if={stepThree}>
+                        <lightning-button label="Histórico de limite" onclick={handleButtonHistoricoLimite}></lightning-button>
+                    </li>
+                    <li lwc:if={stepThree}>
+                        <lightning-button variant="brand" label="Ir para o caso" onclick={handleButtonIrCaso}></lightning-button>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+    </template>
+</template>

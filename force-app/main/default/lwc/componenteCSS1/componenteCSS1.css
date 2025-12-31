@@ -1,0 +1,41 @@
+:host{
+    --colorCom: #4804e7;
+    --fontCom: 10px;
+}
+
+.container{
+    background-color: #cecece;
+}
+
+.avisoAlert2{
+    height: 36px;
+    background-color: #ff8c00;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0px 0px 8px;
+    font-size: 14px;
+    --slds-c-icon-color-foreground-default: var(--colorGlobal);
+}
+
+.avisoAlert{
+    height: 36px;
+    background-color: #059700;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0px 0px 8px;
+    font-size: 14px;
+}
+
+.custom-icon{
+    --slds-c-icon-color-foreground-default: var(--colorGlobal);
+}
+
+
+.custom-text3{
+    font-weight: 800;
+    font-size: var(--fontGlobal);
+    line-height: 20px;
+    margin: 8px 0px 8px;
+}

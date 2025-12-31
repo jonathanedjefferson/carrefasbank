@@ -1,0 +1,35 @@
+<template>
+    <article class="slds-card">
+        <div lwc:if={spinner} role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+            <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+        </div>
+        <div class="bg-header">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="header-title">
+                    <lightning-icon  class="slds-avatar_small" icon-name="standard:knowledge" alternative-text="Controle de Operações" title="Controle de Operações"></lightning-icon>
+                    <span lwc:if={telaTabela}>Controle de Operações</span>
+                    <span lwc:else>Controle de Operações (0)</span>
+                </div>
+                <div>
+                    <lightning-button-menu disabled={disabledBtnResize} menu-alignment="right" alternative-text="Controles de exibição de lista" variant="border-filled" icon-name="utility:settings">
+                        <lightning-menu-item value="redefinirColuna" label="Redefinir larguras de coluna" onclick={handleBtnResize}></lightning-menu-item>
+                    </lightning-button-menu>
+                    <lightning-button-icon class="slds-m-left_x-small" icon-name="utility:refresh" variant="border-filled" alternative-text="atualizar" slot="actions" onclick={handleBtnRefresh}></lightning-button-icon>
+                </div>
+            </header>
+        </div>
+        <div lwc:if={telaTabela} class="tabela-container">
+            <c-bcsf_-custom-datatable-tooltip
+                key-field="id"
+                data={listaOperacoes}
+                columns={columns}
+                show-row-number-column
+                onrowaction={handleRowClick}
+                hide-checkbox-column>
+            </c-bcsf_-custom-datatable-tooltip>
+        </div>
+        <footer lwc:if={telaTabela} class="slds-card__footer">
+            <a class="slds-card__footer-action" href="#" onclick={handleExibirTudo}>Exibir tudo</a>
+        </footer>
+    </article>
+</template>

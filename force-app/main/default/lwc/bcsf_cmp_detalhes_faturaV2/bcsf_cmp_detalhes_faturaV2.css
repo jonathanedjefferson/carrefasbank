@@ -1,0 +1,79 @@
+.tabela_infos{
+    border:0.5px #E8E8E8	solid; 
+    border-spacing: 5px;
+    border-radius: 5px;
+    border-collapse: separate;
+}
+
+.tabela_detalhes {
+    margin-top:5px; 
+    border:0.5px #E8E8E8 solid; 
+    border-spacing: 5px;
+    border-radius: 5px;
+    border-collapse: separate;
+}
+
+h1{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+h2{
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.tdValues{
+    font-weight: bold;
+}
+
+.accordion_faturas {
+    --slds-c-accordion-summary-color-background: #F3F2F2;
+    --slds-c-accordion-heading-font-size: 16px;
+    --slds-c-accordion-heading-line-height: 24px;
+    --slds-c-accordion-section-spacing-block-start: 4px;
+    --slds-c-accordion-section-spacing-block-end: 4px;
+    --slds-c-accordion-section-spacing-inline-start: 8px;
+    --slds-c-accordion-color-border: #DDDBDA;
+}
+
+.tagTipoFatura{
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 18px;
+    border-radius: 23px;
+    width: fit-content;
+    padding: 2px 8px;
+    margin: 16px;
+}
+
+.tipoFatura_0 {
+    color: #181818;
+    background-color: #FFFFFF;
+    border: 1px solid #DDDBDA;
+}
+
+.tipoFatura_1 {
+    color: #181818;
+    background-color: #FF9A3C;
+}
+
+.tipoFatura_2 {
+    color: #181818;
+    background-color: #DDDBDA;
+}
+
+.tipoFatura_3 {
+    color: #FFFFFF;
+    background-color: #04844B;
+}
+
+.tipoFatura_4 {
+    color: #181818;
+    background-color: #F9E3B6;
+}
+
+.tipoFatura_5 {
+    color: #FFFFFF;
+    background-color: #C23934;
+}

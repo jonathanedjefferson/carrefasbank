@@ -1,0 +1,31 @@
+<template>
+    <div lwc:if={showCloseExpiration} class="detail-message">
+        <lightning-icon icon-name="utility:warning" title="Warning" size="small" class="icon"></lightning-icon>
+        <p>O Saldo do Comprou Voltou expirará em {balanceData.daysToExpire} dias</p>
+    </div>
+    <h1>Detalhes</h1>
+    <div class="container">
+        <div class="balance">
+            <p>Saldo</p>
+            <template if:false={isLoading}>
+                <p class="bold">{balanceData.rewardPoints}</p>
+            </template>
+            <template if:true={isLoading}>
+                <div class="spinner">
+                    <lightning-spinner alternative-text="Loading" size="x-small"></lightning-spinner>
+                </div>
+            </template>
+        </div>
+        <div class="expiration-date">
+            <p>Válido até</p>
+            <template if:false={isLoading}>
+                <p class="bold">{balanceData.expireDate}</p>
+            </template>
+            <template if:true={isLoading}>
+                <div class="spinner">
+                    <lightning-spinner alternative-text="Loading" size="x-small"></lightning-spinner>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

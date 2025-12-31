@@ -1,0 +1,185 @@
+<template>
+    <div if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <template if:true={showCardPrincipal}>
+        <div class="title">Definir cartão primário</div>
+        <div class="c-container">
+            <div class="boxCardPrincipal">
+                <template lwc:if={stepOne}> 
+                    <div class="separator slds-p-bottom_medium">
+                        <ul class="listInformacoes">
+                            <li>
+                                <div class="cmpLabel">Titular da conta</div>
+                                <div class="cmpValue">{nome}</div>
+                            </li>
+                            <li class="tipoConta">
+                                <div class= "logo"><img src={logoTipo}></div>
+                                <div class="texts">
+                                    <div class="cmpLabel">Tipo de conta</div>
+                                    <div class="cmpValue">{tipoConta}</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <template lwc:if={changeEnable}>
+                        <div class="separator slds-p-bottom_x-large ">
+                            <div class="msgInfo slds-p-top_medium slds-m-bottom_medium">
+                                <p>Abaixo está o último cartão enviado ao cliente e apenas ele poderá ser definido como o cartão primário</p>
+                            </div>
+                            <div class="slds-m-left_large">
+                                <div>
+                                    <div class="cmpValue font-weight-700">{labelFinalCartao}</div>
+                                    <ul class="listInformacoes slds-m-top_x-small">
+                                        <li>
+                                            <div class="cmpLabel">Data de emissão</div>
+                                            <div class="cmpValue">{dataEmissao}</div>
+                                        </li>
+                                        <li class="slds-m-left_large">
+                                            <div class="cmpLabel">Status do cartão</div>
+                                            <div class="cmpValue">{statusCartao}</div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    <template lwc:else>
+                        <div class="alert slds-m-top_medium slds-m-bottom_x-large">
+                            <lightning-icon class="slds-m-right_small iconeInfo" icon-name="utility:info" size="small" alternative-text="Atenção"></lightning-icon>
+                            <p>Cartão já definido como primário.</p>
+                        </div>
+                        <div class=" slds-p-bottom_large slds-m-left_large">
+                            <div>
+                                <div class="cmpValue font-weight-700">{labelFinalCartao}</div>
+                                <ul class="listInformacoes slds-m-top_small">
+                                    <li>
+                                        <div class="cmpLabel">Data de emissão</div>
+                                        <div class="cmpValue">{dataEmissao}</div>
+                                    </li>
+                                    <li class="slds-m-left_large">
+                                        <div class="cmpLabel">Status do cartão</div>
+                                        <div class="cmpValue">{statusCartao}</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </template>
+                    
+                    
+                    
+                    <template lwc:if={changeEnable}>
+                        <div class="slds-m-top_large">
+                            <div class="slds-p-top_medium">
+                                <label class="label-caso">Preenchimento de caso</label>
+                                <div class="slds-m-top_x-small boxCaso">
+                                    <lightning-record-edit-form object-api-name="Case">
+                                        <ul>
+                                            <li>
+                                                <label>Origem</label>
+                                                <lightning-input-field 
+                                                language=""
+                                                value={origemValue}
+                                                field-name="Origin" 
+                                                class="lightningInput" 
+                                                placeholder="--Nenhuma--"
+                                                onchange={handleChangeOrigem} 
+                                                    variant="label-hidden"> 
+                                                </lightning-input-field>
+                                            </li>
+                                            <li>
+                                                <label>Canal</label>
+                                                <lightning-input-field
+                                                value={canalValue}
+                                                    field-name="CanalEntrada__c" 
+                                                    class="lightningInput" 
+                                                    placeholder="--Nenhuma--"
+                                                    onchange={handleChangeCanal} 
+                                                    variant="label-hidden"> 
+                                                </lightning-input-field>
+                                            </li>
+                                        </ul>
+                                    </lightning-record-edit-form>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                </template>
+                <template lwc:if={stepTwo}> 
+                    <div class="separator slds-p-bottom_medium">
+                        <h1 class="sucessoCaso">
+                            <lightning-icon 
+                                icon-name="utility:success" 
+                                alternative-text="Success!" 
+                                variant="success" title="success variant" 
+                                size="small"
+                                class="slds-p-right_medium"></lightning-icon> 
+                            Solicitação realizada!
+                        </h1>
+                        <h2 class="pl-40 protocolo slds-p-top_medium">Protocolo: <strong>{numeroCaso}</strong></h2>
+                        <p class="pl-40 dataProtocolo slds-p-x_small">{dateToday}</p>
+                    </div>
+
+                    <div class="pl-40 slds-p-top_large">
+                        <p class="cmpValue">Informações do caso:</p>
+                        <ul class="list-flex-justify slds-p-top_medium">
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpLabel">Origem</div>
+                                    <div class="cmpValue">{origemValue}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpLabel">Canal</div>
+                                    <div class="cmpValue">{canalValue}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpLabel">Assunto</div>
+                                    <div class="cmpValue">Cartão</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="texts">
+                                    <div class="cmpLabel">Evento</div>
+                                    <div class="cmpValue">Cartão Primário</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </template>
+            </div>
+        </div>
+        <footer>
+            <div class="boxFooter">
+                <ul>
+                    <template lwc:if={changeEnable}>
+                        <template lwc:if={stepOne}>
+                            <li>
+                                <lightning-button label="Cancelar" onclick={handleButtonCancelar}></lightning-button>
+                            </li>
+                            <li>
+                                <lightning-button label="Finalizar" variant="brand" onclick={handleButtonSalvar} disabled={disableButtonSalvar}></lightning-button>
+                            </li>
+                        </template>
+                        <template lwc:else>
+                            <li></li>
+                            <li>
+                                <lightning-button label="Finalizar" variant="brand" onclick={handleButtonCancelar}></lightning-button>
+                            </li>
+                        </template>
+                    </template>
+                    <template lwc:else>
+                        <li>
+                            <lightning-button label="Fechar" onclick={handleButtonCancelar}></lightning-button>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </footer>
+    </template>
+</template>

@@ -1,0 +1,565 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+    </div>
+    <div class="lwc-header">
+        <div class="top-header separator slds-p-bottom_small slds-p-horizontal_medium">
+            <div class="slds-m-right_small slds-m-top_xx-small">
+                <lightning-icon icon-name="custom:custom14" alternative-text="Contestação de compras" title="Consulta de proposta" size="large"></lightning-icon>
+            </div>
+            <div class="header-name">
+                <p class="title">Consulta de proposta</p>
+            </div>
+            <div class="boxMenu">
+                <lightning-input type="text" label="CPF" value={cpf} disabled="true" class="header-fields field-cpf"></lightning-input>
+                <lightning-combobox label="Modalidade" options={modalidadePicklist} onchange={handleFielModalidade}
+                    value={fieldPicklistModalidade} placeholder="Selecionar" class="header-fields field-modalidade">
+                </lightning-combobox>
+                <lightning-combobox name="Status" label="Status" options={statusPicklist} onchange={handleFielStatus}
+                    value={fieldPicklistStatus} placeholder="Selecionar" class="field-status">
+                </lightning-combobox>
+                <lightning-input data-id="dataInicial" type="date" date-style="short" name="data-inicial" label="Período inicial" placeholder="Selecionar"
+                    onchange={handleDataInicial} value={dataInicial}
+                    class="date-format-hide header-fields input-data"></lightning-input>
+                <lightning-input data-id="dataFinal" type="date" date-style="short" name="data-final" label="Período final" placeholder="Selecionar"
+                    onchange={handleDataFinal} value={dataFinal} 
+                    class="date-format-hide header-fields input-data"></lightning-input>
+                <div class="container-btn-buscar">
+                    <lightning-button label="Buscar propostas" onclick={handleBtnBuscar}
+                        class="btn-buscar"></lightning-button>
+                </div>
+            </div>
+        </div>
+        
+
+        <div lwc:if={telaHome}  class="container-imagem">
+            <img src={imagemHome} alt="Ícone" class="svg-classe" />
+            <h1>Para buscar as propostas, selecione a modalidade, status e período</h1>
+            <h3>Após a seleção serão listadas todas as propostas</h3>
+        </div>
+
+        <div lwc:if={telaEmpty}  class="container-imagem">
+            <img src={imagemEmpty} alt="Ícone" class="svg-classe" />
+            <h1>Cliente não possui nenhuma proposta na seleção realizada</h1>
+        </div>
+
+        <div lwc:if={telaListagem} class="container-table-propostas slds-p-top_large">
+            <lightning-datatable
+                    key-field="id"
+                    data={sortedData}
+                    show-row-number-column
+                    row-number-offset={rowOffset}
+                    hide-checkbox-column
+                    wrap-text-max-lines="1"
+                    sorted-by={sortBy}
+                    sorted-direction={sortDirection}
+                    onsort={handleSort}
+                    onrowaction={handleAbriProposta}
+                    class="slds-table_header-fixed_container slds-scrollable slds-border_top table-propostas"
+                    columns={columns}>
+            </lightning-datatable>
+        </div>
+
+        <template if:true={modalHistoricoProposta}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-03" class="slds-modal slds-fade-in-open  slds-modal_medium">
+                <div id='myModalHistoricoProposta' class="slds-modal__container">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={handleCloseModal}>
+                        <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close" title="Close"></lightning-icon>
+                        <span class="slds-assistive-text">Cancelar e fechar</span>
+                    </button>
+                    <div class="slds-modal__header">
+                        <h1 id="modal-heading-03" class="slds-modal__title slds-hyphenate" tabindex="-1">Histórico de proposta</h1>
+                    </div>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3">
+                        <div lwc:if={spinner}>
+                            <lightning-spinner alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+                        </div>
+                        <div class="container-dados">
+                            <h2 class="text-title">Dados da proposta</h2>
+                            <ul>
+                                <li>
+                                    <p class="nameDados">Titular</p>
+                                    <p class="valueDados">{nomeCliente}</p>
+                                </li>
+                                <li>
+                                    <p class="nameDados">CPF</p>
+                                    <p class="valueDados">{cpf}</p>
+                                </li>
+                                <li>
+                                    <p class="nameDados">Número de proposta</p>
+                                    <p class="valueDados">{numeroProposta}</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="container-historico separador">
+                            <h2  class="text-title">Histórico de proposta</h2>
+                            <div class="custom-table-container">
+                                <table class="custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Status da Proposta</th>
+                                            <th>Data da hora de movimentação</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={historicoProposta} for:item="item">
+                                            <tr key={item.id}>
+                                                <td class="custom-table-item">{item.statusProposta}</td>
+                                                <td class="custom-table-item">{item.data}</td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="container-detalhes">
+                            <h2  class="text-title">Detalhes gerais</h2>
+                            <div lwc:if={showErrorAlert} class="erroAlert">
+                                <lightning-icon class="slds-m-right_small" icon-name="utility:error" size="small" alternative-text="Atenção"></lightning-icon>
+                                <p>Não foi possível carregar os campos: Código - Motivo de Rejeição e Descrição.</p>
+                            </div>
+                            <ul>
+                                <li>
+                                    <p class="nameDados">Status atual da Proposta</p>
+                                    <p class="valueDados">{statusProposta}</p>
+                                </li>
+                                <li lwc:if={showDetalhesOcorrencia}>
+                                    <p class="nameDados">Código - Motivo da rejeição</p>
+                                    <p class="valueDados">{codigoOcorrencia}</p>
+                                </li>
+                                <li lwc:if={showDetalhesOcorrencia}>
+                                    <p class="nameDados">Descrição</p>
+                                    <p class="valueDados">{descricaoOcorrencia}</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div lwc:if={showDadosCompletos} class="container-dados-completos separador">
+                            <h2  class="text-title">Endereço Residencial</h2>
+                            <ul>
+                                <li>
+                                    <p class="nameDados">CEP</p>
+                                    <p class="valueDados">{cep}</p>
+                                </li>
+                                <li>
+                                    <p class="nameDados">Endereço</p>
+                                    <p class="valueDados">{endereco}</p>
+                                </li>
+                                <li>
+                                    <p class="nameDados">Número</p>
+                                    <p class="valueDados">{numeroEndereco}</p>
+                                </li>
+                                <li>
+                                    <p class="nameDados">Complemento</p>
+                                    <p class="valueDados">{complemento}</p>
+                                </li>
+                                <li>
+                                    <p class="nameDados">Bairro</p>
+                                    <p class="valueDados">{bairro}</p>
+                                </li>
+                                <li>
+                                    <p class="nameDados">Cidade</p>
+                                    <p class="valueDados">{cidade}</p>
+                                </li>
+                                <li>
+                                    <p class="nameDados">UF</p>
+                                    <p class="valueDados">{uf}</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div lwc:if={showDadosMinimos} class="container-dados-minimos separador">
+                            <h2  class="text-title">E-mail e telefone</h2>
+                            <ul>
+                                <li>
+                                    <p class="nameDados">E-mail do cliente</p>
+                                    <p class="valueDados">{emailProposta}</p>
+                                </li>
+                                <li>
+                                    <p class="nameDados">Telefone</p>
+                                    <p class="valueDados">{telefoneProposta}</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="slds-modal__footer slds-modal__footer_directional">
+                        <lightning-button class="slds-button" variant="neutral" label="Fechar" title="Fechar" onclick={handleCloseModal}></lightning-button>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+        </template>
+
+        <template if:true={modalCasoConsultaProposta}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-02" class="slds-modal slds-fade-in-open  slds-modal_medium">
+                <div id='myCasoConsultaProposta' class="slds-modal__container">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={handleCloseModal}>
+                        <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close" title="Close"></lightning-icon>
+                        <span class="slds-assistive-text">Cancelar e fechar</span>
+                    </button>
+                    <div class="slds-modal__header">
+                        <h1 id="modal-heading-02" class="slds-modal__title slds-hyphenate" tabindex="-1">Abertura de caso - Proposta</h1>
+                    </div>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                        <div lwc:if={spinner}>
+                            <lightning-spinner alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+                        </div>
+                        <div lwc:if={telaOneCasoProposta}>
+                            <div class="container-info-caso-proposta">
+                                <h2 class="text-title">Dados da proposta</h2>
+                                <ul>
+                                    <li>
+                                        <p class="nameDados text-cinza-2">Titular</p>
+                                        <p class="valueDados">{nomeCliente}</p>
+                                    </li>
+                                    <li>
+                                        <p class="nameDados text-cinza-2">Status da Proposta</p>
+                                        <p class={classStatusProposta}>{statusProposta}</p>
+                                    </li>
+                                    <li>
+                                        <p class="nameDados text-cinza-2">Tipo de loja</p>
+                                        <p class="valueDados">{tipoLoja}</p>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>
+                                        <p class="nameDados text-cinza-2">CPF</p>
+                                        <p class="valueDados">{cpf}</p>
+                                    </li>
+                                    <li>
+                                        <p class="nameDados text-cinza-2">Número de proposta</p>
+                                        <p class="valueDados">{numeroProposta}</p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="container-preenchimento separador">
+                                <h2  class="text-title">Preenchimento de caso</h2>
+                                <ul>
+                                    <li>
+                                        <p class="nameDados text-cinza-2">Assunto</p>
+                                        <p class="valueDados">Cartão</p>
+                                    </li>
+                                    <li>
+                                        <p class="nameDados text-cinza-2">Evento</p>
+                                        <p class="valueDados">Consulta de proposta</p>
+                                    </li>
+                                </ul>
+                                <lightning-record-edit-form object-api-name="Case">
+                                    <ul>
+                                        <li class="field-caso" >
+                                            <label class="field-label">Origem</label>
+                                            <lightning-input-field 
+                                                language=""
+                                                value={origemCasoConsulta}
+                                                field-name="Origin" 
+                                                placeholder="--Nenhuma--"
+                                                onchange={handleOrigemCasoConsulta} 
+                                                variant="label-hidden"> 
+                                            </lightning-input-field>
+                                        </li>
+                                        <li class="field-caso">
+                                            <label class="field-label">Canal</label>
+                                            <lightning-input-field
+                                                value={canalCasoConsulta}
+                                                field-name="CanalEntrada__c" 
+                                                class="field-caso" 
+                                                placeholder="--Nenhuma--"
+                                                onchange={handleCanalCasoConsulta} 
+                                                variant="label-hidden"> 
+                                            </lightning-input-field>
+                                        </li>
+                                    </ul>    
+                                </lightning-record-edit-form> 
+                            </div>
+                        </div>
+                        <div lwc:elseif={telaTwoCasoProposta}>
+                            <div class="container-confirmar-dados">
+                                <h2 class="text-title">Confirme os dados</h2>
+                                <p class="descricao-dados">Antes de finalizar, confirme com o cliente se os dados estão corretos</p>
+                                <div class="content-confirmar-dados">
+                                    <div class="confirmar-dados">
+                                        <h2 class="text-title">Dados da proposta</h2>
+                                        <ul>
+                                            <li>
+                                                <p class="nameDados text-cinza-2">Titular</p>
+                                                <p class="valueDados">{nomeCliente}</p>
+                                            </li>
+                                            <li>
+                                                <p class="nameDados text-cinza-2">CPF</p>
+                                                <p class="valueDados">{cpf}</p>
+                                            </li>
+                                            <li>
+                                                <p class="nameDados text-cinza-2">Número de proposta</p>
+                                                <p class="valueDados">{numeroProposta}</p>
+                                            </li>
+                                        </ul>
+                                        <ul>
+                                            <li>
+                                                <p class="nameDados text-cinza-2">Status da Proposta</p>
+                                                <p class={classStatusProposta}>{statusProposta}</p>
+                                            </li>
+                                            <li>
+                                                <p class="nameDados text-cinza-2">Tipo de loja</p>
+                                                <p class="valueDados">{tipoLoja}</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="info-caso separador">
+                                        <h2 class="text-title">Informações de caso</h2>
+                                        <ul>
+                                            <li>
+                                                <p class="nameDados text-cinza-1">Origem</p>
+                                                <p class="valueDados">{origemCasoConsulta}</p>
+                                            </li>
+                                            <li>
+                                                <p class="nameDados text-cinza-1">Canal</p>
+                                                <p class="valueDados">{canalCasoConsulta}</p>
+                                            </li>
+                                            <li>
+                                                <p class="nameDados text-cinza-1">Assunto</p>
+                                                <p class="valueDados">Cartão</p>
+                                            </li>
+                                            <li>
+                                                <p class="nameDados text-cinza-1">Evento</p>
+                                                <p class="valueDados">Consulta de proposta</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div lwc:elseif={telaTreeCasoProposta} class="container-casoGerado">
+                            <lightning-icon icon-name="action:approval" size="xx-small" alternative-text="Sucesso" title="Sucesso" class="success-icon"></lightning-icon>
+                            <div class="casoGerado">
+                                <h1>Consulta de Proposta realizada!</h1>
+                                <div class="dados-casoGerado">
+                                    <h2>Caso: <span>{numProtocoloConsulta}</span></h2>
+                                    <p>{dataAtualFormatada}</p>
+                                </div>
+                                <h2 class="slds-border_top">Informações do caso:</h2>
+                                <ul >
+                                    <li>
+                                        <p class="casoGeradoName text-cinza-1">Origem</p>
+                                        <p class="casoGeradoValue">{origemCasoConsulta}</p>
+                                    </li>
+                                    <li>
+                                        <p class="casoGeradoName text-cinza-1">Canal</p>
+                                        <p class="casoGeradoValue">{canalCasoConsulta}</p>
+                                    </li>
+                                    <li>
+                                        <p class="casoGeradoName text-cinza-1">Assunto</p>
+                                        <p class="casoGeradoValue">Cartão</p>
+                                    </li>
+                                    <li>
+                                        <p class="casoGeradoName text-cinza-1">Evento</p>
+                                        <p class="casoGeradoValue">Consulta de proposta</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-modal__footer slds-modal__footer_directional">
+                        <lightning-button class="slds-button" variant="neutral" label={labelBtnFecharCasoProposta} title="Fechar" onclick={handleBtnCloseCasoConsulta}></lightning-button>
+                        <lightning-button class="slds-button" variant="brand" label={labelBtnNextCasoProposta} title="Prosseguir" onclick={handleBtnNextCasoConsulta} disabled={disabledBtnNextConsulta}></lightning-button>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+        </template>
+
+        <template if:true={modalCasoPropostaRecusada}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open  slds-modal_medium">
+                <div id='myModalCasoPropostaRecusada' class="slds-modal__container">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={handleCloseModal}>
+                        <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close" title="Close"></lightning-icon>
+                        <span class="slds-assistive-text">Cancelar e fechar</span>
+                    </button>
+                    <div class="slds-modal__header">
+                        <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate" tabindex="-1">Abertura de caso - Proposta</h1>
+                    </div>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <div lwc:if={spinner}>
+                            <lightning-spinner alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+                        </div>
+                        <div lwc:if={telaOneCasoPropostaRecusada}>
+                            <div class="container-info-caso-recusa">
+                                <h2 class="text-title">Dados da proposta</h2>
+                                <ul>
+                                    <li>
+                                        <p class="nameDados text-cinza-2">Titular</p>
+                                        <p class="valueDados">{nomeCliente}</p>
+                                    </li>
+                                    <li>
+                                        <p class="nameDados text-cinza-2">Status da Proposta</p>
+                                        <p class={classStatusProposta}>{statusProposta}</p>
+                                    </li>
+                                    <li>
+                                        <p class="nameDados text-cinza-2">Tipo de loja</p>
+                                        <p class="valueDados">{tipoLoja}</p>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>
+                                        <p class="nameDados text-cinza-2">CPF</p>
+                                        <p class="valueDados">{cpf}</p>
+                                    </li>
+                                    <li>
+                                        <p class="nameDados text-cinza-2">Número de proposta</p>
+                                        <p class="valueDados">{numeroProposta}</p>
+                                    </li>
+                                </ul>
+                                <div class="avisoAlert avisoAlert-margin">
+                                    <lightning-icon class="slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="Atenção"></lightning-icon>
+                                    <p>Este caso será tratado pelo setor responsável.</p>
+                                </div>
+                            </div>
+                            <div class="container-preenchimento separador">
+                                <h2  class="text-title">Preenchimento de caso</h2>
+                                <ul>
+                                    <li>
+                                        <p class="nameDados text-cinza-2">Assunto</p>
+                                        <p class="valueDados">Cartão</p>
+                                    </li>
+                                    <li>
+                                        <p class="nameDados text-cinza-2">Evento</p>
+                                        <p class="valueDados">Consulta de proposta</p>
+                                    </li>
+                                </ul>
+                                <lightning-textarea 
+                                    class="field-descricao-caso" 
+                                    variant=""
+                                    label="Descrição"
+                                    required
+                                    value={fieldDescricao}
+                                    onchange={handleFielDescricao}>
+                                </lightning-textarea>
+                                <lightning-record-edit-form object-api-name="Case">
+                                    <ul>
+                                        <li class="field-caso" >
+                                            <label class="field-label">Origem</label>
+                                            <lightning-input-field 
+                                                language=""
+                                                value={origemCasoRecusa}
+                                                field-name="Origin" 
+                                                placeholder="--Nenhuma--"
+                                                onchange={handleOrigemCasoRecusa} 
+                                                variant="label-hidden"> 
+                                            </lightning-input-field>
+                                        </li>
+                                        <li class="field-caso">
+                                            <label class="field-label">Canal</label>
+                                            <lightning-input-field
+                                                value={canalCasoRecusa}
+                                                field-name="CanalEntrada__c" 
+                                                class="field-caso" 
+                                                placeholder="--Nenhuma--"
+                                                onchange={handleCanalCasoRecusa} 
+                                                variant="label-hidden"> 
+                                            </lightning-input-field>
+                                        </li>
+                                    </ul>    
+                                </lightning-record-edit-form> 
+                            </div>
+                        </div>
+                        <div lwc:elseif={telaTwoCasoPropostaRecusada}>
+                            <div class="container-confirmar-dados">
+                                <div class="avisoAlert">
+                                    <lightning-icon class="slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="Atenção"></lightning-icon>
+                                    <p>Este caso será tratado pelo setor responsável.</p>
+                                </div>
+                                <h2 class="text-title">Confirme os dados</h2>
+                                <p class="descricao-dados">Antes de finalizar, confirme com o cliente se os dados estão corretos</p>
+                                <div class="content-confirmar-dados">
+                                    <div class="confirmar-dados">
+                                        <h2 class="text-title">Dados da proposta</h2>
+                                        <ul>
+                                            <li>
+                                                <p class="nameDados text-cinza-2">Titular</p>
+                                                <p class="valueDados">{nomeCliente}</p>
+                                            </li>
+                                            <li>
+                                                <p class="nameDados text-cinza-2">CPF</p>
+                                                <p class="valueDados">{cpf}</p>
+                                            </li>
+                                            <li>
+                                                <p class="nameDados text-cinza-2">Número de proposta</p>
+                                                <p class="valueDados">{numeroProposta}</p>
+                                            </li>
+                                        </ul>
+                                        <ul>
+                                            <li>
+                                                <p class="nameDados  text-cinza-2">Status da Proposta</p>
+                                                <p class={classStatusProposta}>{statusProposta}</p>
+                                            </li>
+                                            <li>
+                                                <p class="nameDados text-cinza-2">Tipo de loja</p>
+                                                <p class="valueDados">{tipoLoja}</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="info-caso-proposta-rescusado separador">
+                                        <div class="text-descricao-caso">
+                                            <p class="nameDados">Descrição</p>
+                                            <p class="valueDados">{fieldDescricao}</p>
+                                        </div>
+                                        <h2 class="text-title">Informações de caso</h2>
+                                        <ul>
+                                            <li>
+                                                <p class="nameDados text-cinza-1">Origem</p>
+                                                <p class="valueDados">{origemCasoRecusa}</p>
+                                            </li>
+                                            <li>
+                                                <p class="nameDados text-cinza-1">Canal</p>
+                                                <p class="valueDados">{canalCasoRecusa}</p>
+                                            </li>
+                                            <li>
+                                                <p class="nameDados text-cinza-1">Assunto</p>
+                                                <p class="valueDados">Cartão</p>
+                                            </li>
+                                            <li>
+                                                <p class="nameDados text-cinza-1">Evento</p>
+                                                <p class="valueDados">Recusa de crédito</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div lwc:elseif={telaTreeCasoPropostaRecusada} class="container-casoGerado">
+                            <lightning-icon icon-name="action:approval" size="xx-small" alternative-text="Sucesso" title="Sucesso" class="success-icon"></lightning-icon>
+                            <div class="casoGerado">
+                                <h1>Abertura de caso para Recusa de crédito realizada!</h1>
+                                <div class="dados-casoGerado">
+                                    <h2>Caso: <span>{numProtocoloPropostaRecusada}</span></h2>
+                                    <p>{dataAtualFormatada}</p>
+                                </div>
+                                <h2 class="slds-border_top">Informações do caso:</h2>
+                                <ul >
+                                    <li>
+                                        <p class="casoGeradoName text-cinza-1">Origem</p>
+                                        <p class="casoGeradoValue">{origemCasoRecusa}</p>
+                                    </li>
+                                    <li>
+                                        <p class="casoGeradoName text-cinza-1">Canal</p>
+                                        <p class="casoGeradoValue">{canalCasoRecusa}</p>
+                                    </li>
+                                    <li>
+                                        <p class="casoGeradoName text-cinza-1">Assunto</p>
+                                        <p class="casoGeradoValue">Cartão</p>
+                                    </li>
+                                    <li>
+                                        <p class="casoGeradoName text-cinza-1">Evento</p>
+                                        <p class="casoGeradoValue">Recusa de crédito</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-modal__footer slds-modal__footer_directional">
+                        <lightning-button class="slds-button" variant="neutral" label={labelBtnFecharCasoRecusa} title="Fechar" onclick={handleBtnCloseCasoRecusa}></lightning-button>
+                        <lightning-button class="slds-button" variant="brand" label={labelBtnNextCasoRecusa} title="Prosseguir" onclick={handleBtnNextCasoRecusa} disabled={disabledBtnNextRecusa}></lightning-button>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+        </template>
+    </div>
+</template>

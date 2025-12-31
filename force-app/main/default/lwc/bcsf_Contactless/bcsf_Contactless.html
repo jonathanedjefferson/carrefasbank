@@ -1,0 +1,141 @@
+<template>
+    <div if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <template if:true={showCardPrincipal}>
+        <div class="title">Pagamento por aproximação</div>
+        <div class="c-container">
+            <div class="boxCardPrincipal">
+                <div if:true={stepOne}>
+                    <div class="separator pb-15">
+                        <ul class="listInformacoes">
+                            <li>
+                                <div class="cmpLabel">Titular da conta</div>
+                                <div class="cmpValue">{nome}</div>
+                            </li>
+                            <li class="tipoConta">
+                                <div class= "logo"><img src={logoTipo}></div>
+                                <div class="texts">
+                                    <div class="cmpName">Tipo de conta</div>
+                                    <div class="cmpValue">{tipoConta}</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="boxListaCartoes mt-20">
+                    <div class="cmpName">Selecione o cartão desejado</div>
+                    <lightning-combobox
+                        name="progress"
+                        value={valueCartaoSelecionado}
+                        options={optionsCartoes}
+                        placeholder="Selecione o cartão"
+                        class="lightningInput" 
+                        variant="label-hidden"
+                        onchange={handleChangeCartaoSelecionado} >
+                    </lightning-combobox>
+                    <div class="mt-5" if:true={possuiUmCartaoContacless}> 
+                        <label class="label-text">{msgAlertUmCartao}</label>
+                    </div>
+                </div>
+                
+                <div if:true={stepTwo}> 
+                    <div class="alert mt-30" if:true={solicitar2Via}>
+                        <lightning-icon icon-name="utility:warning" alternative-text="Warning!" title="Warning" class="pr-10 color-icon"></lightning-icon>
+                        <p>Ação indisponível para este cartão, caso o cliente queira solicite uma 2ª via do cartão.</p>
+                    </div>
+                    <div class="alert mt-30" if:false={tipoCartaoChip}>
+                        <lightning-icon icon-name="utility:warning" alternative-text="Warning!" title="Warning" class="pr-10 color-icon"></lightning-icon>
+                        <p>Ação indisponível para cartão com tarja.</p>
+                    </div>
+                    <div class="mt-20">
+                        <div>
+                            <ul class="listDadosCartoes">
+                                <li>
+                                    <div class="cmpLabel">Número do cartão</div>
+                                    <div class="cmpValue">{numeroCartao}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Nome Reduzido</div>
+                                    <div class="cmpValue">{nomeReduzido}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Status</div>
+                                    <div class="cmpValue">{statusCartao}</div>
+                                </li>
+                                <li class="statusCartao">
+                                    <template if:true={solicitar2Via}>
+                                        <lightning-button label="2ª via do cartão" onclick={handleButtonSegundaViaCartao}></lightning-button>
+                                    </template>
+                                    <template if:true={tipoCartaoChip}>
+                                        <template if:true={statusContactless}>
+                                            <lightning-input type="toggle" onchange={handleChangeToggle} name="novoStatusContactless" checked>
+                                            </lightning-input>
+                                        </template>
+                                        <template if:false={statusContactless}>
+                                            <lightning-input type="toggle" onchange={handleChangeToggle}  name="novoStatusContactless">
+                                            </lightning-input>
+                                        </template>
+                                    </template>
+                                </li>
+                            </ul>
+                        </div>
+                        <template if:true={tipoCartaoChip}>
+                            <div class="mt-20">
+                                <label class="label-caso">Preenchimento de caso</label>
+                                <div class="mt-5 boxCaso">
+                                    <lightning-record-edit-form object-api-name="Case">
+                                        <ul>
+                                            <li>
+                                                <label>Origem</label>
+                                                <lightning-input-field 
+                                                    language=""
+                                                    value={origemValue}
+                                                    field-name="Origin" 
+                                                    class="lightningInput" 
+                                                    placeholder="--Nenhuma--"
+                                                    onchange={handleChangeOrigem} 
+                                                    variant="label-hidden"> 
+                                                </lightning-input-field>
+                                            </li>
+                                            <li>
+                                                <label>Canal</label>
+                                                <lightning-input-field
+                                                    value={canalValue}
+                                                    field-name="CanalEntrada__c" 
+                                                    class="lightningInput" 
+                                                    placeholder="--Nenhuma--"
+                                                    onchange={handleChangeCanal} 
+                                                    variant="label-hidden"> 
+                                                </lightning-input-field>
+                                            </li>
+                                        </ul>    
+                                    </lightning-record-edit-form>   
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="boxFooter">
+                <ul>
+                    <li>
+                        <lightning-button label="Voltar" onclick={handleButtonCancelar}></lightning-button>
+                    </li>
+                    <li>
+                        <lightning-button label="Salvar Alterações" variant="brand" onclick={handleButtonSalvar} disabled={disableButtonSalvar}></lightning-button>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+    </template>
+    <template if:true={abrirSegundaViaCartao}>
+        <c-bcsf_-segunda-via-cartao
+            record-id={recordId}
+            close-parent-component={closeModalComponent}
+            oncloseparentmodal={closeQuickAction}>
+        ></c-bcsf_-segunda-via-cartao>   
+    </template>
+</template>

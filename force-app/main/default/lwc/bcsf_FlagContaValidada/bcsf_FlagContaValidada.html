@@ -1,0 +1,36 @@
+<template>
+    <template lwc:if={isNull}>
+       
+    </template>
+
+    <template lwc:else >
+      <div class="container">
+          <template lwc:if={contaValidada}>
+              <span class="slds-badge slds-theme_success slds-p-around_x-small text textBox ">
+                <lightning-icon 
+                icon-name="utility:success" 
+                class="slds-m-right_small slds-m-left_small"
+                alternative-text="Sucesso" 
+                variant="success"
+                size="small">
+                </lightning-icon>  
+                Cliente com a senha validada 
+                </span>
+            </template>
+            
+            <template lwc:else>
+                <span class="slds-badge slds-theme_warning slds-p-around_x-small text textBox">
+                    <lightning-icon 
+                    icon-name="utility:warning" 
+                    class="slds-m-right_small slds-m-left_small"
+                    alternative-text="Alerta" 
+                    variant="warning"
+                    size="small">
+                </lightning-icon>
+                Cliente sem a senha validada 
+                </span>
+            </template>
+            
+        </div>
+    </template>
+</template>

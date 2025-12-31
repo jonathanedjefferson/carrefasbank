@@ -1,0 +1,117 @@
+.custom {
+    background-color: #00A36A;
+    background: #00A36A;
+    background-image: #00A36A;
+    float: left;
+    position: absolute;
+    left: 10px;
+    margin-top: 7px;
+    width: 36px;
+    height: 36px;
+}
+
+.customArticleClose{
+    margin-right: 8px;;
+}
+.customArticleClose img{
+    width: 30px;
+    margin-top: 8px;
+    margin-left: 10px;
+} 
+
+.customArticleMin {
+    height: 40px;
+}
+
+.customArticleMin img {
+    margin-top:22px;
+    width: 16px;
+}
+
+.customArticle {
+    cursor: pointer;
+}
+
+.header {
+    width: 48%;
+    background-color: #00A36A;
+    background: #00A36A;
+    background-image: #00A36A;
+    float: left;
+    padding-right: 400px;
+} 
+
+.article {
+    width: 30px;
+    margin-top: 8px;
+}
+
+.max {
+    float: right;
+   
+    right: -308px;
+    margin-top: 15px;
+    width: 30px;
+    height: 30px;
+}
+
+.min {
+    float: right;
+    position: absolute;
+    right: -275px;
+    margin-top: 33px;
+}
+
+h2 {
+    color:#FFFFFF;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 12px;
+    white-space: nowrap;
+    float: left;
+    width: 45%;
+    text-indent: 60px;
+    vertical-align: middle;
+    margin-top: 22px;
+    top: -9px
+}
+
+.chat-label {
+    display: flex; /* Ativa o flexbox */
+    align-items: center; /* Centraliza verticalmente */
+    justify-content: center; /* Centraliza horizontalmente */
+    color: white;
+    width: 100%;
+    font-weight: bold;
+    font-style: normal;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #00A36A;
+    font-size: smaller;
+    opacity: 0; /* Começa totalmente transparente */
+    animation: fadeIn 2s ease-in-out forwards; /* Aplica a animação */
+    text-align: center; /* Centraliza horizontalmente o texto */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0; /* Inicia com opacidade 0 */
+    }
+    to {
+        opacity: 1; /* Termina com opacidade 1 */
+    }
+}
+
+.chat-label.fade-out {
+    animation: fadeOut 2s ease-in-out forwards; /* Aplica a animação de fade-out */
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1; /* Inicia com opacidade 1 */
+    }
+    to {
+        opacity: 0; /* Termina com opacidade 0 */
+    }
+}

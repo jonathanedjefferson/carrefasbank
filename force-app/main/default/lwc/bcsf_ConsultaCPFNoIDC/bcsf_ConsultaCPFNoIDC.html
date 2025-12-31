@@ -1,0 +1,32 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+    </div>
+    
+    <div class="title">Buscar cliente pelo CPF</div>
+    <br>
+    <div class="c-container">
+        <div class="busca">
+            <lightning-input type="text" name="inputCpf" label="Digite o número do CPF(apenas números):" placeholder="Digite aqui..." onchange={handlerCPF} maxlength="14" value={cpfImputFormat}></lightning-input>
+            <lightning-button variant="brand" label="Buscar"  onclick={buscar} class="btn" disabled={desableBuscar}></lightning-button>
+            <lightning-button label="Consultar Propostas" class="btn"  onclick={handlerBtnConsultarProposta} disabled={desableBuscar}></lightning-button>
+        </div>
+        
+        <br>
+
+        <div class="listInfoAccount" lwc:if={showInfoAccount}>
+            <ul class="listUl">
+                <li>
+                    <div class="cmpName">Nome do cliente:</div>
+                    <div class="cmpValue">{NameAccount}</div>
+                </li>
+                <br>
+                <li>
+                    <div class="cmpName">Data de Nascimento:</div>
+                    <div class="cmpValue">{DataNascimento}</div>
+                </li>
+            </ul>
+            <lightning-button variant="brand" label="Ir para a Conta"  onclick={irAccount} class="btn"></lightning-button>
+        </div>
+    </div>
+</template>

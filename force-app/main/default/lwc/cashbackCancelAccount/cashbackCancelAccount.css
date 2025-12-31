@@ -1,0 +1,86 @@
+h1 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+lightning-modal-body {
+    position: relative;
+}
+
+.layout-container {
+    margin: 7.5px 0;
+}
+
+.second-line-item {
+    margin-top: 10px;
+}
+
+.values {
+    font-weight: bold;
+}
+
+.separetion-line{
+    border-top: solid #dddbda;
+    margin: 20px 0;
+}
+
+.detail-message {
+    background-color: #ffb75d;
+    color: #342616;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px 0;
+    padding: 20px;
+    height: 50px;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.custom-spinner {
+    position: absolute;
+    opacity: 0.5;
+}
+
+.slds-spinner_container {
+    background-color: white;
+}
+
+.icon-success {
+    margin-right: 10px;
+    --sds-c-icon-color-foreground-default: white;
+}
+
+.icon-message {
+    margin-right: 10px;
+    --sds-c-icon-color-foreground-default: #342616;
+}
+
+.review-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.case-review {
+    margin: 15px 0;
+    padding: 15px;
+    background-color: #f8f9fa;
+}
+
+.confirmation-message {
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+    width: 100%;
+}
+
+.next-button {
+    margin-left: 5px;
+}
+
+.created-date {
+    margin-top: 5px;
+}

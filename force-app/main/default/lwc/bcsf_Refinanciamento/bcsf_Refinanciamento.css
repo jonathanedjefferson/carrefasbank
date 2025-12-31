@@ -1,0 +1,236 @@
+/* Styles genericos */
+.title {
+    font-size: 20px;
+    color:#080707;
+    text-align:center;
+    padding: 20px 0;
+    box-shadow: 0px 1px 0px #DDDBDA;
+}
+.subTitle{
+    font-weight: bold;
+    font-size: var(--font-size-xlarge);
+    margin-top: 15px;
+    margin-bottom: 2px;
+    padding-bottom: 15px;
+    position: relative;
+    display: inline-block;
+}
+.subTitle::after{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50%; 
+    border-bottom: 2px solid black;
+}
+.colorName{
+    display: flex;
+    align-items: center;
+    color: #444444;
+    font-weight: 500;
+    font-size: var(--font-size-large);
+}
+.colorCode{
+    display: flex;
+    align-items: center;
+    color: #444444;
+    font-size: var(--font-size-medium);
+}
+.colorToken{
+    color: rgba(227, 6, 106, 1);
+    font-size: var(--font-size-small);
+}
+.container {
+    display: flex;
+    flex-wrap: wrap;
+}
+.containerAlternative{
+    display: flex;
+    flex-wrap: wrap;
+    width: 80%;
+}
+.alert{
+    background-color: #FFB75D;
+    padding: 10px;
+}
+/* Styles genericos Fim*/
+
+.c-container {
+    padding: 20px 40px;
+}
+
+h1 {
+    font-size: 24px;
+    color:#000;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.listInputs{
+    display: flex;
+    justify-content: space-between;
+    width: 70%;
+}
+.troco{
+    display: flex;
+    padding-left: 5%;
+    margin-left: 5%;
+    justify-content: space-between;
+    border-left: #D9D9D9 solid 1px;
+    white-space: nowrap;
+}
+.escolherParcelas{
+    width: 40%;
+}
+
+
+.listInformacoes{
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+}
+
+.borda{
+    border-right: #D9D9D9 solid 1px;
+}
+
+.cmpName {
+    font-size: 14px;
+}
+.cmpValue {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.boxCardPrincipal {
+    box-shadow: 0px 1px 0px #DDDBDA;
+    padding-bottom: 20px;  
+}
+.boxCardPrincipal ul {
+    margin: -20px 0px 0px 0px;
+}   
+
+.step02{
+    width: 100%;
+}
+
+.step02 h1{
+    font-weight: 400;
+}
+.step002 h1{
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+.step002 h2{
+    margin-top: 0px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 600;
+}
+.listInformacoesAlternativa{
+    display: flex;
+    justify-content: space-between;
+    flex: 2;
+    width: 70%;
+}
+.listInformacoesAlternativa ul{
+    margin-right: 15px;
+}
+
+.valueInput{
+    font-size: 13px;
+    margin-top: -17px;
+    padding-top: 0px;
+}
+
+.valorTrocoErro{
+    color: red;
+    font-weight: 400;
+    font-size: 12px;
+}
+
+.statusContrato{
+    background-color: #C23934;
+    color: #ffffff;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 50px;
+}
+.boxStep3 h1{
+    font-size: 18px;
+    margin-bottom: 0px;
+    font-weight: 400;
+}
+.boxStep3 h2{
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 0px;
+}
+.boxStep3 p{
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: 10px;
+}
+
+.avisoAlternativo{
+    background-color: #f89807;
+    opacity: 1;
+    background: repeating-linear-gradient( 45deg, #f8ae54, #f8ae54 50px, #ffbb67 50px, #ffbb67 100px);
+    width: 100%;
+    height: 30px;
+    padding-left: 15px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.avisoAlternativo:last-child{
+    margin-top: -30px;
+}
+.avisoTexto{
+    color: black;
+    font-weight: 400;
+    margin: auto;
+}
+.avisoTexto a{
+    color: black;
+    font-weight: 400;
+    text-decoration: underline black;
+}
+
+
+/* Inputs Case */
+.boxInputs{
+    margin-bottom: 0px;
+}
+.boxInputs h1{
+    margin-bottom: 5px;
+    font-weight: 400;
+    font-size: 18px;
+}
+.boxInputs ul {
+    display:flex;
+    justify-content: start;
+    max-width: 95%;
+    flex-wrap: wrap;
+}
+.boxInputs ul li {
+    width: 40%;
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+.required {
+    color: red;
+  }
+
+/* Footer */
+footer {
+    box-shadow:  0px -1px 0px #DDDBDA;
+    margin-top: 30px;
+}
+.boxFooter  {
+    padding:20px;
+}
+.boxFooter ul {
+    display: flex;
+    justify-content: space-between;
+}

@@ -1,0 +1,99 @@
+<template>
+    <div if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <template lwc:if={statusFalecimento}>
+        <div class="title">Falecimento</div>
+
+        <div class="slds-m-left_large">
+            <div>
+                <h1 class="slds-text-heading_small slds-m-top_medium">Consulte a Situação Cadastral do CPF</h1>
+                <ul class="slds-list_horizontal">
+                    <li class="listDados">
+                        <div class="cmpName">Nome completo</div>
+                        <div class="cmpValue">{nome}</div>
+                    </li >
+                    <li class="listDados">
+                        <div class="cmpName">Data de nascimento</div>
+                        <div class="cmpValue">{dataNascimento}</div>
+                        <a onclick={handleCopyDataNascimento} class="copiar">Copiar</a>
+                    </li>
+                    <li class="listDados">
+                        <div class="cmpName">CPF</div>
+                        <div class="cmpValue">{cpf}</div>
+                        <a onclick={handleCopyCPF} class="copiar">Copiar</a>
+                    </li>
+                    <li class="listDados">
+                        <div class="cmpName">Status Conta</div>
+                        <div class="cmpValue">{statusConta}</div>
+                    </li>
+                </ul>
+            </div>
+        
+            <lightning-button
+                label="Consultar"
+                title="Consultar status"
+                onclick={handleConsultar}
+                variant="brand-outline"
+                icon-name="utility:link"
+                class="slds-m-bottom_small"
+                icon-position="right">
+            </lightning-button>
+        
+            <div class="slds-p-top_small">
+                <label>Situação cadastral do CPF<span style="position:relative; top:-3px;"><lightning-helptext content="Confira a situação cadastral do CPF antes de prosseguir." class="slds-m-left_xx-small"></lightning-helptext></span></label>
+                <lightning-combobox
+                    name="progress"
+                    value={valueStatus}
+                    options={options}
+                    placeholder="Selecione a opção"
+                    class="slds-size_2-of-6" 
+                    variant="label-hidden"
+                    onchange={handleStatus} >
+                </lightning-combobox>
+            </div>
+        </div>
+
+    </template>
+    
+    <template if:true={cancelar}>
+        <c-b-c-s-f_-cancelamento-conta
+            close-parent-component={closeModalComponent}
+            oncloseparentmodal={closeQuickAction}
+            cmp-falecimento={cmpFalecimento}
+            onreload={handleVoltarToFalecimento}>
+        ></c-b-c-s-f_-cancelamento-conta>
+    </template>
+
+    
+    <template if:true={bloquear}>
+        <c-bcsf_-bloqueio-cartao
+            close-parent-component={closeModalComponent}
+            oncloseparentmodal={closeQuickAction}
+            cmp-falecimento={cmpFalecimento}
+            onreload={handleVoltarToFalecimento}>
+        ></c-bcsf_-bloqueio-cartao>   
+    </template>
+
+    <template lwc:if={statusFalecimento}>
+        <footer>
+            <div class="boxFooter">
+                <ul>
+                    <li>
+                        <lightning-button variant="Neutral" label="Cancelar" onclick={handleButtonVoltar} disabled={disableButton} class="slds-m-left_xx-small"></lightning-button>
+                    </li>
+                    <li>
+                        <lightning-progress-indicator current-step={currentStep} class="customProgress" type="base" has-error={hasErrorSteps} variant="base">
+                            <lightning-progress-step label="Consultar Status" value="1"></lightning-progress-step>
+                                <lightning-progress-step label="Executar Processo" value="2" ></lightning-progress-step>
+                        </lightning-progress-indicator>
+                    </li>
+                    <li>
+                        <lightning-button variant="brand" label="Prosseguir"  onclick={handleProsseguir} disabled={buttonPross} class="slds-m-right_large"></lightning-button>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+    </template>
+    
+</template>

@@ -1,0 +1,43 @@
+<template>
+    <lightning-card>
+        <lightning-tabset active-tab-value="open">
+            <lightning-tab label="Abertura massificada" value="open" onactive={handleSelectTab}>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="sub-info">
+                        <lightning-icon icon-name="utility:info" size="x-small"></lightning-icon>
+                        <span>Baixe o arquivo modelo no botão ao lado.</span>
+                        <a href="#" onclick={handleDownloadModel} class="link-download">Baixar arquivo modelo</a>
+                    </div>
+
+                    <h1>Importe seu arquivo abaixo</h1>
+
+                    <div class="upload-area" ondragover={handleDragOver} ondrop={handleDrop}>
+                        <lightning-button label="Importar arquivo" onclick={openFilePicker} icon-name="utility:upload" class="upload-button"></lightning-button>
+                        <p>ou arraste seus arquivos aqui<br/>em formato .csv</p>
+                        <input type="file" accept=".csv" onchange={handleFileChange} class="hidden-input"/>
+                    </div>
+                </div>
+            </lightning-tab>
+            <lightning-tab label="Fechamento massificado" value="close" onactive={handleSelectTab}>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="sub-info">
+                        <lightning-icon icon-name="utility:info" size="x-small"></lightning-icon>
+                        <span>Baixe o arquivo modelo no botão ao lado.</span>
+                        <a href="#" onclick={handleDownloadModel} class="link-download">Baixar arquivo modelo</a>
+                    </div>
+
+                    <h1>Importe seu arquivo abaixo</h1>
+
+                    <div class="upload-area" ondragover={handleDragOver} ondrop={handleDrop}>
+                        <lightning-button label="Importar arquivo" onclick={openFilePicker} icon-name="utility:upload" class="upload-button"></lightning-button>
+                        <p>ou arraste seus arquivos aqui<br/>em formato .csv</p>
+                        <input type="file" accept=".csv" onchange={handleFileChange} class="hidden-input"/>
+                    </div>
+                </div>
+            </lightning-tab>
+            <lightning-tab label="Erros de importação" value="error" onactive={handleSelectTab}>
+                <c-bulk-case-import-errors></c-bulk-case-import-errors>
+            </lightning-tab>
+        </lightning-tabset>
+    </lightning-card>
+</template>

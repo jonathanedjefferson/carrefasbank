@@ -1,0 +1,245 @@
+.textInfoData{
+    font-size: 13px;
+    margin: 16px 0px;
+}
+
+.pageTreeAlert{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 15px;
+    background-color: #FFB75D;
+    line-height: 20px;
+    margin: 8px 0px 24px 0px;
+}
+
+.pageTreeAlert p{
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.pageTreeAlert span:first-child{
+    font-weight: 700;
+}
+
+.pageTreeAlert span:nth-child(2){
+    font-weight: 600;
+}
+
+.iconAlert{
+    --slds-c-icon-color-foreground-default: #3E3E3C;
+}
+
+.containerTable {
+    margin: 15px 0px;
+    max-height: 450px;
+    overflow: auto;
+}
+
+.columnDefault{
+    width: 15%;
+}
+
+.customHeader {
+    font-size: 13px;
+    border-bottom: 1px solid #d8dde6; 
+    margin: auto;
+}
+
+.customHeader span{
+    display: flex;
+    align-items: center;
+}
+
+.customTooltip{
+    padding-bottom: 4px;
+}
+
+.tableLancamentos{
+    margin-bottom: 24px;
+}
+
+.slds-table th, .slds-table td {
+    border-left: 1px solid #d8dde6; 
+    border-right: 1px solid #d8dde6; 
+}
+
+.slds-table td:first-child {
+    border-left: none; 
+}
+
+.slds-table th:first-child {
+    border-left: none; 
+    border-bottom: 1px solid #d8dde6; 
+}
+
+.slds-table td:last-child, .slds-table th:last-child {
+    border-right: none; 
+}
+
+.slds-table tbody tr {
+    border-bottom: none; 
+}
+
+.selectColumn{
+    width: 6%;
+    text-align: center;
+    margin: 0;
+    padding: 2px 0 0 0 !important;
+}
+
+.buttonFooter{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.pageFive{
+    width: 100%;
+    border: 1px solid #d8dde6;
+    border-radius: 4px;
+    margin-bottom: 24px;
+    padding: 16px;
+}
+
+.caseNumber h1{
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.caseNumber h1 span{
+    font-weight: 700;
+}
+
+.caseNumber p{
+    font-size: 14px;
+}
+
+.success-message {
+    display: flex;
+    align-items: center;
+    height: 18px;
+    margin-bottom: 24px;
+}
+
+.success-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    --slds-c-icon-color-foreground-default: #2e844a;
+    margin-right: 8px;
+    padding: 5px;
+    height: 18px;
+    width: 18px;
+}
+
+.success-text {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.containerDadosContrato{
+    margin-bottom: 16px;
+}
+
+.containerDadosContrato h1{
+    font-size: 18px;
+    font-weight: 600;
+    margin: 32px 0px 20px 0px;
+}
+
+.containerDadosContrato ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-bottom: 16px;
+}
+
+.emailAlternativo{
+    font-size: 13px;
+    font-weight: 600;
+    padding: 0;
+}
+
+.buttonGroupContrato{
+    padding: 6px 0px 32px 0px;
+    border-bottom: 1px solid #d8dde6;
+}
+
+.dadosCaso{
+    margin-top: 24px;
+}
+
+.dadosCaso h1{
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.dadosCaso ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.infoName{
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.infoValue{
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.emailAlternativoField{
+    padding-top: 10px;
+    width: 55%;
+}
+
+.tavaAlternativa{
+    display: flex;
+    align-items: center;
+    background-color: #F9E3B6;
+}
+
+.tavaAlternativa:hover{
+    background-color: #F9E3B6;
+}
+
+.iconTaxa{
+    --slds-c-icon-color-foreground-default: #e4a201;
+}
+
+.buttonFooter{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.listaEmpty{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 40px 0px;
+}
+
+.listaEmpty img{
+    width: 300px;
+    height: 200px;
+}
+
+.listaEmpty h1{
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.listaEmpty p{
+    font-size: 13px;
+}
+
+.desbloqueioCell{
+    background-color: #F9E3B6;
+}

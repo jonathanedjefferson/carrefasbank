@@ -1,0 +1,274 @@
+<template>
+    <div class="container">
+        <div lwc:if={spinner} role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+            <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+        </div>
+        <div class="header">
+            <lightning-icon icon-name="standard:approval" alternative-text="Approved" title="Approved"></lightning-icon>
+            <h1>Pendente de Validação</h1>
+        </div>
+
+        <div class="informacoes" lwc:if={showInfo}>
+            <div class="columInformacoes">
+                <ul>
+                    <li>Telefone de Contato</li>
+                    <li>{TelefoneContato}</li>
+                    <li><lightning-icon icon-name="utility:edit" alternative-text="Editar" title="Editar" size="xx-small" class="btnEdit" onclick={handleEdit}></lightning-icon></li>
+                </ul>
+                <ul>
+                    <li>Solicitação de Cartão</li>
+                    <li>{SolicitacaoCartao}</li>
+                    <li><lightning-icon icon-name="utility:edit" alternative-text="Editar" title="Editar" size="xx-small" class="btnEdit" onclick={handleEdit}></lightning-icon></li>
+                </ul>
+                <ul lwc:if={MudouCPF}>
+                    <li>CPF</li>
+                    <li>{CPF}</li>
+                    <li><lightning-icon icon-name="utility:edit" alternative-text="Editar" title="Editar" size="xx-small" class="btnEdit" onclick={handleEdit}></lightning-icon></li>
+                </ul>
+                <ul lwc:else>
+                    <li>Endereço</li>
+                    <li>{Rua}</li>
+                    <li><lightning-icon icon-name="utility:edit" alternative-text="Editar" title="Editar" size="xx-small" class="btnEdit" onclick={handleEdit}></lightning-icon></li>
+                </ul>
+                <ul>
+                    <li>Complemento</li>
+                    <li>{Complemento}</li>
+                    <li><lightning-icon icon-name="utility:edit" alternative-text="Editar" title="Editar" size="xx-small" class="btnEdit" onclick={handleEdit}></lightning-icon></li>
+                </ul>
+                <ul>
+                    <li>Cidade</li>
+                    <li>{Cidade}</li>
+                    <li><lightning-icon icon-name="utility:edit" alternative-text="Editar" title="Editar" size="xx-small" class="btnEdit" onclick={handleEdit}></lightning-icon></li>
+                </ul>
+            </div>
+
+            <div class="columInformacoes">
+                <ul>
+                    <li>E-mail</li>
+                    <li>{Email}</li>
+                    <li><lightning-icon icon-name="utility:edit" alternative-text="Editar" title="Editar" size="xx-small" class="btnEdit" onclick={handleEdit}></lightning-icon></li>
+                </ul>
+                <ul>
+                    <li>CEP</li>
+                    <li>{CEP}</li>
+                    <li><lightning-icon icon-name="utility:edit" alternative-text="Editar" title="Editar" size="xx-small" class="btnEdit" onclick={handleEdit}></lightning-icon></li>
+                </ul>
+                <ul>
+                    <li>Número</li>
+                    <li>{NumeroCasa}</li>
+                    <li><lightning-icon icon-name="utility:edit" alternative-text="Editar" title="Editar" size="xx-small" class="btnEdit" onclick={handleEdit}></lightning-icon></li>
+                </ul>
+                <ul>
+                    <li>Bairro</li>
+                    <li>{Bairro}</li>
+                    <li><lightning-icon icon-name="utility:edit" alternative-text="Editar" title="Editar" size="xx-small" class="btnEdit" onclick={handleEdit}></lightning-icon></li>
+                </ul>
+                <ul>
+                    <li>UF</li>
+                    <li>{UF}</li>
+                    <li><lightning-icon icon-name="utility:edit" alternative-text="Editar" title="Editar" size="xx-small" class="btnEdit" onclick={handleEdit}></lightning-icon></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="slds-m-around_medium" lwc:if={showEditForm}>
+            <lightning-record-edit-form object-api-name="AvaliacaoAlteracaoCadastral__c" record-id={IdFormsAvaliacao}>
+                <div class="recordEditForm">
+                    <div class="columEditForm">
+                        <lightning-input-field field-name="TelefoneContato__c"> </lightning-input-field>
+                        <lightning-input-field field-name="SolicitacaoCartao__c"> </lightning-input-field>
+                        <lightning-input-field lwc:if={MudouCPF} field-name="CPF__c"> </lightning-input-field>
+                        <lightning-input-field lwc:else field-name="Rua__c"> </lightning-input-field>
+                        <lightning-input-field field-name="Complemento__c"> </lightning-input-field>
+                        <lightning-input-field field-name="Cidade__c"> </lightning-input-field>
+                    </div>
+                    
+                    <div class="columEditForm">
+                        <lightning-input-field field-name="Email__c"> </lightning-input-field>
+                        <lightning-input-field field-name="CEP__c"> </lightning-input-field>
+                        <lightning-input-field field-name="NumeroCasa__c"> </lightning-input-field>
+                        <lightning-input-field field-name="Bairro__c"> </lightning-input-field>
+                        <lightning-input-field field-name="UF__c"> </lightning-input-field>
+                    </div>                    
+                </div>
+            
+                <div class="slds-clearfix">
+                    <div  class="slds-float_left">
+                        <lightning-button variant="neutral" label="Cancelar" onclick={handleEdit}></lightning-button>
+                    </div>
+                    <div  class="slds-float_right">
+                        <lightning-button variant="brand" type="submit" label="Salvar" onclick={handleSave}></lightning-button>
+                    </div>
+                </div>
+            </lightning-record-edit-form>
+        </div>
+
+        <footer lwc:if={showInfo}>   
+            <div class="boxFooter">
+                <div>
+                    <lightning-button variant="neutral" label="Aprovar" onclick={handleAprovar}></lightning-button> <br>
+                </div>
+
+                <div>
+                    <lightning-button variant="neutral" label="Reprovar" onclick={handleReprovar}></lightning-button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- modal start -->      
+   <template if:true={showModal}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+            <div lwc:if={spinner} role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+                <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+            </div>
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse slds-float_right" title="Close" onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close"
+                    alternative-text="close"
+                    variant="inverse"
+                    size="small" ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+
+                <div class="slds-modal__content slds-p-around_medium body" id="modal-content-id-1">
+                    <div lwc:if={step01}>
+                        <div class="avisoTexto">
+                            <lightning-icon icon-name="utility:warning" alternative-text="Warning!" title="Warning" size="x-small"></lightning-icon> 
+                            
+                            <p>Ao finalizar, o caso sera fechado e as alterações solicitadas abaixo não serão feitas no perfil do cliente.</p>
+                        </div>
+                        <br>
+
+                        <div lwc:if={MudouCPF} class="infoModal">
+                            <h1>Detalhes da solicitação</h1>
+                            <br>
+
+                            <p class="cmpLabel">CPF</p>
+                            <p class="cmpValue">{CPF}</p>
+                        </div>
+                        <div lwc:else class="infoModal">
+                            <div class="listInfo">
+                                <ul>
+                                    <li>
+                                        <div class="cmpLabel">Telefone de contato</div>
+                                        <div class="cmpValue">{TelefoneContatoInfo}</div>
+                                    </li>
+                                    <li>
+                                        <div class="cmpLabel">CEP</div>
+                                        <div class="cmpValue">{CEPInfo}</div>
+                                    </li>
+                                    <li>
+                                        <div class="cmpLabel">Complemento</div>
+                                        <div class="cmpValue">{ComplementoInfo}</div>
+                                    </li>
+                                </ul>
+
+                                <ul>
+                                    <li>
+                                        <div class="cmpLabel">E-mail</div>
+                                        <div class="cmpValue">{EmailInfo}</div>
+                                    </li>
+                                    <li>
+                                        <div class="cmpLabel">Endereço</div>
+                                        <div class="cmpValue">{RuaInfo}</div>
+                                    </li>
+                                    <li>
+                                        <div class="cmpLabel">Bairro</div>
+                                        <div class="cmpValue">{BairroInfo}</div>
+                                    </li>
+                                </ul>
+
+                                <ul>
+                                    <li>
+                                        <div class="cmpLabel">Soliciração de cartão</div>
+                                        <div class="cmpValue">{SolicitacaoCartaoInfo}</div>
+                                    </li>
+                                    <li>
+                                        <div class="cmpLabel">Número</div>
+                                        <div class="cmpValue">{NumeroCasaInfo}</div>
+                                    </li>
+                                    <li>
+                                        <div class="cmpLabel">Cidade</div>
+                                        <div class="cmpValue">{CidadeInfo}</div>
+                                    </li>
+                                </ul>
+
+                                <ul>
+                                    <li>
+                                        <div class="cmpLabel">&zwnj; </div>
+                                        <div class="cmpValue">&zwnj;  </div>
+                                    </li>
+                                    <li>
+                                        <div class="cmpLabel">&zwnj;  </div>
+                                        <div class="cmpValue">&zwnj;  </div>
+                                    </li>
+                                    <li>
+                                        <div class="cmpLabel">UF</div>
+                                        <div class="cmpValue">{UFInfo}</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="listInput">
+                            <ul>
+                                <li>
+                                    <p class="cmpLabel">Número do protocolo</p>
+                                    <p class="cmpValue">{CaseNumber}</p>
+                                </li>
+                                <li>
+                                    <p class="cmpLabel">Status da solicitação</p>
+                                    <p class="cmpValue">{StatusSolicitacao}</p>
+                                </li>
+                                <li>
+                                    <p class="cmpLabel"><span class="req">*</span> Incidencia de Fraude?</p>
+                                    <lightning-radio-group
+                                        options={options01}
+                                        value={valueIncidenciaFraude}
+                                        type="radio"
+                                        onchange={handleBtnRadio}
+                                        id="valueIncidenciaFraude">
+                                    </lightning-radio-group>
+                                </li>
+                                <li>
+                                    <p class="cmpLabel"><span class="req">*</span> Falou de LGPD?</p>
+                                    <lightning-radio-group 
+                                        options={options02}
+                                        value={valueFalouLGPD}
+                                        type="radio"
+                                        onchange={handleBtnRadio}
+                                        id="valueFalouLGPD">
+                                    </lightning-radio-group>
+                                </li>
+                                <li>
+                                    <p class="cmpLabel"><span class="req">*</span> Protocolo Indevido?</p>
+                                    <lightning-radio-group class="cmpLabel"
+                                        options={options03}
+                                        value={valueProtocoloIndevido}
+                                        type="radio"
+                                        onchange={handleBtnRadio}
+                                        id="valueProtocoloIndevido">
+                                    </lightning-radio-group>
+                                </li>
+                            </ul>
+
+                            <p class="cmpLabel"><span class="req">*</span> Descrição</p>
+                            <lightning-textarea name="input3" placeholder="Digite seu comentário aqui" value={valueDescricao} onchange={handleDescricao}></lightning-textarea>
+                        </div>
+                    </div>
+
+                    <div lwc:if={step02}>
+                        <p>O protocolo número <b>{CaseNumber}</b> foi encerrado!</p>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="neutral" label="Cancelar" onclick={closeModal} style="margin-right: 5px;" lwc:if={step01}></lightning-button>
+                    <lightning-button variant="brand" label="Finalizar" onclick={finalizar} disabled={disableFinalizar}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+    <!-- modal end -->
+</template>

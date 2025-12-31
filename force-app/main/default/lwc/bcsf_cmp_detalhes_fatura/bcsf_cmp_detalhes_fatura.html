@@ -1,0 +1,64 @@
+<template>
+    <lightning-accordion allow-multiple-sections-open active-section-name={section} onsectiontoggle={handleSectionToggle}>
+        <lightning-accordion-section label={sectionLabel} name={sectionLabel}>
+            <div slot="actions">
+                <lightning-button
+                    style = "margin-right: 1px;"
+                    variant="neutral" 
+                    label="Limpar seleção"
+                    class="slds-theme_brand" 
+                    disabled={botao_limpar_bloq}
+                    onclick={limparSelecao} 
+                ></lightning-button>
+                <lightning-button
+                    style = "margin-left: 1px;"
+                    variant="brand"
+                    label="Detalhar"
+                    class="slds-theme_brand"
+                    onclick={fetchDetalhes}
+                ></lightning-button>
+            </div>
+            <table class="tabela_infos">
+                <template if:true={is_fatura_aberta}>
+                    <tr>
+                        <td>Valor parcial da fatura</td>
+                        <td>Data de Vencimento</td>
+                    </tr>
+                    <tr>
+                        <td class="tdValues">{moeda} {valorFatura}</td>
+                        <td class="tdValues">{fatura.dados.dataVencimento}</td>
+                    </tr>
+                </template>
+                <template if:false={is_fatura_aberta}>
+                    <tr>
+                        <td>Valor total da fatura</td>
+                        <td>Data de vencimento</td>
+                        <td>Valor mínimo da fatura</td>
+                        <td>Pagamento efetuados/créditos</td>
+                    </tr>
+                    <tr>
+                        <td class="tdValues">{fatura.dados.valorFatura.moeda} {valorFatura}</td>
+                        <td class="tdValues">{fatura.dados.dataVencimento}</td>
+                        <td class="tdValues">{fatura.dados.pagamentoMinimo.moeda} {fatura.dados.pagamentoMinimo.valor}</td>
+                        <td class="tdValues">{pagamentoEfetuado.moeda} {pagamentoEfetuado.valor}</td>
+                    </tr>
+                </template>
+                
+            </table>
+
+            <template if:true={detalhes}>
+                <div class="tabela_detalhes">
+                    <lightning-tree-grid
+                      key-field="idTransacao"
+                      data={detalhes}
+                      columns={columns}
+                      selected-rows={setSelectedRows}
+                      resize-column-disabled="true"
+                      onrowselection={onRowSelection}
+                      data-childrens={_childrens}
+                    ></lightning-tree-grid>
+                </div>
+            </template>
+        </lightning-accordion-section>
+    </lightning-accordion>
+</template>

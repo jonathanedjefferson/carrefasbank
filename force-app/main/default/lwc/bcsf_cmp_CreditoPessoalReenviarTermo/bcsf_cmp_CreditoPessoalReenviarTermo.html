@@ -1,0 +1,127 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+        <div class="slds-modal__container">
+            <div lwc:if={spinner}>
+                <lightning-spinner alternative-text="Carregando..." size="large" variant="brand"></lightning-spinner>
+            </div>
+            <button class="slds-button slds-button_icon slds-modal__close botao_fechar" onclick={closeQuickAction}>
+                <lightning-icon icon-name="utility:close" alternative-text="Fechar" title="Fechar" class="icon_botao_fechar slds-avatar_medium"></lightning-icon>
+            </button>
+            <div class="slds-modal__content slds-p-around_medium container-modal" id="modal-content-id-1">
+                <div class="header-modal">
+                    <h1>Envio de termo de adesão</h1>
+                </div>
+                <div class="conteudo-modal">
+                    <template if:true={step01}>
+                        <div class="box-modalidade-envio separator flex-item slds-m-top_large slds-p-bottom_medium">
+                            <ul class="flex-item">
+                                <li class="slds-m-right_x-large">
+                                    <div class="label-dados">Titular da conta</div>
+                                    <div class="value-dados">{dadosCliente.nomeCliente}</div>
+                                </li>
+                                <li class="flex-item">
+                                    <div class= "logo slds-m-right_small"><img src={logo}></div>
+                                    <div class="texts">
+                                        <div class="label-dados">Tipo de conta</div>
+                                        <div class="value-dados">{tipoConta}</div>
+                                    </div>
+                                </li>
+                            </ul>               
+                        </div>
+                        <div class="slds-m-top_medium">
+                            <div class="subtitle">Os termos de adesão serão enviados para o endereço de e-mail de cadastro:</div>
+                            <ul class="flex-item justify-content-between slds-m-vertical_medium">
+                                <li>
+                                    <div class="label-dados">Modo de envio</div>
+                                    <div class="value-dados">E-mail</div>
+                                </li>
+                                <li>
+                                    <div class="label-dados">Prazo de envio</div>
+                                    <div class="value-dados">Imediato</div>
+                                </li>
+                                <li>
+                                    <div class="label-dados">Endereço de e-mail</div>
+                                    <div class="value-dados">{dadosCliente.email}</div>
+                                </li>
+                            </ul> 
+                        </div>
+                    </template>
+                </div>
+                <div>
+                    <template if:true={step01}>
+                        <div class={classBackgroundColor}>
+                            <lightning-input class="text-bold slds-p-top_medium slds-p-bottom_medium" type="checkbox" onchange={handlerAlterarEmail} label="Encaminhar o termo de adesão para um endereço de e-mail alternativo " name="checkboxAlterarEmail" id="AlterarEmail"></lightning-input>
+                        </div>
+                        <template lwc:if={alterarEmail}>
+                        <div class={classBackgroundColor}>
+                            <div class="subtitle">Se o cliente preferir encaminhar a um endereço de e-mail alternativo:</div>
+                            <div class="slds-m-top_medium">
+                                <lightning-input class="input-email" type="email" label="Email" 
+                                    placeholder="Digite o e-mail aqui"
+                                    onblur={handleAlterarEmailEnvio}></lightning-input>
+                            </div>
+                            <div class="alert flex-item slds-m-vertical_x-large">
+                                <lightning-icon icon-name="utility:warning" size="small" alternative-text="Warning!" title="Warning" class="slds-p-right_medium color-icon"></lightning-icon>
+                                <div>
+                                    <p>O endereço de e-mail utilizado para reenviar o termo de adesão não alterará o e-mail de cadastro.</p>
+                                </div>
+                            </div>
+                        </div>
+                        </template>
+                    </template>
+                </div>
+                <div class="conteudo-modal">
+                    <template if:true={step02}>
+                        <div class="box-resumo-solicitacao slds-p-vertical_medium">
+                            <div class="finalizado-sucesso">
+                                <lightning-icon class="slds-m-right_small" icon-name="utility:success" size="small" alternative-text="sucesso"></lightning-icon>
+                                <h1 class="subtitulo-modal">Termo de adesão enviado!</h1>
+                            </div>
+                            <div class="resumo-operacao slds-m-top_medium">
+                                <div>Protocolo: <strong>{numeroProtocolo}</strong></div>
+                                <div>Em: <strong>{dataProtocolo}</strong></div>
+                                <div>Pessoa operadora: <strong>{nomeOperador}</strong></div>
+                                <div>Cliente: <strong>{dadosCliente.nomeCliente}</strong></div>
+                                <div>E-mail: <strong>{emailDestinatario}</strong></div>
+                            </div>
+                        </div>      
+                        <div class="box-resumo-caso slds-m-top_medium slds-m-bottom_large">
+                            <h1 class="subtitulo-modal">Informações do caso:</h1>
+                            <ul class="resumo-caso slds-m-top_small">
+                                <li>
+                                    <div class="label-detalhe">Origem</div>
+                                    <div class="valor-detalhe">{origemCaso}</div>
+                                </li>
+                                <li>
+                                    <div class="label-detalhe">Canal</div>
+                                    <div class="valor-detalhe">{canalCaso}</div>
+                                </li>
+                                <li>
+                                    <div class="label-detalhe">Assunto</div>
+                                    <div class="valor-detalhe">{assuntoCaso}</div>
+                                </li>
+                                <li>
+                                    <div class="label-detalhe">Evento</div>
+                                    <div class="valor-detalhe">{eventoCaso}</div>
+                                </li>
+                            </ul>
+                        </div>  
+                    </template>      
+                </div>                  
+                <div class="footer-modal">
+                    <button if:true={exibirBtnVoltar} 
+                        class="slds-button slds-button_neutral btnVoltar"
+                        onclick={handleVoltar}>
+                        Voltar
+                    </button>
+                    <button 
+                        class="slds-button slds-button_brand btnAvancar"
+                        onclick={handleAvancar} disabled={disableButtonProsseguir}>
+                        {labelBotaoAvancar}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+</template>

@@ -1,0 +1,271 @@
+<template>
+    <div if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <div class="title">Segunda Via de Senha</div>
+    <div class="c-container">
+        <template if:true={showCardPrincipal}>
+            <div class="boxCardPrincipal">
+                <div if:true={stepTwo}>
+                    <h1>Confirmação de reimpressão de senha</h1>
+                    <div class="cmpValue">Dados do cliente</div>
+                    <br>
+                </div>
+                <div if:true={stepThree}>
+                    <h1>Confirmação de reimpressão de senha</h1>
+                    <div class="cmpValue">Dados do cliente</div>
+                    <br>
+                </div>
+                <div if:false={stepTwo}>
+                    <h1>Dados do cliente</h1>
+                </div>
+
+                <div class="cmpName">Nome</div>
+                <div class="cmpValue">{nome}</div>
+                <ul class="firstUl">
+                    <li>
+                        <div class= "logo"><img src={logoTipo}></div>
+                        <div class="texts">
+                            <div class="cmpName">Tipo de conta</div>
+                            <div class="cmpValue">{tipoConta}</div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Conta</div>
+                        <div class="cmpValue">{numeroConta}</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Status da conta</div>
+                        <div class="cmpValue">{statusConta}<span style="position:relative; top:-3px;"><lightning-helptext content={statusContaInfo} class="slds-m-left_xx-small"></lightning-helptext></span></div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Data de nascimento</div>
+                        <div class="cmpValue">{dataNascimento}</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">CPF</div>
+                        <div class="cmpValue">{cpf}</div>
+                    </li>
+                </ul>
+                <ul class="secondList">
+                    <li>
+                        <div class="cmpName">Celular Seguro</div>
+                        <div class="cmpValue">{celularSeguro}</div>
+                    </li>
+                    <template if:true={possuiCelularSeguro}>
+                        <li>
+                            <div class="cmpName">Número do celular</div>
+                            <div class="cmpValue">{telefone}</div>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </template>
+
+        <div class="alertMessageAlteracao" role="alert">
+            <span class="slds-icon_container slds-icon-utility-user slds-m-right_x-small">
+                <lightning-icon icon-name="utility:warning" size="x-small" style="--slds-c-icon-color-foreground-default: black;" alternative-text="Ícone de Aviso"></lightning-icon>
+            </span>
+            <div class="textContainerAlteracao">
+                <p class="textAlertAlteracao">Para trocar o endereço do cliente, é necessário acessar o módulo de Alteração Cadastral.</p>
+                <p class="textAlertAlteracao"><span style="text-decoration:underline;font-weight:bold;" onclick={navegarParaAlteracao}>Clique aqui</span> para realizar a alteração de endereço.</p>
+            </div>
+        </div>
+        
+        <template if:false={possuiCelularSeguro}>
+            <div class="boxCardEndereco">
+                <div if:false={stepTwo}>
+                    <div class="cmpValue">Confirmação de endereço</div>
+                </div>
+                <ul class="firstUlEnd">
+                    <li>
+                        <div class="cmpName">CEP</div>
+                        <div class="cmpValue">{cep}</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Endereço</div>
+                        <div class="cmpValue">{rua}</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Número</div>
+                        <div class="cmpValue">{numero}</span></div>
+                    </li>
+                </ul>
+                <ul class="secondListEnd">
+                    <li>
+                        <div class="cmpName">Complemento</div>
+                        <div class="cmpValue">{complemento}</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Bairro</div>
+                        <div class="cmpValue">{bairro}</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Cidade</div>
+                        <div class="cmpValue">{cidade}</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">UF</div>
+                        <div class="cmpValue">{estado}</div>
+                    </li>
+                </ul>
+            </div>
+        </template>
+        
+            
+        <div class="boxSteps">
+            <!-- Primeiro bloco -->
+            <template if:true={stepOne}>           
+                <h1>Preenchimento de caso</h1>
+                <div class="txtInfos txtInfosBoxTwo">Selecione a seguir o cartão desejado, origem e o canal do caso a ser criado.</div>
+                <div class="boxInputs">
+                    <lightning-record-edit-form object-api-name="Case">
+                        <ul>
+                            <li>
+                                <lightning-combobox
+                                    label="Cartão"
+                                    name="progress"
+                                    placeholder="--Nenhuma--"
+                                    value={valueCartoes}
+                                    options={optionsCartoes}
+                                    onchange={handleChangeStatusReimpressao} >
+                                </lightning-combobox>
+                            </li>
+                            <li>
+                                <lightning-combobox
+                                    label="Modo de envio"
+                                    name="progress"
+                                    placeholder="--Nenhuma--"
+                                    value={valueMotivo}
+                                    options={optionsMotivo}
+                                    onchange={handleChangeMotivoCancelamento} 
+                                    disabled={disabledMotivo}
+                                    class="slds-hidden">
+                                </lightning-combobox>
+                            </li>
+                            <li>
+                                <label>Origem</label>
+                                <lightning-input-field 
+                                    language=""
+                                    value={valueOrigem}
+                                    field-name="Origin" 
+                                    class="lightningInput" 
+                                    placeholder="--Nenhuma--"
+                                    onchange={handleChangeOrigem} 
+                                    variant="label-hidden"> 
+                                </lightning-input-field>
+                            </li>
+                            <li>
+                                <label>Canal</label>
+                                <lightning-input-field
+                                    value={valueCanal}
+                                    field-name="CanalEntrada__c" 
+                                    class="lightningInput" 
+                                    placeholder="--Nenhuma--"
+                                    onchange={handleChangeCanal} 
+                                    variant="label-hidden"> 
+                                </lightning-input-field>
+                            </li>
+                        </ul>    
+                    </lightning-record-edit-form>   
+                </div>
+            </template>
+            <!-- Final do Primeiro bloco -->
+            
+            <!-- Inicio do Segundo bloco -->
+            <template if:true={stepTwo}>
+                <h1>Informações do caso</h1>
+
+                <div class="boxCardPrincipal boxPrincipalCardTwo">
+                    <ul>
+                        <li>
+                            <div class="texts">
+                                <div class="cmpName">Nome no cartão</div>
+                                <div class="cmpValue">{nomeNoCartao}</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="texts">
+                                <div class="cmpName">Número do cartão</div>
+                                <div class="cmpValue">{numeroCartao}</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="texts">
+                                <div class="cmpName">Status do cartão</div>
+                                <div class="cmpValue">{valueStatusCartoes}<span style="position:relative; top:-3px;"><lightning-helptext content={statusCartaoInfo} class="slds-m-left_xx-small"></lightning-helptext></span></div>
+                            </div>
+                        </li>
+                        <!-- <li>
+                            <div class="texts">
+                                <div class="cmpName">Modo de envio</div>
+                                <div class="cmpValue">{valueMotivo}</div>
+                            </div>
+                        </li>  -->
+                    </ul>
+
+                    <ul>
+                        <li>
+                            <div class="texts">
+                                <div class="cmpName">Origem</div>
+                                <div class="cmpValue">{valueOrigem}</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="texts">
+                                <div class="cmpName">Canal</div>
+                                <div class="cmpValue">{valueCanal}</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </template>
+             <!-- Final do Segundo bloco -->
+
+            <!-- Inicio do Terceiro bloco -->
+            <template if:true={stepThree}>
+                <h1>Segunda Via de Senha realizada com sucesso!</h1>
+                <div class="txtInfos">Protocolo: {numProtocolo}</div>       
+            </template>
+            <!-- Final do Terceiro bloco -->
+        </div>
+        
+        
+    </div>
+
+    <footer>   
+        <div class="boxFooter">
+            <ul>
+                <li>
+                    <lightning-button variant="base" label="Voltar" onclick={handleButtonVoltar} disabled={disableButton} class="slds-m-left_x-small"></lightning-button>
+                </li>
+                <li>
+                    <lightning-progress-indicator current-step={currentStep} class="customProgress" type="base" has-error={hasErrorSteps} variant="base">
+                        <lightning-progress-step label="Preenchimento do Caso" value="1"></lightning-progress-step>
+                        <lightning-progress-step label="Confirmação de Reimpressão de Senha" value="2"></lightning-progress-step>
+                        <lightning-progress-step label="Informações do Caso" value="3"></lightning-progress-step>
+                        <template if:true={stepFour}>
+                            <lightning-progress-step label="Sucesso" value="4" class="slds-hide"></lightning-progress-step>
+                        </template>
+                    </lightning-progress-indicator>
+                </li>
+                <template if:true={showButtonProsseguir}>
+                    <li>
+                        <!-- disabled={buttonPross} -->
+                        <lightning-button variant="brand" label="Prosseguir"  onclick={handleProsseguir} class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                </template>
+                <template if:true={stepTwo}>
+                    <li class="liBtnConfirmar">
+                        <lightning-button variant="brand" label="Confirmar Reimpressão"  onclick={handleConfirmaReimpressao} class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                </template>
+                <template if:true={stepThree}>
+                    <li class="liBtnCaso">
+                        <lightning-button variant="brand" label="Ir para o caso"  onclick={irCase} class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </footer>
+</template>

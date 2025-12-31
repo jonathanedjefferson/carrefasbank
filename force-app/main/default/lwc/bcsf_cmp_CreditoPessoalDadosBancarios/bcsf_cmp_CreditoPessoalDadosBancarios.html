@@ -1,0 +1,213 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class='slds-modal slds-fade-in-open slds-modal_medium'>
+        <div class="slds-modal__container">
+            <div lwc:if={spinner}>
+                <lightning-spinner alternative-text="Carregando..." size="large" variant="brand"></lightning-spinner>
+            </div>
+            <button class="slds-button slds-button_icon slds-modal__close botao_fechar" onclick={closeQuickAction}>
+                <lightning-icon icon-name="utility:close" alternative-text="Fechar" title="Fechar" class="icon_botao_fechar slds-avatar_medium"></lightning-icon>
+            </button>
+            <div class="slds-modal__content slds-p-around_medium container-modal" id="modal-content-id-2">
+                <div class="header-modal">
+                    <h1>Reenvio de dados bancários</h1>
+                </div>
+                <div class="conteudo-modal">
+                    <template if:true={step01}>
+                        <div class="box-alterar-dados-bancarios">
+                            <h1 class="subtitulo-modal">Inserir os dados da conta corrente ou poupança para depósito do valor</h1>
+                            <div class="alerta">
+                                <lightning-icon class="slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="aviso"></lightning-icon>
+                                <p><strong>Conta Corrente ou Poupança (somente de Pessoa Física).</strong><br>
+                                    A titularidade deve ser a mesma da pessoa contratante do empréstimo.
+                                </p>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-gutters inputs">
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12">
+                                    <lightning-combobox
+                                        label="Banco"
+                                        name="banco"
+                                        placeholder="Selecione o banco"
+                                        value={dadosBancarios.codBanco}
+                                        onchange={handleBancoAlterado}
+                                        options={opcoesBancos}>
+                                    </lightning-combobox>
+                                </div>
+                        
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12">
+                                    <lightning-combobox
+                                        label="Tipo de conta"
+                                        name="tipoConta"
+                                        placeholder="Selecione"
+                                        value={dadosBancarios.tipoConta}
+                                        onchange={handleTipoContaAlterado}
+                                        options={opcoesTipoConta}>
+                                    </lightning-combobox>
+                                </div>
+                        
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12">
+                                    <lightning-input
+                                        type="text"
+                                        label="Agência (sem o dígito)"
+                                        pattern="^\d{1,5}$"
+                                        message-when-pattern-mismatch="Dados inválidos"
+                                        value={dadosBancarios.agencia}
+                                        onchange={handleAgenciaAlterado}
+                                        placeholder="Apenas números">
+                                    </lightning-input>
+                                </div>
+                        
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12">
+                                    <lightning-input
+                                        type="text"
+                                        label="Conta"
+                                        pattern="^\d{1,13}$"
+                                        message-when-pattern-mismatch="Dados inválidos"
+                                        value={dadosBancarios.numeroConta}
+                                        onchange={handleNumeroContaAlterado}
+                                        placeholder="Ex: 000000">
+                                    </lightning-input>
+                                </div>
+                        
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12">
+                                    <lightning-input
+                                        type="text"
+                                        label="Dígito"
+                                        pattern="^[0-9Xx]{1}$"
+                                        message-when-pattern-mismatch="Dados inválidos" 
+                                        value={dadosBancarios.digitoConta}
+                                        onchange={handleDigitoContaAlterado}
+                                        placeholder="Ex: 0">
+                                    </lightning-input>
+                                </div>
+                        
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-12 info-digito">
+                                    <p>Preencher com 0 em caso de dígito inexistente ou letra.</p>
+                                </div>
+                            </div>
+                            <lightning-input type="checkbox" checked={confirmaTitularConta} onchange={handleConfirmaTitular} label="Cliente confirma que é titular da conta"> </lightning-input>
+                        </div>
+                    </template>
+                    <template if:true={step02}>
+                        <div class="box-confirmacao-dados">
+                            <h1 class="subtitulo-modal">Conferir os dados com a pessoa cliente antes de confirmar</h1>
+                            <div class="alerta">
+                                <lightning-icon class="slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="aviso"></lightning-icon>
+                                <p>
+                                    Informar que existe um <strong>limite de 3 tentativas de reenvio</strong> de dados bancários. Excedido esse limite a contratação é cancelada automaticamente.
+                                </p>
+                            </div>
+                            <div class="resumo-operacao">
+                                <div>Cliente: <strong>{dadosCliente.nomeCliente}</strong></div>
+                                <div>Banco: <strong>{dadosBancarios.codBanco} - {dadosBancarios.nomeBanco}</strong></div>
+                                <div>Agência: <strong>{dadosBancarios.agencia}</strong></div>
+                                <div>Conta: <strong>{dadosBancarios.numeroConta}</strong></div>
+                                <div>Dígito: <strong>{dadosBancarios.digitoConta}</strong></div>
+                                <div>Tipo de conta: <strong>{tipoContaLabel}</strong></div>
+                                <lightning-input disabled type="checkbox" checked={confirmaTitularConta} label="Cliente confirma que é titular da conta"> </lightning-input>
+                            </div>
+                        </div>
+                        <div class="box-preenchimento-caso">
+                            <h1 class="subtitulo-modal">Preenchimento de caso</h1>
+                            <div class="detalhes-caso">
+                                <div>
+                                    <div class="label-detalhe">Assunto</div>
+                                    <div class="valor-detalhe">{assunto}</div>
+                                </div>
+                                <div>
+                                    <div class="label-detalhe">Evento</div>
+                                    <div class="valor-detalhe">{evento}</div>
+                                </div>
+                            </div>
+                            <lightning-record-edit-form object-api-name="Case">
+                                <div class="detalhes-caso">
+                                    <div class="input-origem-canal">
+                                        <div class="label-detalhe">Origem</div>
+                                        <lightning-input-field 
+                                            value={origemCaso}
+                                            field-name="Origin" 
+                                            placeholder="Selecione"
+                                            onchange={handleOrigemAlterada} 
+                                            variant="label-hidden"> 
+                                        </lightning-input-field>
+                                    </div>
+                                    <div class="input-origem-canal">
+                                        <div class="label-detalhe">Canal</div>
+                                        <lightning-input-field
+                                            value={canalCaso}
+                                            field-name="CanalEntrada__c" 
+                                            placeholder="Selecione"
+                                            onchange={handleCanalAlterado} 
+                                            variant="label-hidden"
+                                            class="input-origem-canal"> 
+                                        </lightning-input-field>
+                                    </div>
+                                </div>
+                            </lightning-record-edit-form> 
+                        </div>
+                    </template>
+                    <template if:true={step03}>
+                        <div class="box-confirmacao-dados">
+                            <div class="finalizado-sucesso">
+                                <lightning-icon class="slds-m-right_small" icon-name="utility:success" size="small" alternative-text="sucesso"></lightning-icon>
+                                <h1 class="subtitulo-modal">Dados bancários foram atualizados!</h1>
+                            </div>
+                            <div class="alerta">
+                                <lightning-icon class="slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="aviso"></lightning-icon>
+                                <p>
+                                    Informar que agora o processo de contratação é reiniciado e, <strong>em até 2 dias o valor deverá ser depositado</strong> na conta de destino informada.
+                                </p>
+                            </div>
+                            <div class="resumo-operacao">
+                                <div>Protocolo: <strong>{numeroProtocolo}</strong></div>
+                                <div>Em: <strong>{dataProtocolo}</strong></div>
+                                <div>Pessoa operadora: <strong>{nomeOperador}</strong></div>
+                                <div>Cliente: <strong>{dadosCliente.nomeCliente}</strong></div>        
+                                <div>Banco: <strong>{dadosBancarios.codBanco} - {dadosBancarios.nomeBanco}</strong></div>
+                                <div>Agência: <strong>{dadosBancarios.agencia}</strong></div>
+                                <div>Conta: <strong>{dadosBancarios.numeroConta}</strong></div>
+                                <div>Dígito: <strong>{dadosBancarios.digitoConta}</strong></div>
+                                <div>Tipo de conta: <strong>{tipoContaLabel}</strong></div>
+                                <lightning-input disabled checked={confirmaTitularConta} type="checkbox" label="Cliente confirma que é titular da conta"> </lightning-input>
+                            </div>
+                        </div>
+                        <div class="box-resumo-caso">
+                            <h1 class="subtitulo-modal">Informações do caso:</h1>
+                            <ul class="resumo-caso">
+                                <li>
+                                    <div class="label-detalhe">Origem</div>
+                                    <div class="valor-detalhe">{origemCaso}</div>
+                                </li>
+                                <li>
+                                    <div class="label-detalhe">Canal</div>
+                                    <div class="valor-detalhe">{canalCaso}</div>
+                                </li>
+                                <li>
+                                    <div class="label-detalhe">Assunto</div>
+                                    <div class="valor-detalhe">{assunto}</div>
+                                </li>
+                                <li>
+                                    <div class="label-detalhe">Evento</div>
+                                    <div class="valor-detalhe">{evento}</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </template>
+                </div>                 
+                <div class="footer-modal">
+                    <button if:true={showVoltar} 
+                        class="slds-button slds-button_neutral btnVoltar"
+                        onclick={handleVoltar}>
+                        {labelBotaoVoltar}
+                    </button>
+                    <button 
+                        class="slds-button slds-button_brand btnAvancar"
+                        onclick={handleAvancar} 
+                        disabled={desativarAvancar}>
+                        {labelBotaoAvancar}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+</template>

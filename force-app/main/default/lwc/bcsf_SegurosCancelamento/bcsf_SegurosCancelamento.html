@@ -1,0 +1,399 @@
+<template>
+    <div if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <div class="container-validade">
+        <div>
+            <p lwc:if={showBtnCancelar} class="name-Validade">Valido até</p>
+            <p lwc:elseif={seguroCancelado} class="name-Validade">Cancelado em</p>
+            <p lwc:else class="name-Validade">Expirado em</p>
+            <span lwc:if={seguroCancelado} class="value-Validade">{dataCancelamento}</span>
+            <span lwc:else class="value-Validade">{dataVencimento}</span>
+        </div>
+        <div class="validate-separador"></div>
+        <div>
+            <p class="name-Validade">Última cobrança</p>
+            <p class="slds-m-bottom_xx-small">
+                <span class="value-Validade">{ultimaCobranca}</span> 
+                <span lwc:if={showStatusParcela} class={badgeClass}>{badgeText}</span>
+            </p>
+            <lightning-button lwc:if={showBtnDetalhes} label="Detalhes de cobrança" title="Detalhes de cobrança" onclick={handleBtnDetalhes}></lightning-button>
+
+        </div>
+    </div>
+    <lightning-tabset>
+        <lightning-tab label="Detalhes da contratação">
+            <template for:each={seguroFormatado} for:item="item">
+                <div key={item.name} class="resumoLine">
+                    <span class="nameLine">{item.label}</span>
+                    <span class="valueLine">{item.valor}</span>
+                </div>
+            </template>
+        </lightning-tab>
+    </lightning-tabset>
+    <div class="btn-contestacao">
+        <lightning-button
+            icon-position="right" 
+            icon-name="utility:close" 
+            stretch 
+            variant="destructive-text" 
+            label="Solicitar cancelamento" 
+            title="Solicitar cancelamento" 
+            onclick={handleBtnCancelamento}>
+        </lightning-button>
+        <lightning-button  
+            lwc:if={showBtnContestar}
+            stretch 
+            variant="destructive-text" 
+            label="Solicitar contestação" 
+            title="Solicitar contestação" 
+            onclick={handleBtnContestarMain}>
+        </lightning-button>
+    </div>
+
+
+    <template if:true={modalDetalhes}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open  slds-modal_medium">
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={handleFecharModalDetalhes}>
+                    <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close" title="Close"></lightning-icon>
+                    <span class="slds-assistive-text">Cancelar e fechar</span>
+                </button>
+                <div class="slds-modal__header">
+                    <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate" tabindex="-1">Detalhes de cobrança - {nomeSeguro}</h1>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                    <div class="container-detalhes">
+                        <h1>Detalhes de cobrança do seguro</h1>
+                        <ul>
+                            <li>
+                                <p class="nameDetalhes">Valor mensal</p>
+                                <p class="valueDetalhes">{valorMensal}</p>
+                            </li>
+                            <li>
+                                <p class="nameDetalhes">Total pago</p>
+                                <p class="valueDetalhes">{totalPago}</p>
+                            </li>
+                            <li>
+                                <p class="nameDetalhes">Parcela atual</p>
+                                <p class="valueDetalhes">{parcelaAtual} <span>de {totalParcelas}</span></p>
+                            </li>
+                            <li>
+                                <p class="nameDetalhes">Última cobrança</p>
+                                <p >
+                                    <span class="valueDetalhes">{ultimaCobranca}</span> 
+                                    <!-- <span class={badgeClass}>{badgeText}</span> -->
+                                </p>
+                            </li>
+                            <li>
+                                <p class="nameDetalhes">Próxima cobrança</p>
+                                <p class="valueDetalhes">{proximaCobranca}</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="container-historico">
+                        <h2>Histórico de parcelas</h2>
+                        <div class="container-statusDetalhes">
+                            <label>Status</label>
+                            <lightning-combobox
+                                name="Status"
+                                label="Status"
+                                variant="label-hidden"
+                                value={valueStatusParcela}
+                                placeholder="Selecione o status"
+                                class="field-statusDetalhes"
+                                options={optionsStatusContratados}
+                                onchange={handleStatusParcelas} >
+                            </lightning-combobox> 
+                        </div>
+                    </div>
+                    <div class="custom-table-container">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th class="custom-table-itemHeaderRight">Parcela</th>
+                                    <th>Data</th>
+                                    <th>Status</th>
+                                    <th class="custom-table-itemHeaderRight">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={listParcelas} for:item="parcela">
+                                    <tr key={parcela.idParcela}>
+                                        <td class="custom-table-item">{parcela.numero}</td>
+                                        <td class="custom-table-item">{parcela.data}</td>
+                                        <td class="custom-table-item">{parcela.status}</td>
+                                        <td class="custom-table-item">{parcela.valor}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="slds-modal__footer slds-modal__footer_directional">
+                    <button class="slds-button slds-button_neutral" onclick={handleFecharModalDetalhes}>Fechar</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template> 
+
+    <template if:true={modalCancelar}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open  slds-modal_medium">
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={handleFecharModalCancelar}>
+                    <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close" title="Close"></lightning-icon>
+                    <span class="slds-assistive-text">Cancelar e fechar</span>
+                </button>
+                <div class="slds-modal__header">
+                    <h1 id="modal-heading-03" class="slds-modal__title slds-hyphenate" tabindex="-1">Cancelar seguro: {nomeSeguro}</h1>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3">
+                    <div if:true={spinner}>
+                        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+                    </div>
+                    <div lwc:if={pageOneCancelar}>
+                        <div class="alert-Info slds-notify slds-notify_alert slds-alert_warning" role="alert">
+                            <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="Ícone de Aviso">
+                                <lightning-icon icon-name="utility:warning" size="x-small" alternative-text="Ícone de Aviso"></lightning-icon>
+                            </span>
+                            <h2>Ao cancelar o seguro, todas as coberturas e benefícios ficarão indisponíveis de forma definitiva.
+                            </h2>
+                        </div>
+                        <div class="container-motivos">
+                            <h1>{nomeSeguro}</h1>
+                            <h2>Estes são os campos solicitados para alteração:</h2>
+                            <div class="container-motivosLabel">
+                                <label class="label-motivos"><span style="color: #C23934">* </span>Motivo do cancelamento</label>
+                                <lightning-combobox
+                                    name="motivo"
+                                    class="small-picklist"
+                                    label="Motivo do cancelamento"
+                                    variant="label-hidden"
+                                    value={valueMotivoSelecionado}
+                                    placeholder="Selecione o motivo"
+                                    options={listMotivosCancelamento}
+                                    onchange={handleChangeMotivo} >
+                                </lightning-combobox>
+                            </div>
+                            <div lwc:if={especificarMotivo} class="container-motivosLabel slds-m-top_small">
+                                <label class="label-motivos"><span style="color: #C23934">* </span>Especifique o motivo</label>
+                                <lightning-input 
+                                    type="text" 
+                                    maxlength="50"
+                                    variant="label-hidden"
+                                    value={especificarMotivoText}
+                                    onchange={handleChangeEspecificarMotivo}
+                                    placeholder="Insira o outro motivo aqui">
+                                </lightning-input>
+                            </div>
+                            <h1>Informações adicionais</h1>
+                            <div  class="container-motivosLabel">
+                                <label class="label-motivos">Observação</label>
+                                <lightning-textarea 
+                                    class="cancelamento-observacao" 
+                                    variant="label-hidden" 
+                                    value={observacaoCancelar}
+                                    onchange={handleChangeObservacaoCancelar}
+                                    placeholder="Insira seu comentário aqui.">
+                                </lightning-textarea>
+                            </div>
+                            <div lwc:if={showFieldsCaso} class="container-caso slds-border_top">
+                                <h1>Preenchimento de caso</h1>
+                                <ul>
+                                    <li>
+                                        <p>Assunto</p>
+                                        <span>Seguros</span>
+                                    </li>
+                                    <li>
+                                        <p>Evento</p>
+                                        <span>Cancelamento</span>
+                                    </li>
+                                </ul>
+                                <lightning-record-edit-form object-api-name="Case">
+                                    <ul>
+                                        <li class="field-caso" >
+                                            <label>Origem</label>
+                                            <lightning-input-field 
+                                                language=""
+                                                value={origemCasoCancelar}
+                                                field-name="Origin" 
+                                                placeholder="--Nenhuma--"
+                                                onchange={handleFieldOrigemCaso} 
+                                                variant="label-hidden"> 
+                                            </lightning-input-field>
+                                        </li>
+                                        <li class="field-caso">
+                                            <label>Canal</label>
+                                            <lightning-input-field
+                                                value={canalCasoCancelar}
+                                                field-name="CanalEntrada__c" 
+                                                class="field-caso" 
+                                                placeholder="--Nenhuma--"
+                                                onchange={handleFieldCanalCaso} 
+                                                variant="label-hidden"> 
+                                            </lightning-input-field>
+                                        </li>
+                                    </ul>    
+                                </lightning-record-edit-form> 
+                            </div>
+                        </div>
+                    </div>
+                    <div lwc:else class="container-casoGerado">
+                        <lightning-icon icon-name="action:approval" size="xx-small" alternative-text="Sucesso" title="Sucesso" class="success-icon"></lightning-icon>
+                        <div class="casoGerado">
+                            <h1>Seguro cancelado!</h1>
+                            <div class="dados-casoGerado">
+                                <h2>Protocolo: <span>{numProtocoloCancelar}</span></h2>
+                                <p>{dataAtualFormatada}</p>
+                            </div>
+                            <h2 class="slds-border_top">Informações do caso:</h2>
+                            <ul >
+                                <li>
+                                    <p class="casoGeradoName">Origem</p>
+                                    <p class="casoGeradoValue">{origemCasoCancelar}</p>
+                                </li>
+                                <li>
+                                    <p class="casoGeradoName">Canal</p>
+                                    <p class="casoGeradoValue">{canalCasoCancelar}</p>
+                                </li>
+                                <li>
+                                    <p class="casoGeradoName">Assunto</p>
+                                    <p class="casoGeradoValue">Seguros</p>
+                                </li>
+                                <li>
+                                    <p class="casoGeradoName">Evento</p>
+                                    <p class="casoGeradoValue">Cancelamento</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div lwc:if={pageOneCancelar} class="slds-modal__footer slds-modal__footer_directional">
+                    <lightning-button class="slds-button" variant="neutral" label="Fechar" title="Fechar" onclick={handleFecharModalCancelar}></lightning-button>
+                    <lightning-button class="slds-button" variant="brand" label="Confirmar cancelamento" title="Confirmar cancelamento" disabled={disableBtnNext} onclick={handleBtnNext}></lightning-button>
+                </div>
+                <div lwc:else class="slds-modal__footer">
+                    <lightning-button lwc:if={showContestar} class="slds-button" variant="brand-outline" label="Solicitar contestação" title="Solicitar contestação" onclick={handleBtnContestar}></lightning-button>
+                    <lightning-button class="slds-button" variant="brand" label="Ir para o caso" title="Ir para o caso" onclick={handleBtnNext}></lightning-button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+    <template if:true={modalContestar}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open  slds-modal_medium">
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={handleFecharModalContestar}>
+                    <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close" title="Close"></lightning-icon>
+                    <span class="slds-assistive-text">Cancelar e fechar</span>
+                </button>
+                <div class="slds-modal__header">
+                    <h1 id="modal-heading-04" class="slds-modal__title slds-hyphenate" tabindex="-1">Solicitar contestação de seguro</h1>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-4">
+                    <div if:true={spinner}>
+                        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+                    </div>
+                    <div lwc:if={pageOneContestar}>
+                        <div class="resumo-CasoContestar">
+                            <h1>Resumo da solicitação</h1>
+                            <ul class="resumo-detalhes">
+                                <li>
+                                    <p class="nameCasoContestar">Seguro</p>
+                                    <span class="valueCasoContestar">{nomeSeguro}</span>
+                                </li>
+                                <li>
+                                    <p class="nameCasoContestar">Contrato</p>
+                                    <span class="valueCasoContestar">{contratoId}</span>
+                                </li>
+                                <li>
+                                    <p class="nameCasoContestar">Motivo de cancelamento / contestação</p>
+                                    <span class="valueCasoContestar">{motivoCancelamento}</span>
+                                </li>
+                            </ul>
+                        
+                            <div class="container-casoContestar slds-border_top">
+                                <h1>Preenchimento de caso</h1>
+                                <ul>
+                                    <li>
+                                        <p class="nameCasoContestar">Assunto</p>
+                                        <span class="valueCasoContestar">Seguros</span>
+                                    </li>
+                                    <li>
+                                        <p class="nameCasoContestar">Evento</p>
+                                        <span class="valueCasoContestar">Contestação</span>
+                                    </li>
+                                </ul>
+                                <lightning-record-edit-form object-api-name="Case">
+                                    <ul>
+                                        <li class="field-caso" >
+                                            <label>Origem</label>
+                                            <lightning-input-field 
+                                                language=""
+                                                value={origemCasoContestar}
+                                                field-name="Origin" 
+                                                placeholder="--Nenhuma--"
+                                                onchange={handleFieldOrigemCaso} 
+                                                variant="label-hidden"> 
+                                            </lightning-input-field>
+                                        </li>
+                                        <li class="field-caso">
+                                            <label>Canal</label>
+                                            <lightning-input-field
+                                                value={canalCasoContestar}
+                                                field-name="CanalEntrada__c" 
+                                                class="field-caso" 
+                                                placeholder="--Nenhuma--"
+                                                onchange={handleFieldCanalCaso} 
+                                                variant="label-hidden"> 
+                                            </lightning-input-field>
+                                        </li>
+                                    </ul>    
+                                </lightning-record-edit-form> 
+                            </div>
+                        </div>
+                    </div>
+                    <div lwc:else class="container-casoGerado">
+                        <lightning-icon icon-name="action:approval" size="xx-small" alternative-text="Sucesso" title="Sucesso" class="success-icon"></lightning-icon>
+                        <div class="casoGerado">
+                            <h1>Contestação solicitada!</h1>
+                            <div class="dados-casoGerado">
+                                <h2>Protocolo: <span>{numProtocoloContestar}</span></h2>
+                                <p>{dataAtualFormatada}</p>
+                            </div>
+                            <h2 class="slds-border_top">Informações do caso:</h2>
+                            <ul >
+                                <li>
+                                    <p class="casoGeradoName">Origem</p>
+                                    <p class="casoGeradoValue">{origemCasoContestar}</p>
+                                </li>
+                                <li>
+                                    <p class="casoGeradoName">Canal</p>
+                                    <p class="casoGeradoValue">{canalCasoContestar}</p>
+                                </li>
+                                <li>
+                                    <p class="casoGeradoName">Assunto</p>
+                                    <p class="casoGeradoValue">Seguros</p>
+                                </li>
+                                <li>
+                                    <p class="casoGeradoName">Evento</p>
+                                    <p class="casoGeradoValue">Contestação</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div lwc:if={pageOneContestar} class="slds-modal__footer slds-modal__footer_directional">
+                    <lightning-button class="slds-button" variant="neutral" label="Voltar" title="Voltar" onclick={handleBtnVoltarContestar}></lightning-button>
+                    <lightning-button class="slds-button" variant="brand" label="Finalizar" title="Finalizar" disabled={disableBtnNextContestar} onclick={handleBtnNext}></lightning-button>
+                </div>
+                <div lwc:else class="slds-modal__footer">
+                    <lightning-button class="slds-button" variant="brand" label="Ir para o caso" title="Ir para o caso" onclick={handleBtnNext}></lightning-button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template> 
+</template>

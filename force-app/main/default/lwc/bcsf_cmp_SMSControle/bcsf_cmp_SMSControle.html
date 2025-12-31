@@ -1,0 +1,340 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+    </div>
+    <div>
+        <div class="title"><p>{titlePage}</p></div>
+        <div lwc:if={pageContratar} class="container-adesao">
+            <div class="avisoAlert">
+                <lightning-icon class="slds-m-horizontal_medium" icon-name="utility:warning" size="small" alternative-text="Atenção"></lightning-icon>
+                <p>Este cliente não possui SMS Controle Total</p>
+            </div>
+
+            <h2>Dados da conta</h2>
+            <ul class="dados-conta">
+                <li>
+                    <p class="text-name">Titular</p>
+                    <p class="text-value">{nomeCliente}</p>
+                </li>
+                <li class="container-logo">
+                    <div class= "logo"><img src={logoEmpresa}></div>
+                    <div>
+                        <p class="text-name">Tipo de conta</p>
+                        <p class="text-value">{nomeEmpresa}</p>
+                    </div>
+                </li>
+                <li>
+                    <p class="text-name">CPF</p>
+                    <p class="text-value">{cpfCliente}</p>
+                </li>
+                <li>
+                    <p class="text-name">Conta</p>
+                    <p class="text-value">{numeroConta}</p>
+                </li>
+                <li>
+                    <p class="text-name">Status Geral</p>
+                    <p class="text-value">{statusConta}</p>
+                </li>
+            </ul>
+        </div>
+
+        <div lwc:if={pageCancelar} class="container-cancelar">
+            <h2>Detalhes da contratação</h2>
+            <ul class="dados-contrato">
+                <li class="item-large">
+                    <p class="text-name">Plano e valor</p>
+                    <p class="text-value">{planoValor}</p>
+                </li>
+                <li>
+                    <p class="text-name">Celular SMS Controle Total</p>
+                    <p class="text-value">{celularSMSControle}</p>
+                </li>
+                <li>
+                    <p class="text-name">Celular de cadastro</p>
+                    <p class="text-value">{celularCadastro}</p>
+                </li>
+                <li>
+                    <p class="text-name">Número do contrato</p>
+                    <p class="text-value">{numeroContrato}</p>
+                </li>
+                <li>
+                    <p class="text-name">Tipo da adesão</p>
+                    <p class="text-value">{tipoAdesao}</p>
+                </li>
+                <li>
+                    <p class="text-name">Data da adesão</p>
+                    <p class="text-value">{dataAdesao}</p>
+                </li>
+                <li>
+                    <p class="text-name">Início da vigência</p>
+                    <p class="text-value">{inicioVigencia}</p>
+                </li>
+                <li class="item-large">
+                    <p class="text-name">Fim da vigência</p>
+                    <p class="text-value">{fimVigencia}</p>
+                </li>
+            </ul>
+            <ul class="dados-contrato-flex">
+                <li>
+                    <p class="text-name">Canal da adesão</p>
+                    <p class="text-value">{tipoAdesao}</p>
+                </li>
+                <li>
+                    <p class="text-name">Loja da adesão</p>
+                    <p class="text-value">{lojaAdesao}</p>
+                </li>
+                <li>
+                    <p class="text-name">Vendido por</p>
+                    <p class="text-value">{inicioVigencia}</p>
+                </li>
+            </ul>
+        </div>
+
+        <div lwc:if={pageContestar} class="container-cancelar">
+            <div class="avisoAlert">
+                <lightning-icon class="slds-m-horizontal_medium" icon-name="utility:warning" size="small" alternative-text="Atenção"></lightning-icon>
+                <p>SMS Controle Total Cancelado</p>
+            </div>
+            <h2>Detalhes da contratação</h2>
+            <ul class="dados-contrato">
+                <li class="item-large">
+                    <p class="text-name">Plano e valor</p>
+                    <p class="text-value">{planoValor}</p>
+                </li>
+                <li>
+                    <p class="text-name">Celular SMS Controle Total</p>
+                    <p class="text-value">{celularSMSControle}</p>
+                </li>
+                <li>
+                    <p class="text-name">Celular de cadastro</p>
+                    <p class="text-value">{celularCadastro}</p>
+                </li>
+                <li>
+                    <p class="text-name">Número do contrato</p>
+                    <p class="text-value">{numeroContrato}</p>
+                </li>
+                <li>
+                    <p class="text-name">Tipo da adesão</p>
+                    <p class="text-value">{tipoAdesao}</p>
+                </li>
+                <li>
+                    <p class="text-name">Data da adesão</p>
+                    <p class="text-value">{dataAdesao}</p>
+                </li>
+                <li>
+                    <p class="text-name">Início da vigência</p>
+                    <p class="text-value">{inicioVigencia}</p>
+                </li>
+                <li class="item-large">
+                    <p class="text-name">Fim da vigência</p>
+                    <p class="text-value">{fimVigencia}</p>
+                </li>
+            </ul>
+            <ul class="dados-contrato-flex">
+                <li>
+                    <p class="text-name">Canal da adesão</p>
+                    <p class="text-value">{tipoAdesao}</p>
+                </li>
+                <li>
+                    <p class="text-name">Loja da adesão</p>
+                    <p class="text-value">{lojaAdesao}</p>
+                </li>
+                <li>
+                    <p class="text-name">Vendido por</p>
+                    <p class="text-value">{inicioVigencia}</p>
+                </li>
+            </ul>
+            <div class="detalhes-cancelamento">
+                <h2>Detalhes do cancelamento</h2>
+                <ul class="dados-contrato-flex">
+                    <li>
+                        <p class="text-name">Motivo do cancelamento</p>
+                        <p class="text-value">{motivoCancelamento}</p>
+                    </li>
+                    <li>
+                        <p class="text-name">Data do cancelamento</p>
+                        <p class="text-value">{dataCancelamento}</p>
+                    </li>
+                </ul>
+            </div>
+            
+            <ul class="dados-contrato-flex">
+                <li>
+                    <p class="text-name">Canal do cancelamento</p>
+                    <p class="text-value">{canalCancelamento}</p>
+                </li>
+                <li>
+                    <p class="text-name">Loja do cancelamento</p>
+                    <p class="text-value">{lojaCancelamento}</p>
+                </li>
+                <li>
+                    <p class="text-name">Cancelado por</p>
+                    <p class="text-value">{canceladoPor}</p>
+                </li>
+            </ul>
+        </div>
+
+        <div lwc:if={pageConfirmarContrato} class="container-adesao">
+            <div class="avisoAlert" lwc:if={fluxoCancelar}>
+                <lightning-icon class="slds-m-horizontal_medium" icon-name="utility:warning" size="small" alternative-text="Atenção"></lightning-icon>
+                <p>Ao cancelar o serviço, todos os benefícios ficarão indisponíveis de forma definitiva.</p>
+            </div>
+            <h2>Dados da conta</h2>
+            <ul class="dados-conta">
+                <li>
+                    <p class="text-name">Titular</p>
+                    <p class="text-value">{nomeCliente}</p>
+                </li>
+                <li class="container-logo">
+                    <div class= "logo"><img src={logoEmpresa}></div>
+                    <div>
+                        <p class="text-name">Tipo de conta</p>
+                        <p class="text-value">{nomeEmpresa}</p>
+                    </div>
+                </li>
+                <li>
+                    <p class="text-name">CPF</p>
+                    <p class="text-value">{cpfCliente}</p>
+                </li>
+                <li lwc:if={fluxoAdesao}>
+                    <p class="text-name">Celular de cadastro</p>
+                    <p class="text-value">{numeroCelular}</p>
+                </li>
+                <li lwc:if={fluxoOcorrencia}>
+                    <p class="text-name">Conta</p>
+                    <p class="text-value">{numeroConta}</p>
+                </li>
+                <li lwc:if={fluxoOcorrencia}>
+                    <p class="text-name">Status Geral</p>
+                    <p class="text-value">{statusConta}</p>
+                </li>
+            </ul>
+            <p lwc:if={fluxoAdesao} class="text-termo dados-separador">Para consultar o termo de adesão, acesse o aplicativo no celular ou vá até uma loja.</p>
+            <div lwc:else class="info-adicionais">
+                <lightning-combobox lwc:if={fluxoCancelar}
+                    required
+                    name="motivoCancelamentoField"
+                    label="Motivo do cancelamento"
+                    value={motivoCancelamentoField}
+                    placeholder="Selecione uma opção"
+                    options={motivoCancelamentoOptions}
+                    onchange={handleField} >
+                </lightning-combobox>
+                <lightning-record-edit-form object-api-name="Case" lwc:if={fluxoOcorrencia}>
+                    <label class="field-label"><span>*</span>Motivo do registro</label>
+                    <lightning-input-field 
+                        id="eventoCaso"
+                        field-name="Evento__c"
+                        value={eventoCaso}
+                        class="slds-hidden2 field"
+                        variant="label-hidden"> 
+                    </lightning-input-field>
+                    <lightning-input-field
+                        id="assuntoCaso"
+                        field-name="Assunto__c"
+                        value={assuntoCaso}
+                        class="slds-hidden2 field"
+                        variant="label-hidden"> 
+                    </lightning-input-field> 
+                    <lightning-input-field 
+                        name="motivoRegistroField" 
+                        value={motivoRegistroField}
+                        field-name="MotivodaReclamacao__c" 
+                        placeholder="--Nenhuma--"
+                        onchange={handleField} 
+                        variant="label-hidden"> 
+                    </lightning-input-field> 
+                </lightning-record-edit-form> 
+                <h3>Informações adicionais</h3>
+                <lightning-textarea 
+                    name="descricaoField" 
+                    label="Descrição" 
+                    value={descricaoField}
+                    onchange={handleField}
+                    placeholder="Insira seu comentário aqui.">
+                </lightning-textarea>
+            </div>
+            <div class="preenchimento-caso">
+                <h2>Preenchimento de caso</h2>
+                <ul class="dados-itens">
+                    <li class="slds-m-right_xx-large">
+                        <p class="text-name">Assunto</p>
+                        <p class="text-value">SMS Controle Total</p>
+                    </li>
+                    <li class="slds-m-right_xx-large">
+                        <p class="text-name">Evento</p>
+                        <p class="text-value">{eventoCaso}</p>
+                    </li>
+                </ul>
+                <lightning-record-edit-form object-api-name="Case">
+                    <ul class="fields-caso">
+                        <li class="field-caso" >
+                            <label class="field-label">Origem</label>
+                            <lightning-input-field 
+                                language=""
+                                name="origemCaso" 
+                                value={origemCaso}
+                                field-name="Origin" 
+                                placeholder="--Nenhuma--"
+                                onchange={handleField} 
+                                variant="label-hidden"> 
+                            </lightning-input-field>
+                        </li>
+                        <li class="field-caso">
+                            <label class="field-label">Canal</label>
+                            <lightning-input-field
+                                value={canalCaso}
+                                name="canalCaso" 
+                                field-name="CanalEntrada__c" 
+                                placeholder="--Nenhuma--"
+                                onchange={handleField} 
+                                variant="label-hidden"> 
+                            </lightning-input-field>
+                        </li>
+                    </ul>    
+                </lightning-record-edit-form> 
+            </div>
+        </div>
+    </div>
+    
+    <div lwc:if={pageCasoGerado} class="container-casoGerado">
+        <lightning-icon icon-name="action:approval" size="xx-small" alternative-text="Sucesso" title="Sucesso" class="success-icon"></lightning-icon>
+        <div class="casoGerado">
+            <h1>{textCasoGerado}</h1>
+            <div class="dados-casoGerado">
+                <h2>Caso: <span>{numProtocolo}</span></h2>
+                <p>{dataAtualFormatada}</p>
+            </div>
+            <h2 class="slds-border_top">Informações do caso:</h2>
+            <ul >
+                <li>
+                    <p class="casoGeradoName text-cinza-1">Origem</p>
+                    <p class="casoGeradoValue">{origemCaso}</p>
+                </li>
+                <li>
+                    <p class="casoGeradoName text-cinza-1">Canal</p>
+                    <p class="casoGeradoValue">{canalCaso}</p>
+                </li>
+                <li>
+                    <p class="casoGeradoName text-cinza-1">Assunto</p>
+                    <p class="casoGeradoValue">SMS Controle Total</p>
+                </li>
+                <li>
+                    <p class="casoGeradoName text-cinza-1">Evento</p>
+                    <p class="casoGeradoValue">{eventoCaso}</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <footer>
+        <lightning-button label={labelBtnVoltar} title="Voltar" onclick={handleBtnVoltar}></lightning-button>
+        <div>
+            <!-- <lightning-button lwc:if={podeRegistrarOcorr} variant="brand-outline" label="Registrar ocorrência" title="Registrar ocorrência" onclick={handleBtnOcorrencia} class="slds-m-right_x-small"></lightning-button> -->
+            <lightning-button lwc:if={pageCancelar} variant="destructive-text" label="Solicitar cancelamento" title="Solicitar cancelamento" onclick={handleBtnPross} disabled={disabledBtnPross} icon-name="utility:close" icon-position="right"></lightning-button>
+            <lightning-button lwc:else variant="brand" label={labelBtnPross} title={labelBtnPross} onclick={handleBtnPross} disabled={disabledBtnPross}></lightning-button>
+        </div>
+    </footer>
+
+</template>

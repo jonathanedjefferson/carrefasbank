@@ -1,0 +1,188 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <div lwc:if={pageOne}>
+        <div class="errorAlert" role="alert">
+            <lightning-icon class="iconErrorAlert slds-m-right_small" icon-name="utility:error" size="small" alternative-text="Atenção"></lightning-icon>
+            <p><span>Atenção:</span> cliente possui um parcelamento pendente. Informe que é necessário pagar a entrada para confirmar a contratação ou que é possível fazer uma nova simulação.</p>
+        </div>
+
+        <table class="slds-table tabelaParcelamento ">
+            <thead class="tabelaParcelamento">
+                <tr>
+                    <th class="customHeader">Data criação</th>
+                    <th class="customHeader">Valor da parcela</th>
+                    <th class="customHeader">Data entrada</th>
+                    <th class="customHeader">Valor entrada</th>
+                    <th class="customHeader">Detalhe</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={listParcelas} for:item="item">
+                    <tr key={item.id}>
+                        <td>{item.dataCriacao}</td>
+                        <td>{item.moedaParcela}{item.valorParcela}</td>
+                        <td>{item.dataEntradaLabel}</td>
+                        <td>{item.moedaEntrada}{item.valorEntrada}</td>
+                        <td><a class="resumoBtn" data-value={item.id} onclick={handleBtnVerResumo}>Ver resumo</a></td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+
+    <div lwc:if={pageTwo}>
+        <div class="pageTreeAlert" role="alert">
+            <lightning-icon class="iconAlert slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="Atenção"></lightning-icon>
+            <p><span>Atenção:</span> {mensagemLimiteCartao}</p>
+        </div>
+        <div class="titleResumoContrato">
+            <h1>Resumo da contratação</h1>
+            <lightning-button variant="brand-outline" label="Copiar resumo" title="Copiar resumo"  onclick={copyResumoObject}></lightning-button>
+        </div>
+
+        <div class="containerResumo">
+            <template for:each={resumoObject} for:item="item">
+                <div key={item.name} class="resumoLine">
+                    <p class="nameLine">{item.name}</p>
+                    <p class="valueLine">{item.value}</p>
+                </div>
+            </template>
+        </div>
+
+        <div class="containerCaso">
+            <h1>Escolha a forma de pagamento</h1>
+            <div class="formasPagamento">
+                <label>
+                    <input type="radio" name="options" data-value="1" onchange={handleRadioPagamento} />
+                    Pagamento com Pix 
+                </label>
+                <label>
+                    <input type="radio" name="options" data-value="0" onchange={handleRadioPagamento} />
+                    Pagamento com boleto
+                </label>
+            </div>
+            <div class="containerCase">
+                <h1>Preenchimento de caso</h1>
+                <lightning-record-edit-form object-api-name="Case">
+                    <ul>
+                        <li>
+                            <label>Origem</label>
+                            <lightning-input-field 
+                                language=""
+                                value={valueOrigem}
+                                field-name="Origin" 
+                                class="lightningInput" 
+                                placeholder="--Nenhuma--"
+                                onchange={handleFieldOrigemCaso} 
+                                variant="label-hidden"> 
+                            </lightning-input-field>
+                        </li>
+                        <li>
+                            <label>Canal</label>
+                            <lightning-input-field
+                                value={valueCanal}
+                                field-name="CanalEntrada__c" 
+                                class="lightningInput" 
+                                placeholder="--Nenhuma--"
+                                onchange={handleFieldCanalCaso} 
+                                variant="label-hidden"> 
+                            </lightning-input-field>
+                        </li>
+                    </ul>    
+                </lightning-record-edit-form>   
+            </div>
+        </div>
+    </div>
+
+    <div lwc:elseif={pageTree} class="pageFive">
+        <div lwc:if={erroPagamento} class="errorAlert" role="alert">
+            <lightning-icon class="iconErrorAlert slds-m-right_small" icon-name="utility:error" size="small" alternative-text="Atenção"></lightning-icon>
+            <p><span>Atenção:</span> o parcelamento foi contratado, mas houve erro ao gerar o {labelTitlePagamento}.</p>
+        </div>
+        <div class="caseNumber">
+            <div class="success-message slds-m-vertical_x-small">
+                <lightning-icon icon-name="action:approval" size="xx-small" class="success-icon"></lightning-icon>
+                <span class="success-text">Operação realizada!</span>
+            </div>
+            <h1 class="slds-m-vertical_xx-small">Protocolo: <span>{numProtocolo}</span></h1>
+            <p>{dataAtual}</p>
+        </div>
+        <div class="containerDadosContrato">
+            <h1 lwc:if={erroPagamento}>O contrato será enviado via e-mail</h1>
+            <h1 lwc:else>O contrato e o {labelTitlePagamento} de entrada serão enviados via e-mail</h1>
+            <ul>
+                <li>
+                    <p class="infoName">Modo de envio</p>
+                    <p class="infoValue">E-mail</p>
+                </li>
+                <li class="slds-m-left_x-large">
+                    <p class="infoName">Endereço de e-mail</p>
+                    <p class="infoValue">{email}</p>
+                </li>
+            </ul>
+            <lightning-input 
+                type="checkbox" 
+                class="emailAlternativo" 
+                checked={checkEmailAlternativo}
+                disabled={disableCheckEmailAlternativo}
+                onchange={handleCheckEmailAlternativo}
+                label="Encaminhar a segunda via para um endereço de e-mail alternativo" 
+                name="emailAlternativo">
+            </lightning-input>
+            <div lwc:if={checkEmailAlternativo}>
+                <lightning-input class="emailAlternativoField" type="email" label="E-mail" placeholder="Digite o e-mail aqui" onchange={handleFieldEmailAlternativo}></lightning-input>
+            </div>
+        </div>
+
+        <div class="buttonGroupContrato">
+            <lightning-button-group lwc:if={erroPagamento}>
+                <lightning-button label={labelBtnGerarPagamento} onclick={handleBtnGerarPagamento}></lightning-button>
+                <lightning-button label={labelBtnAlterarPagamento} onclick={handleBtnAlterarPagamento}></lightning-button>
+            </lightning-button-group>
+
+            <lightning-button-group lwc:else>
+                <lightning-button label={labelBtnCopiarPagamento} onclick={copyCodePagamento}></lightning-button>
+                <lightning-button label="Reenviar 2ª via do contrato" onclick={handleBtnEnviarEmail}></lightning-button>
+            </lightning-button-group>
+        </div>
+
+        <div class="dadosCaso" >
+            <h1>Informações do caso:</h1>
+            <ul>
+                <li>
+                    <p class="infoName">Origem</p>
+                    <p class="infoValue">{origemCaso}</p>
+                </li>
+                <li>
+                    <p class="infoName">Canal</p>
+                    <p class="infoValue">{canalCaso}</p>
+                </li>
+                <li>
+                    <p class="infoName">Motivo</p>
+                    <p class="infoValue">Parcelamento</p>
+                </li>
+                <li>
+                    <p class="infoName">Evento</p>
+                    <p class="infoValue">Adesão Parcele Fácil</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div lwc:if={pageEmpty}>
+        <div class= "listaEmpty">
+            <img src={imgEmpty}>
+            <h1>Não existem ofertas pendentes</h1>
+            <p>Quando tiver ofertas pendentes ela aparecerá aqui!</p>
+        </div>
+    </div>
+
+    <div if:true={footerView} class="slds-modal__footer">
+        <div class="buttonFooter">
+            <lightning-button label={labelBtnVoltar} onclick={handleBtnVoltar} disabled={disableBtnVoltar}></lightning-button>
+            <lightning-button variant="brand" label={labelBtnContinuar} onclick={handleBtnContinuar} disabled={disableBtnContinuar}></lightning-button>
+        </div>
+    </div>
+</template>

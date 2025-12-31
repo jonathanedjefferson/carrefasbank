@@ -1,0 +1,342 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+
+    <div class="title">Aposentadoria Por Velhice - Trabalhador Rural</div>
+    <div class="c-container">
+        <template lwc:if={step01}>
+            <div class="boxCardPrincipal">
+                <h1>Informações do empréstimo atual <span class="statusContrato">{statusContrato}</span></h1>
+                <div class="listInformacoes">
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Valor total</div>
+                            <div class="cmpValue">{valorTotalAtual}</div>
+                        </li>
+                        <br>
+                        <li>
+                            <div class="cmpName">Taxa</div>
+                            <div class="cmpValue">{taxaMensal}</div>
+                        </li>
+                    </ul>
+                    <ul class="borda"></ul> 
+
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Valor da parcela</div>
+                            <div class="cmpValue">{valorParcela}</div>
+                        </li>
+                        <br>
+                        <li>
+                            <div class="cmpName">Parcelas pagas</div>
+                            <div class="cmpValue">{parcelasPagas}</div>
+                        </li>
+                    </ul>
+                    <ul class="borda"></ul>   
+    
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Valor já quitado</div>
+                            <div class="cmpValue">{valorQuitado}</div>
+                        </li>
+                        <br>
+                        <li>
+                            <div class="cmpName">Saldo devedor</div>
+                            <div class="cmpValue">{saldoDevedor}</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <br>
+            <div class="boxCardPrincipal" style="box-shadow: none;">
+                <h1>Resultado do refinanciamento</h1>
+                <div class="listInformacoes">
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Valor total</div>
+                            <div class="cmpValue">{novoValorTotal}</div>
+                        </li>
+                        <br>
+                    </ul>
+                    <ul class="borda"></ul>   
+    
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Nova taxa</div>
+                            <div class="cmpValue">{novaTaxa}</div>
+                        </li>
+                        <br>
+                    </ul>
+                    <ul class="borda"></ul>   
+    
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Nova parcela</div>
+                            <div class="cmpValue">{novaParcela}</div>
+                        </li>
+                        <br>
+                    </ul>
+                </div>
+                <br>
+
+                <div class="listInputs">
+                    <div class="escolherParcelas">
+                        <lightning-combobox 
+                            label="Quantidade de parcelas"
+                            value={valuePickListParcelas}
+                            options={pickListParcelas}
+                            onchange={handleChangeQtdParcelas}>
+                        </lightning-combobox>    
+                    </div>
+
+                    <div>
+                        <div class="troco" lwc:if={showTroco}>
+                            <div class="slds-form-element">
+                                <br>
+                                <label class="slds-checkbox_toggle slds-grid">
+                                    <input type="checkbox" name="checkbox-toggle-16" value="checkbox-toggle-16" aria-describedby="checkbox-toggle-16" onclick={handleBtnTroco} checked={btnTrocoCheked}/>
+                                    <span id="checkbox-toggle-16" class="slds-checkbox_faux_container">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-checkbox_on">Ativo</span>
+                                        <span class="slds-checkbox_off">Desativado</span>
+                                    </span>
+                                    <span class="slds-form-element__label slds-m-bottom_none" style="margin-left: 1%;">Troco</span>
+                                </label>
+                            </div>
+
+                            <div class="slds-p-around_medium lgc-bg" style="padding: 0; margin-left: 5%;">
+                                <lightning-input type="number" formatter="currency" step="0.01" disabled={inputTrocoDisabled} onchange={handleValorTroco} value={inputValorTroco} onfocusout={handleOnFocusOut}></lightning-input>
+                                <div class="valorTrocoErro" lwc:if={msgErroTroco}>
+                                    <p>{valorMsgErro}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <br>
+
+                        <div class="troco">
+                            <label class="slds-checkbox_toggle slds-grid">
+                                <input type="checkbox" name="checkbox-toggle-17" value="checkbox-toggle-17" aria-describedby="checkbox-toggle-17" onclick={handleBtnMargem} checked={usarMargem}/>
+                                <span id="checkbox-toggle-17" class="slds-checkbox_faux_container">
+                                    <span class="slds-checkbox_faux"></span>
+                                    <span class="slds-checkbox_on">Ativo</span>
+                                    <span class="slds-checkbox_off">Desativado</span>
+                                </span>
+                                <span class="slds-form-element__label slds-m-bottom_none" style="margin-left: 1%;">Utilizar nova margem disponível</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template lwc:if={step02}>
+            <div class="boxCardPrincipal" style="width: 100%;">
+                <!-- <div class="avisoAlternativo">
+                    <p class="avisoTexto">
+                        <lightning-icon
+                            icon-name="utility:warning"
+                            size="small"
+                            alternative-text="Indicates approval">
+                        </lightning-icon> &#32; &#32; &#32;Caso precise alterar o e-mail do cliente, <a href="#">clique aqui</a>
+                    </p>
+                </div> -->
+
+                <h1 style="font-weight: 400;">Detalhes da pessoa cliente</h1>
+                <div class="listInformacoes step02">
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">E-mail</div>
+                            <lightning-input type="email" disabled value={email} class="valueInput"></lightning-input>
+                        </li>
+                    </ul>
+
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Nome</div>
+                            <div class="cmpValue">{nome}</div>
+                        </li>
+                    </ul>   
+    
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">CPF</div>
+                            <div class="cmpValue">{cpf}</div>
+                        </li>
+                    </ul>
+    
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Telefone</div>
+                            <div class="cmpValue">{telefone}</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <br>
+
+            <div class="boxCardPrincipal step002">
+                <h1>Dados bancarios</h1>
+                <h2>Conta principal</h2>
+                <br>
+                <div class="listInformacoes" style="width: 50%;">
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Instituição financeira</div>
+                            <div class="cmpValue">{instituicaoBancariaAtual}</div>
+                        </li>
+                        <br>
+                    </ul>
+                    <ul class="borda"></ul>   
+    
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Agência</div>
+                            <div class="cmpValue">{agenciaBancariaAtual}</div>
+                        </li>
+                        <br>
+                    </ul>
+                    <ul class="borda"></ul>   
+    
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Conta</div>
+                            <div class="cmpValue">{contaBancariaAtual}</div>
+                        </li>
+                        <br>
+                    </ul>
+                </div>
+
+                <!-- <br>
+
+                <h2>Conta alternativa</h2>
+                <br>
+                <div class="listInformacoesAlternativa">
+                    <ul class="listUl"  style="width: 60%;">
+                        <li>
+                            <div class="cmpName">Instituição</div>
+                            <lightning-input 
+                                type="text" 
+                                value={instituicaoBancariaAlternativa} 
+                                onchange={handleInstituicaoAlternativa} 
+                                placeholder="001 - Banco do Brasil" 
+                                maxlength="3"
+                                class="valueInput">
+                            </lightning-input>
+                        </li>
+                        <br>
+                    </ul>  
+    
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Agência</div>
+                            <lightning-input 
+                                type="text" 
+                                value={agenciaBancariaAlternativa} 
+                                onchange={handleagenciaBancariaAlternativa} 
+                                placeholder="xxx-x" 
+                                maxlength="5"
+                                class="valueInput">
+                            </lightning-input>
+                        </li>
+                        <br>
+                    </ul> 
+    
+                    <ul class="listUl">
+                        <li>
+                            <div class="cmpName">Conta</div>
+                            <lightning-input 
+                                type="text" 
+                                value={contaBancariaAlternativa} 
+                                onchange={handlecontaBancariaAlternativa} 
+                                placeholder="xxxxxxxxxxxxx-xx" 
+                                maxlength="16"
+                                class="valueInput">
+                            </lightning-input>
+                        </li>
+                        <br>
+                    </ul>
+                </div> -->
+            </div>
+            <br>
+        </template>
+
+        <template lwc:if={step03}>
+
+            <div class="boxInputs" lwc:if={step03}>
+                <h1>Preenchimento de Caso</h1>
+                <lightning-record-edit-form object-api-name="Case">
+                    <lightning-layout multiple-rows="true">
+                        <lightning-layout-item size="4" padding="horizontal-medium">
+                            <label>Origem</label>
+                            <lightning-input-field 
+                                disabled
+                                language=""
+                                value={valueOrigem}
+                                field-name="Origin" 
+                                class="lightningInput" 
+                                placeholder="--Nenhuma--"
+                                variant="label-hidden"> 
+                            </lightning-input-field>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item size="4" padding="horizontal-medium">
+                            <label>Canal</label>
+                            <lightning-input-field
+                                disabled
+                                value={valueCanal}
+                                field-name="CanalEntrada__c" 
+                                class="lightningInput" 
+                                placeholder="--Nenhuma--"
+                                variant="label-hidden"> 
+                            </lightning-input-field>
+                        </lightning-layout-item>
+
+                        <lightning-layout-item size="4" padding="horizontal-medium">
+                            <label>Telefone de contato <span class="required">*</span></label>
+                            <lightning-input
+                                value={valueTelefone}
+                                type="tel"
+                                variant="label-hidden"
+                                max-length="15"
+                                required
+                                onchange={handlePhoneChange}> 
+                            </lightning-input>
+                            <span>Telefone de contato do Discador Genesys Cloud</span>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </lightning-record-edit-form>   
+            </div>
+        </template>
+
+        <template lwc:if={step04}>
+            <div class="boxStep3" lwc:if={step04}>
+                <div class="section01">
+                    <h1><lightning-icon icon-name="utility:success" alternative-text="Success!" variant="success" title="success variant" size="small"></lightning-icon> Protocolo registrado!</h1> <br>
+                    <h2>Protocolo: <b>{numeroProtocolo}</b></h2>
+                    <p>Em: {dateToday} - {hourToday}</p>
+                </div>
+    
+                <div class="section02" style="box-shadow: none;">
+                    <p>Processo de refinanciamento iniciado.</p>
+                    <p>Informa à pessoa cliente que o SMS pode demorar até 20 min para ser recebido.</p>
+                </div>
+            </div>
+        </template>
+    </div>
+
+
+    <footer>   
+        <div class="boxFooter">
+            <ul>
+                <li>
+                    <lightning-button variant="Neutral" label={labelButtonVoltar} onclick={handleButnVoltar} disabled={disableButtonVoltar} class="slds-m-left_x-small"></lightning-button>
+                </li>
+                <li>
+                    <lightning-button variant="brand" label={labelButtonAvancar}  onclick={handleBtnProsseguir} disabled={disableButtonAvancar}  class="slds-m-left_x-small"></lightning-button>
+                </li>
+            </ul>
+        </div>
+    </footer>
+</template>

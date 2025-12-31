@@ -1,0 +1,197 @@
+.page-container {
+    background-color: #FAFAF9;
+    min-height: 96%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    margin: 0px;
+}
+
+.header-container{
+    padding: 18px 16px 10px;
+    border-bottom: 1px solid #DDDBDA;
+}
+
+.header-title{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.header-title h1{
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 27px;
+    margin-left: 12px;
+}
+
+.btn-export{
+    margin-left: auto;
+}
+
+.header-fields{
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 0px 16px;
+}
+
+.btn-header{
+    margin-bottom: 3px;
+}
+
+.fields-margin{
+    margin-bottom: 2px;
+}
+
+.field-transacao{
+    --lwc-sizeXSmall: 360px;
+}
+
+.fields-item{
+    width: 14%;
+}
+
+.field-medium{
+    width: 16%;
+}
+
+.field-large{
+    width: 24%;
+}
+
+/*Telas com imagens*/
+.imagem-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 5%;
+    margin-bottom: 50px;
+    font-weight: 400;
+}
+
+.imagem-container img{
+    width: 300px;
+    height: 200px;
+}
+
+.imagem-container h1{
+    font-size: 20px;
+    line-height: 30px;
+}
+
+.imagem-container p{
+    font-size: 13px;
+    line-height: 20px;
+    margin-top: 5px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.text-img{
+    max-width: 38ch;
+}
+
+/* Tela modal */
+.detalhes-line{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px 10px;
+    padding-top: 12px;
+    padding-bottom: 24px;
+}
+
+.detalhes-line:not(:first-of-type){
+    padding-top: 24px;
+}
+
+.detalhes-line:not(:last-of-type){
+    border-bottom: 1px solid #DDDBDA;
+}
+
+.detalhes-item{
+    grid-column: span 2;
+}
+
+.text-name{
+    color: #444444;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.text-value{
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.color-text-black{
+    color: #181818;
+}
+
+/* Tela tabela */
+.tabela-container{
+    width: 100%;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+@media (max-width: 1300px) {
+    .tabela-container{
+        max-height: 500px;
+    }
+}
+
+.paginacao-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: #FAFAF9;
+    border-radius: 0 0 4px 4px;
+    font-size: 0.9rem;
+    position: relative;
+    margin-top: auto;
+}
+
+.paginacao-footer-item{
+    position: absolute;
+    right: 24px;
+}
+
+.paginacao-footer .slds-button_icon {
+    margin-left: 0.5rem;
+}
+
+.paginacao-footer lightning-combobox {
+    width: 120px;
+}
+
+.input-paginas{
+    max-width: 65px;
+    --lwc-sizeXSmall: 65px;
+}
+
+.text-button > button {
+    cursor: default;
+    display: block;
+    width: 100%;
+    text-align: start;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #080707;
+}
+
+.text-button > button:hover {
+    color: #080707;
+}
+
+.no-link-style a {
+    color: inherit !important;
+    text-decoration: none !important;
+    cursor: default !important;
+    pointer-events: none !important; /* evita clique */
+}

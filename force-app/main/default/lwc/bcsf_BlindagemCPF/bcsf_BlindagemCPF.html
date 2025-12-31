@@ -1,0 +1,93 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Carregando..." size="large" variant="brand"></lightning-spinner>
+    </div>
+    <div class="header">
+        <h1>Blindar CPF</h1>
+    </div>
+    <div class="container">
+        <div class="box-resumo-conta">
+            <div class="slds-grid slds-wrap slds-gutters">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <div class="informacao">
+                        <div class="info-label">Titular da conta</div>
+                        <div class="info-valor">{dadosCliente.titularConta}</div>
+                    </div>
+                </div>
+            
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                    <div class="informacao">
+                        <div class="info-label">CPF do titular</div>
+                        <div class="info-valor">{dadosCliente.cpf}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-selecionar-blindagem">
+            <div class="alerta">
+                <lightning-icon class="slds-m-right_small" icon-name="utility:info" size="small" alternative-text="Atenção"></lightning-icon>
+                <p>A blindagem do CPF será refletida em todos os produtos do cliente.</p>
+            </div>
+
+            <h2>Blindagem</h2>
+
+            <div class="box-inputs">
+                <div class="slds-grid slds-wrap slds-gutters inputs">
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <div class="tipo-blindagem">
+                            <div class="info-label">Tipo de blindagem</div>
+                            <div class="combo-box">
+                                <lightning-radio-group 
+                                    name="tipoBlindagem"
+                                    options={tiposDePindagem}
+                                    value={tipoBlindagemSelecionada}
+                                    type="radio"
+                                    onchange={tipoBlindagemHandler}>
+                                </lightning-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                            
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                        <div class="motivo">
+                            <div class="combo-box">
+                                <lightning-combobox
+                                    label="Motivo"
+                                    name="motivo"
+                                    value={motivo}
+                                    options={motivosBlindagem}
+                                    placeholder="Selecione"
+                                    onchange={motivoHandler}>
+                                </lightning-combobox>
+                            </div>
+                        </div>
+                    </div>   
+
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-1" if:true={showDescMotivo}>
+                        <div class="motivo">
+                            <div class="motivo-outro">
+                                 <lightning-input
+                                    type="text"
+                                    label="Informe o motivo da blindagem"
+                                    value={descMotivo}
+                                    onchange={descMotivoHandler}>
+                                </lightning-input>
+                            </div>
+                        </div>
+                    </div>  
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <ul>
+            <li>
+                <lightning-button variant="Neutral" label={lblBtnVoltar} onclick={closeQuickAction} class="slds-m-left_x-small"></lightning-button>
+            </li>
+            <li>
+                <lightning-button variant="brand" label={lblBtnAvancar}  onclick={handleProsseguir} disabled={desativarAvancar}  class="slds-m-left_x-small"></lightning-button>
+            </li>
+        </ul>
+    </div>
+</template>

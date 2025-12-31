@@ -1,0 +1,21 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Carregando..." size="large" variant="brand"></lightning-spinner>
+    </div>
+    <div class="slds-tabs_default">
+        <ul class="slds-tabs_default__nav" role="tablist">
+            <li class="slds-tabs_default__item slds-is-active" role="presentation">
+                <a onclick={handleTabClick} data-value="adesao" data-tab="1" class="slds-tabs_default__link" href="#">Adesão</a>
+            </li>
+            <li class="slds-tabs_default__item" role="presentation">
+                <a onclick={handleTabClick} data-value="consulta" data-tab="2" class="slds-tabs_default__link" href="#">Consulta</a>
+            </li>
+        </ul>
+    </div>
+    <div lwc:if={exibirPaginaAdesao}>
+        <c-bcsf_cmp_-credito-pessoal-adesao record-id={recordId} status={statusCP}></c-bcsf_cmp_-credito-pessoal-adesao>
+    </div>
+    <div lwc:if={exibirPaginaConsulta}>
+        <c-bcsf_cmp_-credito-pessoal-consulta record-id={recordId}></c-bcsf_cmp_-credito-pessoal-consulta>
+    </div>
+</template>

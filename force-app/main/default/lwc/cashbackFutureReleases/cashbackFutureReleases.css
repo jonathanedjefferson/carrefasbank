@@ -1,0 +1,121 @@
+.title {
+    margin-top: 24px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.spinner {
+    position: relative;
+    display: inline-block;
+    background-color: white;
+    margin: 25px 0;
+    margin-left: 5%;
+}
+
+.slds-spinner_container {
+    background-color: white;
+}
+
+:host { 
+    --sds-c-accordion-summary-color-background: var(--lwc-colorBackground,rgb(243,242,242)); 
+}
+
+.container {
+    margin-top: 10px;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+    border: 1px solid #ddd;
+    margin: 20px 0;
+}
+
+table th, table td {
+    text-align: left;
+    padding: 8px;
+}
+
+table th {
+    background-color: #fafaf9;
+    font-weight: bold;
+}
+
+table tr {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.light-info {
+    font-size: 0.9em;
+    color: #3e3e3c;
+}
+
+.icon-container {
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    margin-right: 10px;
+}
+
+.details-button {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    float: right;
+}
+
+.detail-title {
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+.detail-container {
+    margin-left: 20px;
+    width: 100%;
+}
+
+.detail-value {
+    color: #4a4a49;
+}
+
+.detail-message {
+    background-color: #f3f2f2;
+    display: flex;
+    align-items: center;
+    margin: 15px 0;
+    padding: 20px;
+    height: 50px;
+    width: fit-content;
+    max-width: 90%;
+}
+
+.error-state {
+    background-color: #fafaf9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid #ddd;
+}
+
+.error-image {
+    height: 200px;
+    padding: 10px;
+}
+
+.error-message {
+    font-size: 1.2rem;
+    color: #000000;
+    margin: 5px;
+}
+
+.error-submessage {
+    color: #3e3e3c;
+    margin: 5px 0 20px 0;
+}

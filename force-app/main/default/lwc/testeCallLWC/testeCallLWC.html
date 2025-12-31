@@ -1,0 +1,20 @@
+<template>
+    <template if:true={modalBoletoAvulso}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open  slds-modal_small">
+            <div id='myModalBeletoAvulso' class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={fecharModalBoletoAvulso}>
+                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        <path class="slds-icon-text-white" fill="white" d="M17 6.4L15.6 5 12 8.6 8.4 5 7 6.4 10.6 10l-3.6 3.6L7 15.6 8.4 17l3.6-3.6 3.6 3.6 1.4-1.4L13.4 10 17 6.4z"></path>
+                    </svg>
+                    <span class="slds-assistive-text">Cancelar e fechar</span>
+                </button>
+                <div class="slds-modal__content slds-p-around_medium modalboleto" id="modal-content-id-2">
+                    <c-bcsf_-boleto-avulso record-id={recordId} oncloseparentmodal={closeQuickAction}></c-bcsf_-boleto-avulso>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>  
+    <lightning-button label="Pagamento antecipado" onclick={boletoAvulsoHandler}></lightning-button>
+</template>

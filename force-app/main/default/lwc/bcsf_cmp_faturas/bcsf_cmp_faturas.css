@@ -1,0 +1,84 @@
+.spins::after {
+    position: absolute;
+    content: 'Carregando faturas do cliente...';
+    width: 100%;
+    text-align: center;
+    top: calc(50% + 3em);
+    font-weight: bold;
+}
+
+.resumo-faturas table {
+    border:1px solid #dddbda;
+    border-spacing: 5px;
+    border-radius: 0.25rem;
+    border-collapse: separate;
+}
+
+.resumo-faturas table > tr {
+    color: #3e3e3c;
+    font-size: 0.75rem;
+}
+
+.resumo-faturas table > td {
+    color: #080707;
+    font-size: 0.875rem;
+    font-weight: 400;
+}
+
+.resumo-faturas table.mt-3 {
+    margin-top: 0.75rem
+}
+
+/* div{
+    font-weight: var(--lwc-fontWeightRegular)
+} */
+
+h1{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+h2{
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.tdValues{
+    font-weight: bold;
+}
+
+.infoName{
+    margin-bottom: 4px;
+    font-size: 14px;
+}
+
+.infoValue{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.containerLimites{
+    display: flex;
+    flex-direction: row;
+    padding-left: 5px;
+}
+.containerLimites div{
+    margin-right: 48px;
+}
+
+.spacingContainer{
+    margin-bottom: 32px;
+}
+
+.spacingContainerTop{
+    margin-top: 24px;
+}
+
+.subTitleAlternative{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.modalboleto{
+    padding: 0;
+}

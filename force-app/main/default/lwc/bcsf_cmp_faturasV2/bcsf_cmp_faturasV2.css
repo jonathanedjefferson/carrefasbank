@@ -1,0 +1,225 @@
+.spins::after {
+    position: absolute;
+    content: 'Carregando faturas do cliente...';
+    width: 100%;
+    text-align: center;
+    top: calc(50% + 3em);
+    font-weight: bold;
+}
+
+.resumo-faturas table {
+    border:1px solid #dddbda;
+    border-spacing: 5px;
+    border-radius: 0.25rem;
+    border-collapse: separate;
+}
+
+.resumo-faturas table > tr {
+    color: #3e3e3c;
+    font-size: 0.75rem;
+}
+
+.resumo-faturas table > td {
+    color: #080707;
+    font-size: 0.875rem;
+    font-weight: 400;
+}
+
+.resumo-faturas table.mt-3 {
+    margin-top: 0.75rem
+}
+
+/* div{
+    font-weight: var(--lwc-fontWeightRegular)
+} */
+
+h1{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+h2{
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.tdValues{
+    font-weight: bold;
+}
+
+.infoName{
+    display: flex;
+    align-items: flex-end;
+    height: 22px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #000000;
+}
+
+.infoValue{
+    font-weight: 700;
+    font-size: 14px;
+    margin: 2px 0px;
+}
+
+.infoDescription{
+    font-size: 14px;
+    font-weight: 400;
+    color: #444444;
+}
+
+.containerLimites{
+    display: flex;
+    flex-direction: row;
+    max-width: 700px;
+    flex-wrap: wrap;
+    gap: 24px 0px;
+    padding-left: 5px;
+}
+.containerLimites div{
+    margin-right: 48px;
+}
+
+.spacingContainer{
+    margin-bottom: 32px;
+}
+
+.spacingContainerTop{
+    margin-top: 24px;
+}
+
+.subTitleAlternative{
+    font-size: 18px;
+    font-weight: 600;
+}
+.modalboleto{
+    padding: 0;
+}
+
+.accordion-info-adicionais {
+    --slds-c-accordion-summary-color-background: #F3F2F2;
+    --slds-c-accordion-heading-font-size: 16px;
+    --slds-c-accordion-heading-line-height: 32px;
+    --slds-c-accordion-section-spacing-block-start: 4px;
+    --slds-c-accordion-section-spacing-block-end: 4px;
+    --slds-c-accordion-section-spacing-inline-start: 8px;
+    --slds-c-accordion-color-border: #DDDBDA;
+    font-weight: 400;
+    border: 1px solid #E8E8E8;
+    border-radius: 2px;
+}
+
+.containe-info-adicionais{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 18px 16px;
+}
+.containe-info-adicionais div{
+    width: 50%;
+}
+
+.container-info-fatura-fechada{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 24px 0px;
+    padding-left: 5px;
+}
+
+.container-info-fatura-fechada div{
+    margin-right: 48px;
+}
+
+.container-info-fatura-fechada div:nth-child(4){
+    width: 50%;
+}
+
+@media (max-width:1340px) {
+    .container-info-fatura-fechada div{
+        margin-right: auto;
+        min-width: 30%;
+    }
+}
+
+.container-info-fatura-fechada .infoDescription{
+    font-size: 14px;
+    font-weight: 400;
+    color: #0176D3;
+    cursor: pointer;
+}
+
+.container-info-fatura-fechada .infoDescription:hover{
+    color: #044377;
+}
+
+.container-info-fatura-fechada .infoDescription:active{
+    color: #0176D3;
+}
+
+.aling-items-start {
+    display: flex;
+    justify-content: start;
+    align-items: flex-start;
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    box-shadow: 0px 1px 0px #DDDBDA;
+}
+.aling-items-start li{
+    margin-right: 50px;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.tipoConta {
+    display: inline-flex;
+}
+
+.logo {
+    margin-right: 5px;
+}
+
+.logo > img {
+    max-width: 100%;
+    height: 45px;
+}
+
+.infoNameSaldo{
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.infoValueSaldo{
+    font-weight: 600;
+    font-size: 16px;
+    margin: 2px 0px;
+}
+
+.container-resumo-saldo-vencido h2{
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 18px;
+}
+
+.container-resumo-saldo-vencido p{
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+.container-resumo-saldo-vencido span{
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.container-resumo-saldo-vencido h3{
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.descricao-saldo-vencido{
+    font-size: 13px;
+    font-weight: 400 !important;
+    margin: 20px 0px !important;
+}

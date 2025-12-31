@@ -1,0 +1,377 @@
+.titulo{
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 27px;
+    letter-spacing: 0px;
+    margin: 20px 0px 20px 0px;
+}
+.tabela-contratos{
+    border: 1px solid #C9C9C9;
+    border-radius: 4px;
+    margin-bottom: 32px;
+    overflow: visible;
+}
+.tabela-contratos table{
+    border-collapse: collapse;
+    table-layout: fixed;
+    border-radius: 4px;
+    overflow: visible;
+}
+.tabela-contratos table th{
+    background-color: #FAFAF9;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-bottom: 1px solid #C9C9C9;
+    height: 32px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.tabela-contratos table td{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.status-col{
+    overflow: visible !important;
+}
+.sucesso-label{
+    padding: 2px 8px;
+    background-color: #2E844A;
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0px;
+    border-radius: 23px;
+    max-width: 100%;
+    width: fit-content;
+    white-space: nowrap;
+    overflow: hidden;   
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+.erro-label{
+    padding: 2px 8px;
+    background-color: #BA0517;
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0px;
+    border-radius: 23px;
+    max-width: 100%;
+    width: fit-content;
+    white-space: nowrap;
+    overflow: hidden;   
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+.neutro-label{
+    padding: 2px 8px;
+    background-color: #DDDBDA;
+    color: #181818;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 18px;
+    letter-spacing: 0px;
+    border-radius: 23px;
+    max-width: 100%;
+    width: fit-content;
+    white-space: nowrap;
+    overflow: hidden;   
+    text-overflow: ellipsis;
+    display: inline-block;
+}
+.contratacao-header{
+    display: flex;
+    padding-left: 16px;
+    padding-right: 16px;
+    height: 95px;
+    margin-bottom: 32px;
+    margin-top: 32px;
+}
+.contratacao-header .box-contratado{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid #C9C9C9;
+    padding-right: 16px;
+    height: 100%;
+}
+.contratacao-header .box-status{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 16px;
+    height: 100%;
+}
+.contratacao-header button{
+    border-color: rgba(1, 118, 211, 1);
+    color: rgba(1, 118, 211, 1);
+}
+.contratacao-header button:disabled {
+    color: #c9c9c9;
+    border-color: #c9c9c9;
+}
+.label-campo{
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    letter-spacing: 0px;
+    color: #3E3E3C;
+}
+.valor-campo{
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 21px;
+    letter-spacing: 0px;
+    color: #080707;
+}
+.data-contrato, .envie-novamente{
+    margin-top: 3px;
+}
+.botao-adesao, .botao-dados-bancarios{
+    margin-top: auto;
+    width: fit-content;
+}
+.container-modal{
+    padding: 0;
+    margin: 0;
+}
+.tabset-detalhes .slds-tabs_default__nav{
+    border-bottom: 1px solid #C9C9C9 !important;
+    margin-bottom: 16px;
+}
+.container-detalhes-contratacao{
+    display: flex;
+    flex-direction: column;
+    padding: 16px 16px;
+    gap: 16px;
+}
+.destaques-contratacao{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid #C9C9C9;
+    border-radius: 4px;
+}
+.destaques-contratacao h1{
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0px;
+    color: #181818;
+}
+.destaques-contratacao ul{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+.conta-de-destino{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.conta-de-destino h1{
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0px;
+    color: #181818;
+}
+.linha {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    height: fit-content;
+    border-bottom: 1px solid #ECEBEA;
+} 
+.label-linha {
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0px;
+    color: #444444;
+}
+.valor-linha {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    letter-spacing: 0px;
+    color: #444444;
+}
+.accordion-detalhes{
+    border-top: 1px solid #DDDBDA;
+    border-bottom: 1px solid #DDDBDA;
+    border-left: 1px solid #DDDBDA;
+    border-right: 1px solid #DDDBDA;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+.accordion-detalhes lightning-accordion-section{
+    --slds-c-accordion-summary-color-background: #F3F3F3;
+    --slds-c-accordion-heading-font-size: 16px;
+    --slds-c-accordion-heading-font-weight: 400;
+    --slds-c-accordion-heading-line-height: 24px;
+    --slds-c-accordion-summary-height: 32px;
+    --slds-c-accordion-section-spacing-blockstart: 5px;
+    --slds-c-accordion-section-spacing-blockend: 5px;
+    --slds-c-accordion-section-spacing-inlinestart: 5px;
+    --slds-c-accordion-section-spacing-inlineend: 5px;
+}
+.detalhes-contrato{
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    gap: 5px;
+}
+.modal-cancelar-preencher h3{
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 27px;
+    color: #080707;
+    margin-bottom: 4px;
+}
+.text-name{
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 20px;
+    color: #000000;
+}
+.text-value{
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    color: #000000;
+}
+.preenchimento-caso{
+    margin: 16px 0px;
+    padding-top: 16px;
+    border-top: 1px solid #C9C9C9;
+}
+.preenchimento-caso h2{
+    font-weight: 400;
+    margin-bottom: 8px;
+}
+.preenchimento-caso .text-name{
+    line-height: 13px;
+    color: #3E3E3C;
+}
+.preenchimento-caso .text-value{
+    line-height: 20px;
+}
+.fields-adicionais{
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0px 24px;
+}
+.field-adicional{
+    min-width: 50%;
+}
+.field-label{
+    font-weight: 600;
+    font-size: 13px;
+    color: #2E2E2E;
+    margin: 0px 0px 4px;
+    line-height: 24px;
+}
+.dados-itens{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+}
+.fields-caso{
+    display: flex;
+    flex-direction: row;
+}
+.field-caso{
+    width: 220px;
+    margin-right: 20px;
+}
+.alert-Info{
+    height: 36px;
+    margin: 16px 0px;
+/*     --slds-c-alert-color-background: #F9B765; 
+    --slds-c-alert-text-color: #000000; */
+    --slds-c-icon-color-foreground-default: #222222;
+}
+.alert-Info h2{
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+}
+.success-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    --slds-c-icon-color-background: #087C2B;
+    margin: 23px 10px 0px 24px;
+    padding: 5px;
+    height: 20px;
+    width: 20px;
+}
+.container-casoGerado{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.casoGerado{
+    width: 100%;
+    padding-bottom: 30px;
+    padding: 20px 30px 30px 00px;
+}
+.casoGerado h1{
+    font-size: 18px;
+    font-weight: 700;
+    color: #000000;
+}
+.casoGerado h2{
+    font-size: 16px;
+    font-weight: 600;
+    padding-top: 20px;
+    padding-bottom: 12px;
+    color: #000000;
+}
+.casoGerado ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.casoGeradoName{
+    font-size: 0.875rem;
+    color: #3E3E3C;
+    line-height: 18px;
+}
+.casoGeradoValue{
+    font-size: 1rem;
+    color: #080707;
+    font-weight: 600;
+    line-height: 22px;
+}
+.dados-casoGerado{
+    margin-bottom: 20px;
+}
+.dados-casoGerado h2{
+    font-size: 16px;
+    font-weight: 600;
+    margin: 12px 0px 4px 0px;
+    padding: 0px;
+    color: #000000;
+}
+.dados-casoGerado span{
+    font-size: 16px;
+    font-weight: 700;
+    color: #000000;
+}
+
+
+
+@media screen and (min-width: 1300px) {
+    .tabela-contratos table {
+        table-layout: auto; 
+    }
+}

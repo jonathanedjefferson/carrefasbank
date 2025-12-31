@@ -1,0 +1,201 @@
+.title {
+    font-size: 20px;
+    color:#080707;
+    text-align:center;
+    padding: 20px 0;
+    box-shadow: 0px 1px 0px #DDDBDA;
+}
+.cmpName {
+    font-size: 14px;
+}
+
+.cmpValue {
+    font-size: 14px;
+    font-weight: bold;
+}
+.listaDados{
+    display: flex;
+    width: 85%;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+
+/*Inicio tabela */
+.tabela {
+    border-collapse: collapse;
+    width: 40%;
+    border-radius: 250px;
+    border: 1px solid #dddddd;
+}
+
+th, td {
+    border-bottom: 1px solid #dddddd;
+    text-align: left;
+    padding: 4px;
+}
+
+.linha:last-child td {
+    border-bottom: none; 
+}
+
+.linha:hover {
+    background-color: #f5f5f5;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.ordenacao {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.linha {
+    border-radius: 10px;
+    border: 1px solid #dddddd;
+}
+
+.tabela td:first-child,
+.tabela th:first-child {
+    width: 30px;
+}
+/*fim tabela */
+
+/*Email Alternativo*/
+.containerEmail{
+    width: 100%;
+}
+
+.inputEmail{
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+}
+.corFundo{
+    background-color: #F8F9FA;
+    position: static;
+    width: 100%;
+    height: 100%;
+}
+.suggestions {
+    border: 1px solid #ccc;
+    position: absolute;
+    z-index: 1;
+    background-color: #fff;
+    width: 245px;
+    max-height: 100px; 
+    overflow-y: auto
+}
+
+.suggestions ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.suggestions li {
+    cursor: pointer;
+    margin: 5px 5px;
+}
+
+.suggestions li:hover {
+    background-color: #f5f5f5;
+}
+
+.customAlert {
+    background-color: #FFB75D; 
+    color: #3E3E3C; 
+    font-weight: 500;
+    display: flex;
+    padding: 10px 15px;
+    justify-content:center;
+    align-items: center;
+}
+.customAlert p{
+    margin-left: 5px;
+    font-size: 12px;
+}
+/*fim Email Alternativo*/
+
+/*Tela final mensagem de sucesso*/
+.success-message {
+    display: flex;
+    align-items: center;
+    height: 18px;
+}
+
+.success-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    padding: 5px;
+    height: 18px;
+    width: 18px;
+    
+}
+.success-text {
+    font-weight: bold;
+    font-size: 18px;
+}
+.subTitle{
+    font-weight: bold;
+}
+/*final tela final mensagem de sucesso*/
+
+
+/*Footer*/
+footer {
+    box-shadow:  0px -1px 0px #DDDBDA;
+    margin-top: 30px;
+}
+
+.boxFooter ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 12px;
+}
+/* .boxFooter ul li {
+    width: 70%;
+    border: 2px solid #444;
+}
+.boxFooter ul li:first-child {
+    width: 10%;
+    text-align: start;
+}
+.boxFooter ul li:last-child {
+    width: 12%;
+    text-align: center;
+} */
+
+.liBtnAlterar{
+    width: 22%;
+    text-align: right;
+}
+.liBtnProgress{
+    width: 60%;
+    text-align: center;
+}
+.customProgress {
+    --lwc-progressBarColorBackgroundFill: green !important;
+}
+.customProgress .slds-progress {
+    max-width: 85% !important;
+}
+.input-box{
+    display: block;
+}
+
+.customAlert.info-only {
+    background-color: #f3f2f2;
+    padding: 1rem;
+    border-radius: 0.25rem;
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #3e3e3c;
+}

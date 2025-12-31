@@ -1,0 +1,181 @@
+<template>
+    <div class="page-container">
+        <div lwc:if={spinner} role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+            <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+        </div>
+        <div class="header-container">
+            <div class="header-title">
+                <lightning-icon icon-name="standard:knowledge" alternative-text="Operações" title="Controle de Operações" size="large">Controle de Operações Legado</lightning-icon>
+                <h1>Controle de operações</h1>
+                <lightning-button class="btn-export" label="Exportar tabela" title="Exportar tabela" onclick={exportarTabela} disabled={disableBtnExport}></lightning-button>
+            </div>
+            <ul class="header-fields">
+                <li class="fields-item field-medium fields-margin">
+                    <lightning-combobox
+                        name="empresaField"
+                        value={empresaField}
+                        placeholder="Empresa"
+                        options={opcoesEmpresas}
+                        disabled={disableActions}
+                        onchange={handleFieldsPicklist}>
+                    </lightning-combobox>
+                </li>
+                <li class="fields-item field-large fields-margin">
+                    <lightning-combobox
+                        name="loja"
+                        value={loja}
+                        placeholder="Loja"
+                        options={opcoesLojas}
+                        disabled={disableActions}
+                        onchange={handleFieldsPicklist}>
+                    </lightning-combobox>
+                </li>
+                <li class="fields-item field-large fields-margin field-transacao">
+                    <lightning-combobox
+                        name="transacao"
+                        value={transacao}
+                        placeholder="Transação"
+                        options={opcoesTransacoes}
+                        disabled={disableActions}
+                        onchange={handleFieldsPicklist}>
+                    </lightning-combobox>
+                </li>
+                <li class="fields-item field-medium">
+                    <lightning-input type="search" icon-name="utility:search" icon-position="right" name="cpfField" placeholder="CPF do cliente" value={cpfField} onchange={handleFieldsText} onblur={validarFieldCPF} disabled={disableActions}></lightning-input>
+                </li>
+                <li class="fields-item">
+                    <lightning-input type="search" icon-name="utility:search" icon-position="right" name="usuarioField" placeholder="Usuário" value={usuarioField} onchange={handleFieldsText} disabled={disableActions}></lightning-input>
+                </li>
+                <li class="fields-item">
+                    <lightning-input class="date-format-hide fields-margin" type="date" name="dataInicio" placeholder="Início" value={dataInicio} onchange={handleData} disabled={disableActions}></lightning-input>
+                </li>
+                <li class="fields-item">
+                    <lightning-input class="date-format-hide fields-margin" type="date" name="dataFinal" placeholder="Fim" value={dataFinal} onchange={handleData} disabled={disableActions}></lightning-input>
+                </li>
+                <li class="btn-header">
+                    <lightning-button variant="brand" label="Buscar" title="Buscar" onclick={handleBtnBuscar} disabled={disableActions}></lightning-button>
+                </li>
+                <li class="fields-margin">
+                    <lightning-button-icon icon-name="utility:refresh" variant="border-filled" title="Limpar Filtros" onclick={handleBtnResetFields} disabled={disableActions}></lightning-button-icon>
+                </li>
+            </ul>
+        </div>
+
+        <div lwc:if={telaListagem} class="tabela-container">
+            <c-bcsf_-custom-datatable-tooltip
+                key-field="id"
+                data={listaOperacoes}
+                columns={columns}
+                onrowaction={handleRowClick}
+                hide-checkbox-column>
+            </c-bcsf_-custom-datatable-tooltip>
+        </div>
+        
+        <div lwc:if={telaListagem} class="paginacao-footer">
+            <div class="slds-grid slds-grid_vertical-align-center">
+                <lightning-button-icon icon-name="utility:chevronleft" onclick={handlePaginaAnterior} alternative-text="Anterior"></lightning-button-icon>
+                <div class="slds-m-horizontal_medium">{paginaAtual}</div>
+                <lightning-button-icon icon-name="utility:chevronright" onclick={handlePaginaProxima} alternative-text="Próxima"></lightning-button-icon>
+            </div>
+            <div class="slds-m-left_small">
+                <lightning-combobox
+                    label="Itens por página"
+                    placeholder=""
+                    variant="label-hidden"
+                    class="input-paginas"
+                    value={itensPorPagina}
+                    options={opcoesItensPorPagina}
+                    onchange={handleItensPorPagina}>
+                </lightning-combobox>
+            </div>
+            <div class="paginacao-footer-item">Ver {paginaAtual} - {totalPaginas} de {totalItens}</div>
+        </div>
+
+        <div lwc:if={telaHome} class="imagem-container">
+            <img src={imagemHome} alt="imagem tela inicial">
+            <h1>Use os filtros acima para buscar</h1>
+            <p class="text-img">Após isto, serão listadas todos os resultados de acordo com os filtros</p>
+        </div>
+        <div lwc:if={telaListaVazia} class="imagem-container">
+            <img src={ImgErrorOff} alt="imagem tela inicial">
+            <h1>Não existem resultados para esta busca</h1>
+            <p>Ajuste os filtros e tente novamente.</p>
+        </div>
+        <div lwc:if={telaFalhaAPI} class="imagem-container">
+            <img src={imagemFalhaAPI} alt="imagem tela inicial">
+            <h1>Falha ao realizar a busca</h1>
+            <p lwc:if={showBtnFalhaAPI}>Houve um comportamento inesperado do sistema, tente novamente.</p>
+            <p lwc:else>Houve um comportamento inesperado do sistema, recarregue a página.</p>
+            <lightning-button lwc:if={showBtnFalhaAPI} variant="brand" label="Tentar novamente" title="Tentar novamente" onclick={handleBtnBuscar}></lightning-button>
+        </div>
+    </div>
+
+    <template if:true={modalDetalhes}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-03" class="slds-modal slds-fade-in-open  slds-modal_small">
+            <div id='myModalHistoricoProposta' class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={handleCloseModal}>
+                    <lightning-icon icon-name="utility:close" size="x-small" alternative-text="Close" title="Close"></lightning-icon>
+                    <span class="slds-assistive-text">Cancelar e fechar</span>
+                </button>
+                <div class="slds-modal__header">
+                    <h1 id="modal-heading-03" class="slds-modal__title slds-hyphenate" tabindex="-1">Detalhes do controle de operação</h1>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3">
+                    <div lwc:if={spinner} role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+                        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+                    </div>
+                    <ul class="detalhes-line">
+                        <li>
+                            <p class="text-name">Data/Hora</p>
+                            <p class="text-value">{dataHora}</p>
+                        </li>
+                        <li>
+                            <p class="text-name">CPF</p>
+                            <p class="text-value">{cpf}</p>
+                        </li>
+                        <li>
+                            <p class="text-name">Nome cliente</p>
+                            <p class="text-value">{nomeCliente}</p>
+                        </li>
+                    </ul>
+                    <ul class="detalhes-line">
+                        <li>
+                            <p class="text-name">Canal</p>
+                            <p class="text-value">{canal}</p>
+                        </li>
+                        <li>
+                            <p class="text-name">Empresa</p>
+                            <p class="text-value">{empresa}</p>
+                        </li>
+                        <li>
+                            <p class="text-name">Regional/Unidade</p>
+                            <p class="text-value">{regional}</p>
+                        </li>
+                        <li>
+                            <p class="text-name">Usuário</p>
+                            <p class="text-value">{usuario}</p>
+                        </li>
+                        <li class="detalhes-item">
+                            <p class="text-name">Assunto/Evento</p>
+                            <p class="text-value">{assunto}</p>
+                        </li>
+                    </ul>
+                    <ul class="detalhes-line">
+                        <template for:each={extensoes} for:item="extensao">
+                            <li key={extensao.id}>
+                                <p class="text-name">Extensão {extensao.id}</p>
+                                <p class="text-value">{extensao.texto}</p>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+                <div class="slds-modal__footer slds-modal__footer_directional">
+                    <lightning-button class="slds-button" variant="neutral" label="Fechar" title="Fechar" onclick={handleCloseModal}></lightning-button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+
+</template>

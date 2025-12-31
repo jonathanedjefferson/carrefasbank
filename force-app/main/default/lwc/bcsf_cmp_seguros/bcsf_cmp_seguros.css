@@ -1,0 +1,93 @@
+:host{
+    --font-size-small: 10px;
+    --font-size-medium: 12px;
+    --font-size-large: 14px;
+    --font-size-xlarge: 16px;
+    --font-size-xxlarge: 18px;
+    margin: 0;
+    padding: 0;
+}
+.cardInfo{
+    display: flex;
+    flex-direction: row;
+    background: #dddbda;/* token color = colorGray5  */
+}
+.statusTitle{
+    margin-left: auto;
+    color: white;
+    background: #5d5d5d;
+    padding: 2px 10px;
+    border-radius: 25px;
+    font-weight: bold;
+}
+.accordionTitle{
+    font-weight: bold;
+    font-size: 18px;
+    margin: 16px 0px;
+}
+.accordionFields{
+    display: flex;
+    flex-direction: row;
+}
+
+.accordionItem{
+    --slds-c-accordion-heading-font-size: 16px;
+    --slds-c-accordion-heading-text-color: #181818;
+    --slds-c-accordion-summary-color-background: #F3F2F2;
+    --slds-c-accordion-section-spacing-inline-start: 8px;
+    --slds-c-accordion-section-spacing-inline-end: 0px;
+    border-radius: 25px;
+    border: none;
+    margin-left: 0;
+}
+
+.accordionBorder{
+    --slds-g-shadow-outline-focus-1: 0 0 0 0 #2b0bab;
+}
+.acccordionContent{
+    border: 1px solid #dddbda;
+    box-sizing: border-box;
+    border-top: none;
+    padding: 0 8px 16px 8px;
+    color: black;
+}
+
+.acccordionContentCancelado{
+    border: 1px solid #dddbda;
+    box-sizing: border-box;
+    border-top: none;
+    padding: 8px 0px 24px 0px;
+    color: black;
+}
+.corte{
+    border: 1 solid red;
+}
+
+.tab-seguros {
+    padding-top: 8px;
+    display: block;
+}
+
+.outros_seguros .accordionItem:last-child {
+    margin-bottom: 0 !important;
+}
+
+.div-outros-seguros {
+    padding-bottom: 8px;
+}
+
+.badge {
+    margin-left: auto;
+    padding: 2px 8px;
+    margin: 0px 8px;
+}
+
+.contratados-fields{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 16px;
+}
+
+.field-statusCancelados{
+    width: 188px;
+}

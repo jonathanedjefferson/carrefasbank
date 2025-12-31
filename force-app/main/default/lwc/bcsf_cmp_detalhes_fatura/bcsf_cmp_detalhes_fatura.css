@@ -1,0 +1,28 @@
+.tabela_infos{
+    border:0.5px #E8E8E8	solid; 
+    border-spacing: 5px;
+    border-radius: 5px;
+    border-collapse: separate;
+}
+
+.tabela_detalhes {
+    margin-top:5px; 
+    border:0.5px #E8E8E8 solid; 
+    border-spacing: 5px;
+    border-radius: 5px;
+    border-collapse: separate;
+}
+
+h1{
+    font-weight: bold;
+    font-size: 18px;
+}
+
+h2{
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.tdValues{
+    font-weight: bold;
+}

@@ -1,0 +1,52 @@
+<template>
+
+    <template if:true={isError}>
+        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme--error" role="alert">
+            <h2> {errorMessage} </h2>
+        </div>
+    </template>
+
+    <c-fsc_flow-combobox label="Selecione no método da chamada" builder-context={_builderContext} name="Method"
+        onvaluechanged={handleFlowComboboxValueChange} value={method} class="slds-m-around_medium"
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+    
+
+    <c-fsc_flow-combobox label="Digite o endpoint" builder-context={_builderContext} name="Endpoint"
+        onvaluechanged={handleFlowComboboxValueChange} value={url} class="slds-m-around_medium"
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+
+    <c-dynamic-rows-parent master-label={headers} add-button-label="Adicionar header" list-data={headerList}
+        onchangelist={changeHeaders} builder-context={builderContext}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-dynamic-rows-parent>
+
+    <c-dynamic-rows-parent master-label={params} add-button-label="Adicionar parâmetro" list-data={paramList}
+        onchangelist={changeParams} builder-context={builderContext}
+        automatic-output-variables={automaticOutputVariables}>
+    </c-dynamic-rows-parent>
+
+    <c-fsc_flow-combobox label="Digite o corpo da requisição" builder-context={_builderContext} name="Body"
+        onvaluechanged={handleFlowComboboxValueChange} value={body} class="slds-m-around_medium"
+        automatic-output-variables={automaticOutputVariables}>
+    </c-fsc_flow-combobox>
+
+    <!--<lightning-button label="Teste de chamada" onclick={makeTestCallout}></lightning-button>-->
+
+    <template if:true={testResult}>
+        <div class="slds-m-around_medium slds-hyphenate">
+            <b>Resultado</b>
+            <div class="slds-m-around_small">
+                <template if:true={testResult.Error_message}>
+                    'Erro' {testResult.Error_message}<br />
+                </template>
+                <template if:false={testResult.Error_message}>
+                    Status {testResult.Status} <br />
+                    Código {testResult.Status_code}<br />
+                    Corpo da requisição : {testResult.Body}<br />
+                </template>
+            </div>
+        </div>
+    </template>
+</template>

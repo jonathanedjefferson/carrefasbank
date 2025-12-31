@@ -1,0 +1,56 @@
+<template>
+    <lightning-card lwc:if={toggleScript}  variant="Narrow"  title="Script" icon-name="standard:knowledge" class="container">
+        <div if:true={spinner}>
+            <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+        </div>
+        <lightning-button-icon  
+            icon-name="utility:close" 
+            variant="border-filled" 
+            alternative-text="close"
+            onclick={handleBtnClose}
+            slot="actions">
+        </lightning-button-icon>
+
+        <p class="slds-p-horizontal_small slds-border_bottom slds-p-bottom_x-small">
+            Ultima atualização: {dataModificacao}
+        </p>
+        <div class="slds-m-horizontal_medium contentScript" >
+            <div  class="slds-m-vertical_medium">
+                <h2>{title}</h2>
+                <!-- <div>
+                    <lightning-button-icon-stateful
+                        icon-name="utility:like"
+                        label="Like"
+                        selected={likeState}
+                        value="like"
+                        class="slds-m-horizontal_x-small"
+                        onclick={handleBtnLike}>
+                    </lightning-button-icon-stateful>
+                    {numberLike}
+                    <lightning-button-icon-stateful
+                        icon-name="utility:dislike"
+                        label="Dislike"
+                        selected={dislikeState}
+                        value="dislike"
+                        class="slds-m-horizontal_x-small"
+                        onclick={handleBtnDislike}>
+                    </lightning-button-icon-stateful>
+                {numberDislike}
+                </div> -->
+            </div>
+            <div>
+                <h3>Script</h3>
+                <lightning-button label="Acessar outros scripts" onclick={handleBtnMaisScript}></lightning-button>
+            </div>
+            <p>
+                {pergunta}
+            </p>
+            <p slot="footer">
+                <strong>
+                        {resposta}
+                </strong>
+            </p>
+        </div>
+        
+    </lightning-card>
+</template>

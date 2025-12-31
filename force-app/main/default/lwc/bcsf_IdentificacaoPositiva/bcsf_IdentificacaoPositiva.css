@@ -1,0 +1,286 @@
+.c-container {
+    padding: 20px 40px;
+}
+
+.c-containerresultado {
+    padding: 2px;
+}
+
+.title {
+    font-size: 20px;
+    color:#080707;
+    text-align:center;
+    padding: 20px 0;
+    box-shadow: 0px 1px 0px #DDDBDA;
+}
+.c-container > .containerInfos {
+    box-shadow: 0px 1px 0px #DDDBDA;
+    padding:20px 0;
+}
+h1 {
+    font-size: 24px;
+    color:#000;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+h2 {
+    font-size: 20px;
+    color:#000;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+h3 {
+    font-size: 16px;
+    color:#000;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.legendaPerguntas {
+    font-size: 16px;
+    color:#000;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.conteudoAlternativas {
+    background-color:blueviolet;
+}
+
+.conteudoAlternativas label {
+    font-size: 24px;
+    color:#000;
+    font-weight: bold;
+}
+
+.cmpName {
+    font-size: 14px;
+}
+
+.boxCardPrincipal {
+    /* box-shadow: 0px 1px 0px #DDDBDA; */
+    padding-bottom: 20px;
+    height: 200px;
+}
+
+.boxCardPrincipalSteps {
+    /* box-shadow: 0px 1px 0px #DDDBDA; */
+    padding-bottom: 5px;
+    height: 200px;
+}
+
+.aviso{
+    background-color: #f89807;
+    opacity: 1;
+    background: repeating-linear-gradient( 45deg, #f8ae54, #f8ae54 50px, #ffbb67 50px, #ffbb67 100px );
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avisoTexto{
+    color: black;
+    font-weight: 500;
+}
+
+.avisoBlindagem{
+    background-color: #f89807;
+    opacity: 1;
+    background: repeating-linear-gradient( 45deg, #f8ae54, #f8ae54 50px, #ffbb67 50px, #ffbb67 100px );
+    width: 100%;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.avisoTextoBlindagem{
+    font-size: 14px;
+    color: black;
+    font-weight: 400;
+}
+
+.msgBlindagemFull{
+    font-weight: 400;
+    font-size: 16px;
+    margin-top: 20px;
+}
+.avisoBlindagemFull{
+    background-color: #f89807;
+    opacity: 1;
+    background: repeating-linear-gradient( 45deg, #be3d38, #be3d38 50px, #c64540 50px, #c64540 100px );
+    width: 100%;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.avisoTextoBlindagemFull{
+    font-size: 14px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.avisoResultado{
+    width: 100%;
+    height: 100%;
+    color: black;
+    font-weight: bold;
+    text-align: center;
+}
+
+.avisoCabecalho{
+    font-size: 14px;
+    color: black;
+    font-weight: bold;
+    text-align: center;
+}
+
+.informacoes{
+    width: 100%;
+    height: 60px;
+    line-height: 10px;
+    font-weight: 500;
+
+    display: block;
+    flex-wrap: wrap;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.informacoes p{
+    margin-top: -10px;
+}
+
+.informacoesPergunta{
+    width: 100%;
+    padding-top: 0px !important;
+    margin-top: 0px !important;
+    border-bottom:0.5px #cccaca solid; 
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.conteudoPergunta{
+    width: 100%;
+    padding-top: 0px !important;
+    margin: 0px !important;
+}
+
+.conteudoPergunta p{
+    font-size: 20px;
+    color:#000;
+    font-weight: bold;
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+.conteudoPerguntaTitulo{
+    width: 100%;
+    padding: 0px !important;
+    margin: 0px !important;
+}
+.conteudoPerguntaLinha{
+    width: 100%;
+    margin-top: 0px !important;
+    padding-top: 0px !important;
+    margin-bottom: 0px !important;
+    padding-bottom: 0px !important;
+}
+
+.slds-backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1040;
+    background-color: #8c8a8a;
+}
+
+.myRadioGroup{
+    margin-top: 0px !important;
+    padding-top: 0px !important;
+    margin-bottom: 0px !important;
+    padding-bottom: 0px !important;
+}
+
+.myRadioGroup label {
+    font-size: 24px;
+    color:#000;
+    font-weight: bold;
+}
+
+.conteudoTitulo{
+    width: 100%;
+    min-height: 30px;
+}
+
+.conteudoAdicional{
+    width: 100%;
+    min-height: 30px;
+}
+
+.conteudoTerceiro{
+    width: 100%;
+    min-height: 30px;
+}
+
+.informacoesTitularidade{
+    width: 100%;
+    padding-top: 0px !important;
+    margin-top: 0px !important;
+    border-bottom:0.5px #cccaca solid; 
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.informacoesTerceiros{
+    width: 100%;
+    padding-top: 0px !important;
+    margin-top: 0px !important;
+}
+
+.informacoesstepsOne{
+    width: 100%;
+    min-height: 10px;
+    display: block;
+    flex-wrap: wrap;
+}
+
+.informacoesstepsTwo{
+    width: 100%;
+    min-height: 10px;
+    display: block;
+    flex-wrap: wrap;
+}
+
+.informacoesstepsThree{
+    width: 100%;
+    min-height: 10px;
+    display: block;
+    flex-wrap: wrap;
+}
+
+.txtInfos {
+    margin: 20px 0;
+    font-size: 16px;
+}
+
+.slds-form-element{
+    padding-top: 25px;
+}
+
+.slds-modal__container{
+    width: 50% !important;
+    max-width: 50% !important;
+}
+
+/* footer{
+    display: flex;
+    align-items: center;
+    justify-content: end;
+} */

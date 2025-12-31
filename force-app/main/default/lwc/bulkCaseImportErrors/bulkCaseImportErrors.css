@@ -1,0 +1,61 @@
+.button-container {
+    display: flex;
+    align-items: self-end;
+    justify-content: flex-start;
+    height: 78px;
+}
+
+.empty-state {
+    background-color: #fafaf9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 1px solid #ddd;
+}
+
+.empty-image {
+    height: 200px;
+    padding: 10px;
+}
+
+.empty-message {
+    font-size: 1.2rem;
+    color: #000000;
+    margin: 5px;
+}
+
+.empty-submessage {
+    color: #3e3e3c;
+    margin: 5px 0 20px 0;
+}
+
+.paginacao-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: #FAFAF9;
+    border-radius: 0 0 4px 4px;
+    font-size: 0.9rem;
+    position: relative;
+    margin-top: auto;
+}
+
+.paginacao-footer-item{
+    position: absolute;
+    right: 24px;
+}
+
+.paginacao-footer .slds-button_icon {
+    margin-left: 0.5rem;
+}
+
+.paginacao-footer lightning-combobox {
+    width: 75px;
+}
+
+.input-paginas{
+    max-width: 65px;
+    --lwc-sizeXSmall: 65px;
+}

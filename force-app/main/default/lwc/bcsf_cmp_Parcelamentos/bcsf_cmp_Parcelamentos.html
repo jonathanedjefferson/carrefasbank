@@ -1,0 +1,217 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Carregando..." size="large" variant="brand"></lightning-spinner>
+    </div>
+    <div class="container">
+        <header>
+            <div class="header-principal">
+                <div class="slds-m-right_small">
+                    <lightning-icon icon-name="standard:return_order_line_item" alternative-text="Parcelados" title="Parcelados" class="slds-avatar_large"></lightning-icon>
+                </div>
+                <div class="header-parcelados">
+                    <lightning-breadcrumbs>
+                        <lightning-breadcrumb label="Contas Financeiras" onclick={handleVoltarContaFinanceira}></lightning-breadcrumb>
+                        <lightning-breadcrumb label={nomeContaFinanceira} onclick={handleVoltarContaFinanceira}></lightning-breadcrumb>
+                    </lightning-breadcrumbs>
+                    <h1 class="titulo-parcelados">Parcelados</h1>
+                </div>
+                <div class="header-filtros">
+                    <lightning-combobox label="Selecione o tipo de parcela" options={categoriasParcelamentos} placeholder="Selecionar o tipo" onchange={handleTipoParcela} value={categoria} class="slds-m-right_medium tipo-parcela-input"> </lightning-combobox>
+                    <lightning-input type="date" date-style="short" name="periodoInicial" label="Período inicial" placeholder="Selecionar" onchange={handleDataInicial} value={dataInicial} class="remover-texto-formato slds-m-right_medium data-input"></lightning-input>
+                    <lightning-input type="date" date-style="short" name="periodoFinal" label="Período final" placeholder="Selecionar" onchange={handleDataFinal} value={dataFinal} class="remover-texto-formato slds-m-right_medium data-input"></lightning-input>
+                    <lightning-button variant="brand" label="Buscar compras" onclick={handleBuscarCompras} class="slds-p-bottom_xx-small btn-buscarcompras" disabled={desativaBotaoBuscarCompras}></lightning-button>
+                    <lightning-button-icon icon-name="utility:undelete" variant="small" onclick={handleLimparFiltros} alternative-text="Limpar Filtros" class="btn-limparfiltros"></lightning-button-icon>
+                </div>
+            </div>
+            <div class="header-atualizacao-status">
+                <p>{totalItens} • {mensagemAtualizacao}</p>
+            </div>
+        </header>
+        <div class="container-tabela" if:true={exibirTabela}>
+            <div>
+                <div class="alerta-desfazer-antecipacao" if:true={exibirAlertaAntecipacao}>
+                    <lightning-icon class="slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="aviso"></lightning-icon>
+                    <p>Não é possível desfazer a antecipação depois que ela é finalizada.</p>
+                </div>
+                <div class="erro-tentar-novamente" if:true={exibirErroBuscarCompras}>
+                    <lightning-icon class="slds-m-right_small" icon-name="utility:error" size="small" alternative-text="aviso"></lightning-icon>
+                    <p>Ocorreu um erro ao buscar as compras. Deseja tentar novamente? <button onclick={handleTentarNovamenteParcelamentos} class="slds-button">Tentar novamente</button></p>
+                </div>
+                <div class="erro-tentar-novamente" if:true={exibirErroListarTabela}>
+                    <lightning-icon class="slds-m-right_small" icon-name="utility:error" size="small" alternative-text="aviso"></lightning-icon>
+                    <p>Ocorreu um erro inesperado. Não foi possível carregar as informações. Gostaria de tentar novamente? <button onclick={handleTentarNovamenteParcelamentos} class="slds-button">Tentar novamente</button></p>
+                </div>
+                <div class="erro-tentar-novamente" if:true={exibirErroAoSimular}>
+                    <lightning-icon class="slds-m-right_small" icon-name="utility:error" size="small" alternative-text="aviso"></lightning-icon>
+                    <p>Ocorreu um erro inesperado. Deseja tentar novamente? <button onclick={handleTentarNovamenteSimulacao} class="slds-button">Tentar novamente</button></p>
+                </div>
+                <div class="titulo-selecionar-parcelas">
+                    <h1>Selecione a parcela que deseja antecipar</h1>
+                </div>
+                <div class="tabela-parcelamentos">
+                    <table aria-multiselectable="true" class="slds-table slds-table_cell-buffer" role="grid">
+                        <thead>
+                            <tr>                 
+                                <th aria-sort="none" class="coluna-selecionar" scope="col">
+                                    <lightning-input class="input-selecionar slds-checkbox" type="checkbox" checked={selecionarTodosParcelamentos} onchange={handleSelecionarTodosParcelamentos}></lightning-input>
+                                </th>
+                                <th aria-sort="none" class="slds-has-button-menu slds-is-resizable slds-is-sortable" scope="col">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <span class="slds-truncate" title="ID. Parcelamento">ID. Parcelamento</span>
+                                    </div>
+                                </th>
+                                <th aria-sort="none" class="slds-has-button-menu slds-is-resizable slds-is-sortable" scope="col">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <span class="slds-truncate" title="Cód. Autorização">Cód. Autorização</span>
+                                    </div>
+                                </th>
+                                <th aria-sort="none" class="slds-has-button-menu slds-is-resizable slds-is-sortable" style="max-width: 300px;" scope="col">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <span class="slds-truncate" title="Lançamento">Lançamento</span>
+                                    </div>
+                                </th>
+                                <th aria-sort="none" class="slds-has-button-menu slds-is-resizable slds-is-sortable" scope="col">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <span class="slds-truncate" title="Data e Hora">Data e Hora</span>
+                                    </div>
+                                </th>
+                                <th aria-sort="none" class="slds-has-button-menu slds-is-resizable slds-is-sortable" scope="col">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <span class="slds-truncate" title="Valor">Valor</span>
+                                    </div>
+                                </th>
+                                <th aria-sort="none" class="slds-has-button-menu slds-is-resizable slds-is-sortable" scope="col">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <span class="slds-truncate" title="Tipo">Tipo</span>
+                                    </div>
+                                </th>
+                                <th aria-sort="none" scope="col">
+                                    <div class="slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate">
+                                        <span class="slds-truncate" title="Tipo">Ação</span>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody if:true={showTableBody}>
+                            <template for:each={listaParcelamentos} for:item="item">
+                                <tr aria-selected="false" class="slds-hint-parent" key={item.idParcelamento}>
+                                    <td class="coluna-selecionar"> 
+                                        <lightning-input class="input-selecionar slds-checkbox" data-idparcelamento={item.idParcelamento} type="checkbox" checked={item.checked} onchange={selecionarTodasAsParcelas}></lightning-input>
+                                    </td>
+                                    <td class="slds-truncate">
+                                        <lightning-button data-id={item.idParcelamento} variant="base" label={item.idParcelamento} onclick={handleAbrirParcelas} ></lightning-button>
+                                    </td>
+                                    <td class="slds-truncate">
+                                        <div class="slds-truncate">{item.codigoAutorizacao}</div>
+                                    </td>
+                                    <td class="slds-truncate slds-has-flexi-truncate" style="max-width: 300px;">
+                                        <div class="slds-truncate" title={item.descricao}>{item.descricao}</div>      
+                                    </td>
+                                    <td class="slds-truncate">
+                                        <div class="slds-truncate">{item.dataTransacaoOriginal}</div>   
+                                    </td>
+                                    <td class="slds-truncate">
+                                        <div class="slds-truncate">{item.moeda} {item.valor}</div> 
+                                    </td>
+                                    <td class="slds-truncate">
+                                        <div class="slds-truncate">{item.tipoParcelamento}</div> 
+                                    </td>
+                                    <td class="slds-truncate">
+                                        <lightning-button data-id={item.idParcelamento} variant="base" label="Abrir" onclick={handleAbrirParcelas}></lightning-button>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tabela-rodape">
+                <ul>
+                    <li><lightning-button variant="Neutral" label={botaoVoltar} onclick={handleVoltarContaFinanceira} disabled={desativarBotaoVoltar}></lightning-button></li>
+                    <li><lightning-button variant="brand" label={botaoSimular}  onclick={handleSimularAntecipacao} disabled={desativarBotaoSimular}></lightning-button></li>
+                </ul>
+            </div>
+        </div>
+        <template if:false={exibirTabela}>
+            <div class="ilustracao-itens-nao-retornados">
+                <c-bcsf_cmp_illustration
+                illustration-type='NO_DATA'
+                heading-message='Não existem compras parceladas'
+                body-message='Quando tiver compras parceladas, ele aparecerá aqui!'>
+                ></c-bcsf_cmp_illustration>  
+            </div> 
+        </template>
+        <template if:true={exibirModalSelecaoParcelas}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open  slds-modal_small">
+                <div class="slds-modal__container">
+                    <button class="slds-button slds-button_icon slds-modal__close" onclick={handleFecharParcelas}>
+                        <lightning-icon icon-name="utility:close" alternative-text="Fechar" title="Fechar" class="botao_fechar slds-avatar_medium"></lightning-icon>
+                    </button>
+                    <div class="slds-modal__content slds-p-around_medium modal-selecao-parcelas" id="modal-content-id-2">
+                        <div class="header-modal-selecao-parcelas">
+                            <h1 class="header-modal-selecao-titulo">Detalhamento das parcelas</h1>
+                        </div>
+                        <div class="conteudo-modal-selecao-parcelas">
+                            <h2 class="conteudo-modal-selecao-subtitulo">Selecione as parcelas que deseja antecipar</h2>
+                            <h3 class="conteudo-modal-selecao-descricao">Lançamento: {parcelamentoAberto.descricao}</h3>
+                            <div class="tabela-selecao-parcelas">
+                                <table class="slds-table slds-table_cell-buffer">
+                                    <thead>
+                                        <tr>
+                                            <th class="selecionar"> <lightning-input type="checkbox" checked={parcelamentoAberto.allChecked} onchange={selecionarTodasAsParcelas} data-idparcelamento={parcelamentoAberto.idParcelamento} disabled={disabledCheckAllTransaction}></lightning-input></th>
+                                            <th class="slds-truncate">Status</th>
+                                            <th class="slds-truncate">Data do vencimento</th>
+                                            <th class="slds-truncate">Valor</th>
+                                            <th class="slds-truncate">Número de parcelas</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={listaParcelas} for:item="item">
+                                            <tr key={item.numeroParcela}>
+                                                <td class="selecionar"><lightning-input type="checkbox" checked={item.checked} onchange={handleSelecionarParcela} data-numeroparcela={item.numeroParcela} data-idparcelamento={item.idParcelamento} disabled={item.disabled}></lightning-input></td>
+                                                <td class="slds-truncate">{item.status}</td>
+                                                <td class="slds-truncate" >{item.dataVencimento}</td>
+                                                <td class="slds-truncate" >{item.moeda} {item.valor}</td>
+                                                <td class="slds-truncate">{item.numeroParcela}</td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="footer-modal-selecao-parcelas">
+                            <ul>
+                                <li><lightning-button variant="Neutral" label={botaoFecharModalSelecao} onclick={handleFecharParcelas} disabled={desativarBotaoFecharModalSelecao}></lightning-button></li>
+                                <li><lightning-button variant="brand" label={botaoContinuarSelecao}  onclick={handleContinuarSelecao} disabled={desativarBotaoContinuarSelecao}></lightning-button></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+        </template>
+        <template if:true={exibirModalAntecipacao}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open  slds-modal_medium">
+                <div class="slds-modal__container">
+                    <button class="slds-button slds-button_icon slds-modal__close" onclick={handleFecharAntecipacao}>
+                        <lightning-icon icon-name="utility:close" alternative-text="Fechar" title="Fechar" class="botao_fechar slds-avatar_medium"></lightning-icon>
+                    </button>
+                    <div class="slds-modal__content slds-p-around_medium modal-selecao-parcelas" id="modal-content-id-3">
+                        <c-bcsf_cmp_-parcelamentos-antecipar
+                        dados-cliente={dadosCliente}
+                        dados-usuario={dadosUsuario}
+                        tem-parcela-postada={temParcelaPostada}
+                        parcelamentos-para-simular={parcelamentosParaSimular}
+                        oncloseparentmodal={fecharModalAntecipacao}
+                        onerrosimulacao={handleErroSimulacao}
+                        onsucessosimulacao={handleSucessoSimulacao}
+                        onsolicitacaorealizada={handleSolicitacaoRealizada}
+                        onatualizartabela={handleAtualizarTabela}>
+                        </c-bcsf_cmp_-parcelamentos-antecipar>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open" role="presentation"></div> 
+        </template>
+    </div>
+</template>

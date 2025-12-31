@@ -1,0 +1,80 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+        <div class="slds-modal__container">
+            <div lwc:if={spinner}>
+                <lightning-spinner alternative-text="Carregando..." size="large" variant="brand"></lightning-spinner>
+            </div>
+            <button class="slds-button slds-button_icon slds-modal__close botao_fechar" onclick={closeQuickAction}>
+                <lightning-icon icon-name="utility:close" alternative-text="Fechar" title="Fechar" class="icon_botao_fechar slds-avatar_medium"></lightning-icon>
+            </button>
+            <div class="slds-modal__content slds-p-around_medium container-modal" id="modal-content-id-1">
+                <div class="header-modal">
+                    <h1>Seguro Crédito Pessoal</h1>
+                </div>
+                <div class="conteudo-modal">
+                    <div class="separator slds-p-vertical_medium">
+                        <div class="subtitle">Custo da proteção</div>
+                        <div class="texto slds-m-top_small">9% aplicados sobre o valor do empréstimo contratado.</div>
+                    </div>
+                    <div class="slds-p-top_medium">
+                        <div class="subtitle">Coberturas e assistências</div>
+                        <div class="texto  slds-m-top_small">Com o seguro, quitamos o saldo devedor do empréstimo em casos de:</div>
+                    </div>
+                    <div class="slds-p-top_medium slds-p-bottom_large separator">
+                        <lightning-accordion allow-multiple-sections-open class="accordion-detalhes">
+                            <lightning-accordion-section name="Desemprego" label="Desemprego Involuntário (DI)">
+                                <div class="texto  slds-p-around_medium">
+                                    Pagamos o saldo devedor do seu empréstimo  em até R$ 7.500,00 em caso de desemprego involuntário. Válido para profissionais com vínculo empregatício (CLT) de no mínimo 100 dias seguidos na mesma empresa. O vínculo empregatício do Segurado deve ser mantido com uma pessoa jurídica, através de Contrato de trabalho formalizado pela Carteira de Trabalho e Previdência Social (CTPS) e que receba pagamentos periódicos consecutivos, com uma jornada mínima de 30 (trinta) horas semanais. Carência de 30 dias.
+                                </div>
+                            </lightning-accordion-section>
+                        </lightning-accordion>
+                        <lightning-accordion allow-multiple-sections-open class="accordion-detalhes slds-m-top_large">
+                            <lightning-accordion-section name="Morte" label="Morte">
+                                <div class="texto  slds-p-around_medium">
+                                    Esperamos que não aconteça, mas se ocorrer, pagamos o saldo devedor do seu empréstimo em até R$ 50.000,00. Válido para todas as categorias profissionais.
+                                </div>
+                            </lightning-accordion-section>
+                        </lightning-accordion>
+                        <lightning-accordion allow-multiple-sections-open class="accordion-detalhes slds-m-top_large">
+                            <lightning-accordion-section name="Invalidez" label="Invalidez Total ou Permanente por Acidente">
+                                <div class="texto  slds-p-around_medium">
+                                    Seja uma invalidez total ou permanente causadas por acidente, pagamos o saldo devedor do seu empréstimo em até  R$ 50.000,00. Válido para todas as categorias profissionais.
+                                </div>
+                            </lightning-accordion-section>
+                        </lightning-accordion>
+
+                        <lightning-accordion allow-multiple-sections-open class="accordion-detalhes slds-m-top_large">
+                            <lightning-accordion-section name="Internação" label="Incapacidade Física Total e Temporária por Acidente ou Doença (ITTAD)">
+                                <div class="texto  slds-p-around_medium">
+                                    Pagamos o saldo devedor  do seu empréstimo em até R$ 7.500,00 em caso de incapacidade física total ou temporária. Válido para profissionais liberais e/ou autônomos regulamentados. Carência de 30 dias e franquia de 15 dias.
+                                </div>
+                            </lightning-accordion-section>
+                        </lightning-accordion>
+
+                        <lightning-accordion allow-multiple-sections-open class="accordion-detalhes slds-m-top_large">
+                            <lightning-accordion-section name="Invalidez" label="Internação Hospitalar por Acidente ou Doença (IHAD)">
+                                <div class="texto  slds-p-around_medium">
+                                    Pagamos o saldo devedor do seu empréstimo em até R$ 7.500,00 em caso de internação hospitalar por acidente ou doença. Válido para profissionais não regulamentados. Carência de 30 dias e franquia de 48 horas.
+                                </div>
+                            </lightning-accordion-section>
+                        </lightning-accordion>
+                    </div>
+                    <div>
+                        <ul class="list-style-disc slds-m-vertical_medium slds-m-horizontal_large">
+                            <li class="sub-texto">
+                                Este seguro garante a pessoa segurada o pagamento do saldo devedor do empréstimo contratado através da adesão ao Crédito Pessoal nas situações cobertas acima. O valor da indenização equivale a soma dos valores das parcelas à vencer (que ainda não tenham sido pagas) na data do evento trazidas a valor presente durante a vigência do seguro que será cobrado através do Cartão.
+                            </li>
+                            <li class="sub-texto">
+                                Este seguro pode ser ofertado somente a clientes elegíveis ao Crédito Pessoal e com idade de 18 até 70 anos.
+                            </li>
+                        </ul>
+                    </div>
+                </div>                 
+                <div class="footer-modal">
+                    <lightning-button variant="brand" label="Voltar" onclick={handleVoltar}></lightning-button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+</template>

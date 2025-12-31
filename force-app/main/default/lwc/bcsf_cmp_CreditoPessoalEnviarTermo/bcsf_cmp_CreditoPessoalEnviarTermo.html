@@ -1,0 +1,123 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+        <div class="slds-modal__container">
+            <div lwc:if={spinner}>
+                <lightning-spinner alternative-text="Carregando..." size="large" variant="brand"></lightning-spinner>
+            </div>
+            <button class="slds-button slds-button_icon slds-modal__close botao_fechar" onclick={closeQuickAction}>
+                <lightning-icon icon-name="utility:close" alternative-text="Fechar" title="Fechar" class="icon_botao_fechar slds-avatar_medium"></lightning-icon>
+            </button>
+            <div class="slds-modal__content slds-p-around_medium container-modal" id="modal-content-id-1">
+                <div class="header-modal">
+                    <h1>Enviar termo de adesão</h1>
+                </div>
+                <div class="conteudo-modal">
+                    <template if:true={step01}>
+                        <div class="box-modalidade-envio">
+                            <h2 class="subtitulo-modal">Selecionar modalidade de envio</h2>
+                            <lightning-radio-group 
+                                name="tipoEnvio"
+                                options={opcoesEnvioEmail}
+                                value={opcaoDeEnvioSelecionada}
+                                type="radio"
+                                onchange={handleTipoDeEnvioEmail}
+                            > </lightning-radio-group>
+                            <div class="input-email">
+                                <div class="label-detalhe">Endereço de e-mail</div>
+                                <lightning-input variant="label-hidden" type="email" value={emailDestinatario} placeholder="Digite o e-mail" onchange={handleAlterarEmailEnvio} disabled={desativarEmailInput}></lightning-input>
+                            </div>              
+                        </div>      
+                        <div class="box-preenchimento-caso">
+                            <h2 class="subtitulo-modal">Preenchimento de caso</h2>
+                            <div class="detalhes-caso">
+                                <div>
+                                    <div class="label-detalhe">Assunto</div>
+                                    <div class="valor-detalhe">{assunto}</div>
+                                </div>
+                                <div>
+                                    <div class="label-detalhe">Evento</div>
+                                    <div class="valor-detalhe">{evento}</div>
+                                </div>
+                            </div>
+                            <lightning-record-edit-form object-api-name="Case">
+                                <div class="detalhes-caso">
+                                    <div class="input-origem-canal">
+                                        <div class="label-detalhe">Origem</div>
+                                        <lightning-input-field 
+                                            value={origemCaso}
+                                            field-name="Origin" 
+                                            placeholder="Selecione"
+                                            onchange={handleOrigemAlterada} 
+                                            variant="label-hidden"> 
+                                        </lightning-input-field>
+                                    </div>
+                                    <div class="input-origem-canal">
+                                        <div class="label-detalhe">Canal</div>
+                                        <lightning-input-field
+                                            value={canalCaso}
+                                            field-name="CanalEntrada__c" 
+                                            placeholder="Selecione"
+                                            onchange={handleCanalAlterado} 
+                                            variant="label-hidden"
+                                            class="input-origem-canal"> 
+                                        </lightning-input-field>
+                                    </div>
+                                </div>
+                            </lightning-record-edit-form>   
+                        </div>    
+                    </template>   
+                    <template if:true={step02}>
+                        <div class="box-resumo-solicitacao">
+                            <div class="finalizado-sucesso">
+                                <lightning-icon class="slds-m-right_small" icon-name="utility:success" size="small" alternative-text="sucesso"></lightning-icon>
+                                <h1 class="subtitulo-modal">Termo de adesão enviado!</h1>
+                            </div>
+                            <div class="resumo-operacao">
+                                <div>Protocolo: <strong>{numeroProtocolo}</strong></div>
+                                <div>Em: <strong>{dataProtocolo}</strong></div>
+                                <div>Pessoa operadora: <strong>{nomeOperador}</strong></div>
+                                <div>Cliente: <strong>{dadosCliente.nomeCliente}</strong></div>
+                                <div>E-mail: <strong>{emailDestinatario}</strong></div>
+                            </div>
+                        </div>      
+                        <div class="box-resumo-caso">
+                            <h1 class="subtitulo-modal">Informações do caso:</h1>
+                            <ul class="resumo-caso">
+                                <li>
+                                    <div class="label-detalhe">Origem</div>
+                                    <div class="valor-detalhe">{origemCaso}</div>
+                                </li>
+                                <li>
+                                    <div class="label-detalhe">Canal</div>
+                                    <div class="valor-detalhe">{canalCaso}</div>
+                                </li>
+                                <li>
+                                    <div class="label-detalhe">Assunto</div>
+                                    <div class="valor-detalhe">{assunto}</div>
+                                </li>
+                                <li>
+                                    <div class="label-detalhe">Evento</div>
+                                    <div class="valor-detalhe">{evento}</div>
+                                </li>
+                            </ul>
+                        </div>  
+                    </template>      
+                </div>                  
+                <div class="footer-modal">
+                    <button if:true={exibirBtnVoltar} 
+                        class="slds-button slds-button_neutral btnVoltar"
+                        onclick={handleVoltar}>
+                        {labelBotaoVoltar}
+                    </button>
+                    <button 
+                        class="slds-button slds-button_brand btnAvancar"
+                        onclick={handleAvancar} 
+                        disabled={desativarAvancar}>
+                        {labelBotaoAvancar}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+</template>

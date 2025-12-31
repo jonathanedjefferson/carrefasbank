@@ -1,0 +1,261 @@
+.aviso{
+    background-color: #f89807;
+    opacity: 1;
+    background: repeating-linear-gradient( 45deg, #f8ae54, #f8ae54 50px, #ffbb67 50px, #ffbb67 100px );
+    width: 100%;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.avisoTexto{
+    color: black;
+    font-weight: 500;
+}
+.avisoTexto span{
+    margin-top: 12px;
+}
+.c-container {
+   padding: 20px 40px;
+}
+.title {
+   font-size: 20px;
+   color:#080707;
+   text-align:center;
+   padding: 20px 0;
+   font-weight: 400;
+   line-height: 30px;
+   box-shadow: 0px 1px 0px #DDDBDA;
+}
+
+.c-container > .containerInfos {
+    box-shadow: 0px 1px 0px #DDDBDA;
+    padding:20px 0;
+}
+
+.color-neutral {
+   background-color: #F8F9FA;
+}
+
+.cmpLabel {
+   font-size: 14px;
+   font-weight: 400;
+   line-height: 21px;
+   margin-bottom: 3px;
+}
+
+.cmpValue {
+   font-size: 16px;
+   font-weight: 600;
+   line-height: 24px;
+}
+
+.boxMargin {
+   margin-top: 20px;
+}
+.boxSteps {
+   margin-top: 30px;
+}
+.txtInfos {
+   margin-bottom: 10px;
+   font-size: 14px;
+   font-weight: 400;
+   line-height: 21px;
+}
+
+.txtInfosSemCod {
+   font-size: 14px;
+   font-weight: 400;
+   margin-top: 4px;
+}
+
+.boxListaCartoes {
+   max-width: 40%;
+}
+
+.listInformacoes {
+   display: flex;
+   justify-content: space-between;
+   margin: 20px 0;
+}
+
+.listInformacoes ul li {
+   margin-bottom: 10px;
+}
+
+footer {
+   box-shadow: 0px -1px 0px #DDDBDA;
+   background-color: #F3F2F2;
+}
+.boxFooter {
+   padding:20px;
+}
+.boxFooter ul {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+.boxFooter ul li {
+   width: 76%;
+}
+.boxFooter ul li:first-child {
+   width: 12%;
+   text-align: center;
+}
+.boxFooter ul li:last-child {
+   width: auto;
+   text-align: center;
+}
+
+.boxFooter ul li.liBtnCaso {
+   width: 15%;
+}
+
+.boxFooter ul li.liBtnReimprimirSenha {
+   width:52%;
+}
+
+.boxFooter ul li.liBtnDesbloquearMais {
+   width:30%;
+}
+.customProgress {
+   --lwc-progressBarColorBackgroundFill: green !important;
+}
+.customProgress .slds-progress {
+   max-width: 85% !important;
+}
+.txtInfosBoxTwo {
+   margin-bottom: 10px;
+}
+.listTwo {
+   margin-bottom: 20px;
+   padding-left: 17px;
+}
+.listTwo li {
+   list-style-type: circle;
+}
+
+.dadosCartao {
+   min-width: 30%;
+}
+
+.texto-label {
+   font-size: 18px;
+   font-weight: 600;
+   line-height: 27px;
+}
+
+.alert{
+   background-color: #FFB75D;
+   padding: 10px;
+   display: flex;
+   align-items: center;
+}
+
+.cartaoOfuscado{
+   font-size: 16px;
+   font-weight: 700;
+   line-height: 24px;
+}
+
+.statusBloqueada {
+   color: red;
+   font-size: 16px;
+   font-weight: 600;
+   line-height: 24px;
+}
+
+
+.mt-20 {
+   margin-top: 20px;
+}
+
+.mt-30 {
+   margin-top: 30px;
+}
+
+.ml-20 {
+   margin-left: 20px;
+}
+
+.ml-10 {
+   margin-left: 10px;
+}
+
+.ml-40 {
+   margin-left: 40px;
+}
+
+.pl-20 {
+   padding-left: 20px;
+}
+
+.pr-10 {
+   padding-right: 10px;
+}
+
+.dadosCartaoUl {
+   display: flex;
+   margin-top: 15px;
+}
+
+.mb-10 {
+   margin-bottom: 10px;
+}
+
+.dadosCasoUl li {
+   margin-bottom: 10px;
+}
+
+.dadosCaso {
+   box-shadow: 0px 1px 0px #DDDBDA;
+   padding-bottom: 20px;
+}
+
+.cardDadosCartao {
+   box-shadow: 0px 1px 0px #DDDBDA;
+   padding-bottom: 20px;
+}
+
+.opcaoCartao {
+   margin-top: 10px;
+   margin-left: 20px;
+}
+
+.label-caso {
+   font-size: 18px;
+   font-weight: 400;
+   line-height: 20px;
+}
+
+.result-message {
+   display: flex;
+   align-items: center;
+   height: 18px;
+}
+
+.label-info-caso {
+   font-size: 16px;
+   font-weight: 600;
+   line-height: 21px;
+}
+
+.cardPreenchimentoCaso ul {
+   display:flex;
+   justify-content: start;
+   max-width: 95%;
+   flex-wrap: wrap;
+   margin-top: 10px;
+}
+.cardPreenchimentoCaso ul li {
+   width: 40%;
+   margin-right: 15px;
+   margin-bottom: 10px;
+}
+
+.info-casos {
+   display:flex;
+   justify-content: space-between;
+   max-width: 95%;
+   flex-wrap: wrap;
+}

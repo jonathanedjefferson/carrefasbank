@@ -1,0 +1,139 @@
+<template>
+    <div class="page-container">
+        <div class="header slds-grid slds-wrap slds-p-around_medium slds-border_bottom">
+            <div class="slds-col slds-size_1-of-1 slds-grid slds-wrap slds-grid_align-spread slds-m-top_small">
+                <div class="slds-grid slds-gutters">
+                    <div class="slds-col">
+                        <lightning-combobox
+                            name="tipo"
+                            label="Tipo de blindagem"
+                            placeholder="Todos"
+                            options={opcoesTipoBlindagem}
+                            onchange={handleFiltroTipo}>
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-col">
+                        <lightning-input type="search" label="Pesquisar CPF do cliente" onchange={handleBuscaCpf}></lightning-input>
+                    </div>
+                    <div class="slds-col slds-align-bottom btn-header">
+                        <lightning-button variant="brand" label="Buscar cliente" onclick={buscarCliente}></lightning-button>
+                    </div>
+                </div>
+
+                <div class="slds-grid slds-gutters btn-header-container">
+                    <div class="slds-col slds-align-bottom btn-header">
+                        <lightning-button label="Exportar tabela" onclick={exportarTabela}></lightning-button>
+                    </div>
+                    <div class="slds-col slds-align-bottom btn-header">
+                        <lightning-button label="Exclusão massificada" name="excluir" onclick={abrirModal}></lightning-button>
+                    </div>
+                    <div class="slds-col slds-align-bottom btn-header">
+                        <lightning-button label="Importação massificada" name="importar" onclick={abrirModal}></lightning-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-table">
+            <lightning-datatable
+                key-field="id"
+                data={registrosPaginados}
+                columns={colunas}
+                sorted-by={sortedByData}
+                sorted-direction={sortedDirectionData}
+                onsort={handleSortData}
+                hide-checkbox-column="true"
+                class="slds-m-around_medium">
+            </lightning-datatable>
+        </div>
+        <div class="paginacao-footer">
+            <div class="slds-grid slds-grid_vertical-align-center">
+                <lightning-button-icon icon-name="utility:chevronleft" onclick={paginaAnterior} alternative-text="Anterior"></lightning-button-icon>
+                <div class="slds-m-horizontal_medium">{paginaAtual}</div>
+                <lightning-button-icon icon-name="utility:chevronright" onclick={paginaProxima} alternative-text="Próxima"></lightning-button-icon>
+            </div>
+            <div class="slds-m-left_small">
+                <lightning-combobox
+                    label="Itens por página"
+                    placeholder=""
+                    variant="label-hidden"
+                    class="input-paginas"
+                    value={itensPorPagina}
+                    options={opcoesItensPorPagina}
+                    onchange={handleItensPorPagina}>
+                </lightning-combobox>
+            </div>
+            <div class="paginacao-footer-item">Ver 1 - {paginaAtual} de {totalPaginas}</div>
+        </div>
+    </div>
+
+    <template if:true={exibirModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-modal__title">{titleAcao}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="sub-info">
+                        <lightning-icon icon-name="utility:info" size="x-small"></lightning-icon>
+                        <span>Baixe o arquivo modelo no botão ao lado.</span>
+                        <a href="#" onclick={handleBaixarModelo} class="link-download">Baixar arquivo modelo</a>
+                    </div>
+    
+                    <p class="descricao-import">Importação de arquivo<br/> <small>Máximo de 100 linhas no arquivo</small></p>
+    
+                    <div class="upload-area" ondragover={handleDragOver} ondrop={handleDrop}>
+                        <lightning-button label="Importar arquivo" onclick={abrirFilePicker} icon-name="utility:upload" class="upload-button"></lightning-button>
+                        <p>ou arraste seus arquivos aqui<br/>em formato .csv</p>
+                        <input type="file" accept=".csv" onchange={handleFileChange} class="hidden-input" />
+                    </div>
+                </div>
+                <footer class="slds-modal__footer slds-modal__footer_directional">
+                    <lightning-button class="slds-button" variant="neutral" label="Cancelar" onclick={fecharModal}></lightning-button>
+                    <lightning-button class="slds-button" variant="brand" label="Prosseguir" onclick={handleProsseguir} disabled={isProsseguirDisabled}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    
+    <template if:true={exibirModalConfirmacao}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open modal-confirmacao">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-modal__title">{titleAcao}</h2>
+                </header>
+                <div class="slds-modal__content">
+                    <p class="slds-text-heading_small slds-m-bottom_small">
+                        <strong>Confirme a solicitação</strong>
+                    </p>
+                    <div class="mensagem-wrapper">
+                        <lightning-icon icon-name="utility:info" size="x-small"></lightning-icon>
+                        <span class="mensagem-texto">
+                            A blindagem de CPF será refletida em todos os produtos dos clientes.
+                        </span>
+                    </div>
+    
+                    <lightning-datatable
+                        key-field="id"
+                        data={linhasParaImportar}
+                        columns={colunasConfirmacao}
+                        sorted-by={sortedByCPF}
+                        sorted-direction={sortedDirectionCPF}
+                        onsort={handleSortCPF}
+                        hide-checkbox-column
+                        class="slds-m-bottom_medium"
+                        onrowaction={handleExcluirLinha}>
+                    </lightning-datatable>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Voltar" variant="neutral" onclick={fecharConfirmacao}></lightning-button>
+                    <lightning-button label="Finalizar" variant="brand" onclick={finalizarImportacao}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <div lwc:if={spinner} role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+</template>

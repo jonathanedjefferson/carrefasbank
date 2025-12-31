@@ -1,0 +1,29 @@
+<template>
+    
+    <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+        <div class="page-section page-header">
+            <div class="slds-global-header slds-grid slds-grid_align-spread" style="height: 50px; background-color: #1E5BC6;">
+                <div class="slds-global-header__item">
+                    <img src={salesimagem} alt="Salesforce Image" class="custom" title="Chat Carrefour" style="float:left; background-color: #1E5BC6;"/> 
+                        <h2>Carina</h2>
+                        <article class="slds-card customArticle customArticleClose" style="float:right; background-color: #1E5BC6;">
+                            <div class="slds-m-left_x-large">
+                                <img src={fechar} onclick={close}/>
+                            </div>
+                        </article>
+                        
+                        <article onclick={minimize} class="slds-card customArticle customArticleMin" style="float:right; background-color: #1E5BC6;">
+                            <div class="slds-m-left_x-large">
+                                <img src={min} />
+                            </div>
+                        </article>
+                </div>
+            </div>
+            <!-- Display the idle timeout warning div -->
+            <div class={chatLabelClass} if:true={showIdleTimeoutWarning}>
+                <span>{textLabel}</span>
+            </div>
+        </div>
+    </lightning-layout-item>
+
+</template>

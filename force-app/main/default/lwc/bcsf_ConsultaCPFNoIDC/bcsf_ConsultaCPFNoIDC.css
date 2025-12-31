@@ -1,0 +1,38 @@
+.title {
+    font-size: 20px; 
+    color:#080707; 
+    text-align:center; 
+    padding: 20px 0; 
+    box-shadow: 0px 1px 0px #DDDBDA;
+}
+
+.c-container {
+    padding: 10px 20PX;
+}
+
+.busca{
+    box-shadow: 0px 1px 0px #DDDBDA;
+}
+
+.btn{
+    float: right;
+    /* margin-top: 5px;
+    margin-right: 10px; */
+    margin: 5px 0px 20px 10px;
+}
+
+.container-btn{
+    display: flex;
+    justify-content: space-between;
+}
+
+.listInfoAccount{
+    clear: both;
+}
+.cmpName {
+    font-size: 14px;
+}
+.cmpValue {
+    font-size: 16px;
+    font-weight: bold;
+}

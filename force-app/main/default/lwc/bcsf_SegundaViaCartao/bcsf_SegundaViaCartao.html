@@ -1,0 +1,283 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <div if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <div class="title">
+        Segunda via de Cartão
+        <p if:true={titleProtocol}>Abertura de Protocolo</p>
+    </div>
+
+    <template if:true={pageOne}>
+        <div class="slds-m-horizontal_large">
+
+            <!-- Alerts -->
+            <div if:true={stepOne} class="alertMessageAlteracao" role="alert">
+                <span class="slds-icon_container slds-icon-utility-user slds-m-right_x-small">
+                    <lightning-icon icon-name="utility:warning" size="x-small" style="--slds-c-icon-color-foreground-default: black;" alternative-text="Ícone de Aviso"></lightning-icon>
+                </span>
+                <div class="textContainerAlteracao">
+                    <p class="textAlertAlteracao">Para trocar o endereço do cliente, é necessário acessar o módulo de Alteração Cadastral.</p>
+                    <p class="textAlertAlteracao"><span style="text-decoration:underline;font-weight:bold;" onclick={navegarParaAlteracao}>Clique aqui</span> para realizar a alteração de endereço.</p>
+                </div>
+            </div>
+
+            <div if:true={stepTwo} class="slds-notify slds-notify_alert slds-m-top_small" role="alert"
+                style="--slds-c-alert-color-background: #F9B765; --slds-c-alert-text-color: #000000;">
+                <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="Ícone de Aviso">
+                    <lightning-icon icon-name="utility:warning" size="small"
+                        alternative-text="Ícone de Aviso"></lightning-icon>
+                </span>
+                <h2 class="textAlert">O cartão antigo será bloqueado definitivamente. O prazo de entrega do novo cartão
+                    é em até 10 dias úteis.</h2>
+            </div>
+            <!-- Fim Alerts -->
+
+            <div class="boxCardEndereco">
+                <h1 class="slds-text-heading_medium">Endereço do cliente</h1>
+                <ul class="firstUlEnd">
+                    <li>
+                        <div class="cmpName">CEP</div>
+                        <div class="cmpValue">{cep}</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Endereço</div>
+                        <div class="cmpValue">{rua}</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Número</div>
+                        <div class="cmpValue">{numero}</span></div>
+                    </li>
+                </ul>
+                <ul class="secondListEnd">
+                    <li>
+                        <div class="cmpName">Complemento</div>
+                        <div class="cmpValue">{complemento}</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Bairro</div>
+                        <div class="cmpValue">{bairro}</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Cidade</div>
+                        <div class="cmpValue">{cidade}</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">UF</div>
+                        <div class="cmpValue">{estado}</div>
+                    </li>
+                </ul>
+                <ul class="thirdListEnd" if:true={stepTwo}>
+                    <li>
+                        <div class="cmpName">Motivo</div>
+                        <div class="cmpValue">{valueMotivo}</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Cartão a ser bloqueado</div>
+                        <div class="cmpValue">{nomeCartao}</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Cartão em Braile?</div>
+                        <div class="cmpValue">{valueBraile}</span></div>
+                    </li>
+                </ul>
+                <ul class="thirdListEnd" if:true={stepTwo}>
+                    <li>
+                        <div class="cmpName">Nome impresso no cartão</div>
+                        <div class="cmpValue">{nomeCartaoEnviar}</div>
+                    </li>
+                </ul>
+            </div>
+            <h1 class="slds-text-heading_medium slds-m-vertical_x-small">Detalhes da Solicitação</h1>
+            <div class="boxCartao" if:true={stepOne}>
+                <lightning-combobox label="Cartão a ser bloqueado" options={cartaoOptions} onchange={handleCartao}
+                    value={valueCartao} placeholder="Selecione o cartão" class="infoCartao slds-m-right_medium"
+                    required>
+                </lightning-combobox>
+
+                <lightning-combobox label="Motivo" options={motivoOptions} onchange={handleMotivo}
+                    value={valueMotivoSelecionado} disabled={disableInputStatus} placeholder="Selecione o motivo"
+                    class=" infoCartao slds-m-right_large" required>
+                </lightning-combobox>
+                <div>
+                    <lightning-input type="checkbox" checked={checkedBraile} label="Cartão em Braile"
+                        onchange={handleBraile}></lightning-input>
+                    <lightning-helptext
+                        content="Esta opção possibilita a solicitação de um Cartão em Braile, para clientes com dificuldades na visão."></lightning-helptext>
+                </div>
+            </div>
+
+            <div class="boxInputs" if:true={stepTwo}>
+                <lightning-record-edit-form object-api-name="Case">
+                    <ul>
+                        <li>
+                            <label>Origem</label>
+                            <lightning-input-field language="" value={valueOrigem} field-name="Origin"
+                                class="lightningInput" placeholder="--Nenhuma--" onchange={handleChangeOrigem}
+                                variant="label-hidden">
+                            </lightning-input-field>
+                        </li>
+                        <li>
+                            <label>Canal</label>
+                            <lightning-input-field value={valueCanal} field-name="CanalEntrada__c"
+                                class="lightningInput" placeholder="--Nenhuma--" onchange={handleChangeCanal}
+                                variant="label-hidden">
+                            </lightning-input-field>
+                        </li>
+                    </ul>
+                </lightning-record-edit-form>
+            </div>
+        </div>
+
+        <!-- Nome Reduzido -->
+        <div class="fundoNomeReduzido" if:true={stepNameOne}>
+            <div class="boxCardNomeCartao">
+                <ul class="firstUlNmCartao">
+                    <li>
+                        <div class="cmpName">Nome impresso sugerido no cartão</div>
+                        <div class="cmpValue">{nomeCartaoAlterar}</div>
+                    </li>
+                    <li class="liCenter">
+                        <div>
+                            <lightning-input type="checkbox" checked={checkedAlteraNomeCartao}
+                                label="Alterar nome impresso no cartão"
+                                onchange={handleAlteraNomeCartao} disabled={disableAlterarNome}></lightning-input>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="alerta" if:true={stepNameTwo}>
+                <div class="alertaLeft"><lightning-icon icon-name="utility:warning" alternative-text="Warning!"
+                        title="Warning" class="alertaLeft"></lightning-icon>&nbsp;&nbsp; Verifique o nome completo do cliente na Receita
+                    Federal antes de seguir com a mudança.</div>
+                <div class="alertaRight"><a
+                        href="https://servicos.receita.fazenda.gov.br/Servicos/CPF/ConsultaSituacao/ConsultaPublica.asp"
+                        target=”_blank”>Consultar Receita Federal</a></div>
+            </div>
+
+            <div class="boxCardNomeCartao" if:true={stepNameTwo}>
+                <ul class="firstUlNmCartao">
+                    <li>
+                        <div class="cmpName">Nome Completo</div>
+                        <div class="cmpValue">{nomeCompleto}</div>
+                        <!-- <div class="cmpCopy">
+                            <lightning-button variant="base" label="Alterar nome" value={nomeCompleto}
+                                onclick={handleCopy}></lightning-button>
+                        </div> -->
+                    </li>
+                    <li>
+                        <div class="cmpName">Data de nascimento</div>
+                        <div class="cmpValue">{dataNascimento}</div>
+                        <div class="cmpCopy">
+                            <lightning-button variant="base" label="Copiar" value={dataNascimento}
+                                onclick={handleCopy}></lightning-button>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cmpName">CPF</div>
+                        <div class="cmpValue">{cpf}</span></div>
+                        <div class="cmpCopy">
+                            <lightning-button variant="base" label="Copiar" value={cpf}
+                                onclick={handleCopy}></lightning-button>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="secondListNmCartao">
+                    <li>
+                        <lightning-radio-group name="radioGroup" label="Opções disponívies" options={radioOptions}
+                            value={value} type="radio" onchange={handleNameRadio}></lightning-radio-group>
+                        <div class="slds-is-relative">
+                            <div style="position:relative">
+                                <div class="slds-form-element">
+                                    <div class="slds-is-relative">
+                                        <button class="slds-button slds-button_icon" onmouseover={togglePasswordHint}
+                                            onmouseout={togglePasswordHint}>
+                                            <lightning-input label="" placeholder="    Digite o nome"
+                                                if:true={stepNameRadio} onchange={handleNomeDigitado}
+                                                id="nomeCartaoEnviar" maxlength="19"></lightning-input>
+                                            <lightning-icon if:true={stepNameRadioIcon} class="helpIcon"
+                                                icon-name="utility:info_alt" alternative-text="Info" size="xx-small"
+                                                title=""></lightning-icon>
+
+                                        </button>
+                                        <template if:true={errorMessage}>
+                                            <p class="slds-text-color_error">{errorMessage}</p>
+                                        </template>
+                                        <div class={passwordHintClass} role="tooltip" id="help"
+                                            style="position:absolute;top:-100px;left:-15px;width:200px">
+                                            <div class="slds-popover__body">
+                                                Regras: <br>
+                                                1. O nome não pode conter caracteres especiais ou números.<br>
+                                                2. Não ter nomes com conotações ofensivas.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </template>
+
+    <template if:true={pageTwo}>
+        <div if:true={secondStepOne} class="slds-m-horizontal_large">
+            <div class="slds-notify slds-notify_alert slds-m-top_small" role="alert"
+                style="--slds-c-alert-color-background: #F9B765; --slds-c-alert-text-color: #000000;">
+                <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="Ícone de Aviso">
+                    <lightning-icon icon-name="utility:warning" size="small"
+                        alternative-text="Ícone de Aviso"></lightning-icon>
+                </span>
+                <h2 class="textAlert">O cartão antigo foi bloqueado definitivamente. O prazo de entrega do novo cartão é
+                    em até 10 dias úteis.</h2>
+            </div>
+            <h1 class="slds-text-heading_large slds-m-vertical_medium">Segunda via de Cartão solicitada com sucesso!
+            </h1>
+            <div class="slds-text-heading_medium">Protocolo: {numProtocolo}</div>
+        </div>
+
+        <div if:true={secondStepTwo} class="slds-m-horizontal_large">
+            <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+                <lightning-icon class="slds-m-right_small" icon-name="utility:error" alternative-text="Erro"
+                    variant="inverse" size="small"></lightning-icon>
+                <h2>Cartão emitido a menos de 7 dias. Não é possível fazer uma reposição</h2>
+            </div>
+            <div class="slds-m-vertical_large">
+                <div class="cmpName">Cartão selecionado</div>
+                <div class="cmpValue">{nomeCartao}</div>
+            </div>
+        </div>
+    </template>
+
+    <footer>
+        <div class="boxFooter">
+            <ul class="slds-grid slds-grid_align-spread">
+                <li if:false={pageTwo} class="slds-col">
+                    <lightning-button label="Voltar" onclick={handleBtnVoltar}
+                        disabled={disableBtnVoltar}></lightning-button>
+                </li>
+                <li if:true={stepOne} class="slds-col">
+                    <lightning-button variant="brand" label="Prosseguir" onclick={handleBtnProsseguir}
+                        disabled={disableBtnProsseguir}></lightning-button>
+                </li>
+                <li if:true={stepTwo} class="slds-col">
+                    <lightning-button variant="brand" label="Finalizar" onclick={handleBtnFinalizar}
+                        disabled={disableBtnFinalizar}></lightning-button>
+                </li>
+                <li if:true={secondStepOne} class="liBtnCaso">
+                    <lightning-button variant="brand" label="Ir para o caso" onclick={irCase}
+                        class="slds-button slds-button_brand"></lightning-button>
+                </li>
+                <li if:true={secondStepTwo} class="slds-col liBtnMudarCartao">
+                    <lightning-button variant="brand" label="Escolher outro cartão"
+                        onclick={handleMudarCartao}></lightning-button>
+                </li>
+                <li if:true={secondStepTwo} class="slds-col">
+                    <lightning-button label="Fechar" onclick={closeQuickAction}></lightning-button>
+                </li>
+            </ul>
+        </div>
+    </footer>
+</template>

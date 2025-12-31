@@ -1,0 +1,62 @@
+<template>
+    <div class="container">
+        <template for:each={listaSimulacoesComFalha} for:item="item">
+            <div class="item-parcela-simulada" key={item.serno}>
+                <span class="erro-label">{labelErro}</span>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="label-detalhes-parcelamento">Lançamento</td>
+                            <td class="valor-detalhes-parcelamento">{item.descricaoCompra}</td>
+                        </tr>
+                        <tr>
+                            <td class="label-detalhes-parcelamento">Data da transação</td>
+                            <td class="valor-detalhes-parcelamento">{item.dataCompra}</td>
+                        </tr>
+                        <tr>
+                            <td class="label-detalhes-parcelamento">Motivo do erro</td>
+                            <td class="valor-detalhes-parcelamento">{item.descricaoErro}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+        <template for:each={listaSimulacoesRealizadas} for:item="item">
+            <div class="item-parcela-simulada" key={item.serno}>
+                <span class="sucesso-label">{labelSucesso}</span>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td class="label-detalhes-parcelamento">Lançamento</td>
+                            <td class="valor-detalhes-parcelamento slds-truncate">{item.descricaoCompra}</td>
+                        </tr>
+                        <tr>
+                            <td class="label-detalhes-parcelamento">Data da transação</td>
+                            <td class="valor-detalhes-parcelamento slds-truncate">{item.dataCompra}</td>
+                        </tr>
+                        <tr>
+                            <td class="label-detalhes-parcelamento">Quantidade de parcelas antecipadas</td>
+                            <td class="valor-detalhes-parcelamento slds-truncate">{item.quantidadeParcelasAntecipadas}</td>
+                        </tr>
+                        <tr>
+                            <td class="label-detalhes-parcelamento">Meses antecipados</td>
+                            <td class="valor-detalhes-parcelamento slds-truncate">{item.periodoAntecipado}</td>
+                        </tr>
+                        <tr>
+                            <td class="label-detalhes-parcelamento">Valor antecipado</td>
+                            <td class="valor-detalhes-parcelamento slds-truncate">{item.valorTotal}</td>
+                        </tr>
+                        <tr>
+                            <td class="label-detalhes-parcelamento">Desconto</td>
+                            <td class="valor-detalhes-parcelamento slds-truncate">{item.desconto}</td>
+                        </tr>
+                        <tr>
+                            <td class="label-detalhes-parcelamento">Valor total da antecipação com desconto</td>
+                            <td class="valor-detalhes-parcelamento cor-valor slds-truncate">{item.valorTotalComDesconto}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+    </div>
+</template>

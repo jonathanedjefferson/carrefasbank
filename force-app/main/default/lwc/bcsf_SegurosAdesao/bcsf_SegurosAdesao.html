@@ -1,0 +1,271 @@
+<template>
+    <div lwc:if={tipoSorte} class="slds-list_horizontal slds-border_bottom slds-p-top_medium slds-p-bottom_medium">
+        <lightning-combobox
+            name="quantSeguros"
+            label="Quantidade de seguros"
+            value={quantValue}
+            placeholder="1"
+            options={optionsQuant}
+            class="slds-m-right_medium custom-line"
+            onchange={handlePicklistQuant}>
+        </lightning-combobox>
+        <div class="alertValores">
+            <div if:true={mostrarAlert} class="slds-notify slds-notify_alert" role="alert">
+                <span class="slds-assistive-text">info</span>
+                <span class="slds-icon_container slds-icon-utility-user slds-m-right_x-small" title="Alerta sobre seguros">
+                    <lightning-icon icon-name="utility:user" size="x-small" alternative-text="Pessoa" class="icon-Alert"></lightning-icon>
+                </span>
+                <h2>Os valores alteram de acordo com a quantidade</h2>
+            </div>
+        </div>
+    </div>
+    <div lwc:if={tipoVida} class="slds-list_horizontal slds-border_bottom slds-p-top_medium slds-p-bottom_medium">
+        <lightning-combobox
+            name="Plano"
+            label="Plano"
+            value={valuePlano}
+            placeholder={placePlano}
+            options={optionsPlano}
+            class="slds-m-right_medium custom-line"
+            onchange={handleFieldPlano}>
+        </lightning-combobox>
+    </div>
+    
+    <div class="slds-border_bottom slds-m-bottom_medium">
+        <div class="coberturasHead">
+            <h2>Coberturas</h2>
+            <lightning-button 
+                label="Acessar script" 
+                title="Acessar script"
+                onclick={handleGetScript}>
+            </lightning-button>
+        </div>
+        <!-- <div class="contentSorteios slds-m-top_small">
+            <lightning-icon 
+                    icon-name="standard:resource_preference" 
+                    size="large" 
+                    class="slds-m-around_medium">
+            </lightning-icon>
+            <div>
+                <p class="sorteioTitle">{descricaoSeguro}</strong></p>
+                <p class="sorteioSubtitle">{descricaoValorSeguro}</p>
+            </div>
+        </div> -->
+
+        <!-- <div class="contentCoberturas">
+            <div class="slds-m-right_small slds-border_right">
+                <p>Morte acidental</p>
+                <p><strong>R$ 5.000,00</strong></p>
+            </div>
+            <div class="slds-m-horizontal_x-small slds-border_right" >
+                <p>Cartão Alimentação</p>
+                <p><strong>até 3x R$ 150</strong></p>
+            </div>
+            <div class="slds-m-horizontal_x-small">
+                <p>Outros benefícios</p>
+                <p><strong>Desconto Farmácia</strong></p>
+            </div>
+        </div> -->
+        <div class="slds-m-top_medium slds-m-bottom_small">
+            <div for:each={coberturas} for:item="item" for:index="index" key={item}>
+                <div class="coberturas">
+                    <p><Strong>{item.titulo}</Strong></p>
+                    <p class="custom-line">
+                        {item.descricao}
+                        <span>{item.observacao}</span>
+                    </p>
+                    
+                </div>
+            </div>
+            <lightning-button 
+                lwc:if={btnVerMais} 
+                label={btnMaisLabel} 
+                variant="base"
+                title="Botão ver mais" 
+                icon-name={btnMaisIconName}
+                onclick={handleViewCobertura}>
+            </lightning-button>
+        </div>
+    </div>
+    <div lwc:if={tipoEndereco}>
+        <h2 class="titleAddres">Endereço segurado</h2>
+        <lightning-input type="checkbox" label="Utilizar mesmo endereço do cadastro" name="usarEndereco" class="slds-m-vertical_medium customCheck" onclick={handleCheckEndereco} checked></lightning-input>
+        <div>
+            <ul class="listAddres">
+                <li>
+                    <lightning-input class="custom-line" type="text" label="CEP" value={cepValue} placeholder="00000-000" disabled={disableAddres} onchange={handleCEPChange}></lightning-input>
+                </li>
+                <li>
+                    <lightning-input class="custom-line" type="text" label="Endereço" value={ruaValue} placeholder="Informe o endereço" disabled={disableAddres} onchange={handleRuaChange}></lightning-input>
+                </li>
+                <!-- <li>
+                    <div>
+                        <label class="slds-m-top_xxx-small">Número</label>
+                        <lightning-input type="checkbox" label="S/N" name="possuiNumero" class="slds-m-top_xxx-small" disabled={disableAddres} onchange={handleCheckNumero}></lightning-input>
+                    </div>
+                    <lightning-input type="number" label=" " value={numeroValue} placeholder="000" disabled={disabledFieldNumber} onchange={handleNumeroChange}></lightning-input>
+                </li> -->
+                <li class="semNumero">
+                    <div>
+                        <label class="slds-m-top_xxx-small">Número</label>
+                        <lightning-input type="checkbox" label="S/N" name="possuiNumero" class="slds-m-top_xxx-small" disabled={disableAddres} onchange={handleCheckNumero}></lightning-input>
+                    </div>
+                </li>
+                <li>
+                    <lightning-input type="number" label=" " value={numeroValue} placeholder="000" disabled={disabledFieldNumber} onchange={handleNumeroChange}></lightning-input>
+                </li>
+            </ul>
+            <ul class="listAddresAlternative slds-m-vertical_medium">
+                <li>
+                    <lightning-input class="custom-line" type="text" label="Complemento" value={complementoValue} placeholder="Informe" disabled={disableAddres} onchange={handleComplementoChange}></lightning-input>
+                </li>
+                <li>
+                    <lightning-input class="custom-line" type="text" label="Bairro" value={bairroValue} placeholder="Bairro" disabled={disableAddres} onchange={handleBairroChange}></lightning-input>
+                </li>
+                <li>
+                    <lightning-input class="custom-line" type="text" label="Cidade" value={cidadeValue} placeholder="Cidade" disabled={disableAddres}  onchange={handleCidadeChange}></lightning-input>
+                </li>
+                <li>
+                    <lightning-combobox
+                        name="Estado"
+                        label="Estado"
+                        value={estadoValue}
+                        placeholder="UF"
+                        options={optionsEstados}
+                        disabled={disableAddres}
+                        class="custom-line"
+                        onchange={handlePicklistUF} >
+                    </lightning-combobox>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <p class="valorSeguro">Valor do seguro: <span class="slds-p-left_x-small"> {valorSeguro} / mês</span></p>
+    <button class="slds-button slds-button_brand slds-button_stretch buttonContratar" disabled={disabledBtnContratar} onclick={handlerBtnContratar}>Contratar</button>
+    
+    <!-- Modal -->
+    <template if:true={modalContratar}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open  slds-modal_small">
+            <div id='MyModal' class="slds-modal__container">
+                <div if:true={spinner}>
+                    <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+                </div>
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={fecharModal}>
+                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        <path class="slds-icon-text-white" fill="white" d="M17 6.4L15.6 5 12 8.6 8.4 5 7 6.4 10.6 10l-3.6 3.6L7 15.6 8.4 17l3.6-3.6 3.6 3.6 1.4-1.4L13.4 10 17 6.4z"></path>
+                    </svg>
+                    <span class="slds-assistive-text">Cancelar e fechar</span>
+                </button>
+                <div class="slds-modal__header">
+                    <h1 lwc:if={telaModalOne} id="modal-heading-01" class="slds-modal__title ">Contratar seguro</h1>
+                    <h3 lwc:if={telaModalOne} id="modal-heading-03" class="slds-hyphenate">Abertura de Protocolo</h3>
+                    <h1 lwc:if={telaModalTwo} id="modal-heading-02" class="slds-modal__title slds-hyphenate">Contratar seguro: {nomeSeguro}</h1>
+                </div>
+                <div class="slds-modal__content slds-p-horizontal_medium" id="modal-content-id-1">
+                    <div lwc:if={telaModalOne} class="slds-m-vertical_x-large slds-m-horizontal_medium">
+                        <div class="boxCardEndereco">
+                            <h1  class="slds-text-heading_medium slds-m-bottom_small">Resumo da solicitação</h1>
+                            <ul>
+                                <li>
+                                    <p class="cmpNameCase">Seguro</p>
+                                    <p class="cmpValueCase">{nomeSeguro}</p>
+                                </li>
+                                <li>
+                                    <p class="cmpNameCase">Plano</p>
+                                    <p class="cmpValueCase">{planoResumo}</p>
+                                </li>
+                                <li>
+                                    <p class="cmpNameCase">Valor</p>
+                                    <p class="cmpValueCase">{valorSeguro} / mês</p>
+                                </li>
+                            </ul>
+                            <ul lwc:if={tipoEndereco}>
+                                <li>
+                                    <p class="cmpNameCase">CEP</p>
+                                    <p class="cmpValueCase">{cep}</p>
+                                </li>
+                                <li>
+                                    <p class="cmpNameCase">Endereço</p>
+                                    <p class="cmpValueCase">{rua}</p>
+                                </li>
+                                <li>
+                                    <p class="cmpNameCase">Número</p>
+                                    <p class="cmpValueCase">{numero}</p>
+                                </li>
+                                <li>
+                                    <p class="cmpNameCase">Complemento</p>
+                                    <p class="cmpValueCase">{complemento}</p>
+                                </li>
+                            </ul>
+                            <ul lwc:if={tipoEndereco}>
+                                <li>
+                                    <p class="cmpNameCase">Cidade</p>
+                                    <p class="cmpValueCase">{cidade}</p>
+                                </li>
+                                <li>
+                                    <p class="cmpNameCase">Estado</p>
+                                    <p class="cmpValueCase">{estado}</p>
+                                </li>
+                            </ul>
+                            <ul lwc:if={tipoSorte}>
+                                <li>
+                                    <p class="cmpNameCase">Quantidade</p>
+                                    <p class="cmpValueCase">{quantValue}</p>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="boxInputs">
+                            <lightning-record-edit-form object-api-name="Case">
+                                <h1 class="slds-text-heading_medium slds-m-top_large">Preenchimento de caso</h1>
+                                <ul>
+                                    <li>
+                                        <label>Origem</label>
+                                        <lightning-input-field 
+                                            value={valueOrigem}
+                                            field-name="Origin" 
+                                            class="lightningInput" 
+                                            placeholder="--Nenhuma--"
+                                            onchange={handleChangeOrigem} 
+                                            variant="label-hidden"> 
+                                        </lightning-input-field>
+                                    </li>
+                                    <li>
+                                        <label>Canal</label>
+                                        <lightning-input-field
+                                            value={valueCanal}
+                                            field-name="CanalEntrada__c" 
+                                            class="lightningInput" 
+                                            placeholder="--Nenhuma--"
+                                            onchange={handleChangeCanal} 
+                                            variant="label-hidden"> 
+                                        </lightning-input-field>
+                                    </li>
+                                </ul>    
+                            </lightning-record-edit-form>   
+                        </div>
+                    </div>
+                    <div lwc:if={telaModalTwo} class="caseNumber">
+                        <div class="success-message slds-m-vertical_x-small">
+                            <lightning-icon icon-name="action:approval" size="xx-small" class="success-icon"></lightning-icon>
+                            <span class="success-text">Seguro contratado!</span>
+                        </div>
+                        <h1 class="slds-m-vertical_xx-small">Protocolo: {numProtocolo}</h1>
+                        <p>Em: {dataFormatada}</p>
+                        <p class="slds-m-bottom_xx-large">Quantidade de seguros: {quantValue}</p>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Voltar" disabled={disableBtnVoltar} onclick={handleBtnVoltar}></lightning-button>
+                    <lightning-progress-indicator current-step={currentStep} type="base" variant="base" class="progressBar">
+                        <lightning-progress-step label="Informações do caso." value="1"></lightning-progress-step>
+                        <lightning-progress-step label="Caso criado." value="2"></lightning-progress-step>
+                    </lightning-progress-indicator>
+                    <lightning-button if:false={telaModalTwo} variant="brand" label="Finalizar" onclick={handleBtnProximo} disabled={disableBtnFinalizar}></lightning-button>
+                    <lightning-button if:true={telaModalTwo} variant="brand" label="Ir para o caso" onclick={irCase}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+</template>

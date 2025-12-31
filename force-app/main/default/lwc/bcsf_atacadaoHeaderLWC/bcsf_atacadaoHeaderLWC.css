@@ -1,0 +1,89 @@
+.custom {
+    width: -40%;
+    background-color: #266200;
+    background: #266200;
+    background-image: #266200;
+    float: left;
+    position: absolute;
+    left: 2px;
+    margin-top: 3px;
+}
+
+.header {
+    width: 48%;
+    background-color: #266200;
+    background: #266200;
+    background-image: #266200;
+    float: left;
+    padding-right: 400px;
+}
+
+.max {
+    float: right;
+    position: absolute;
+    right: -308px;
+    margin-top: 15px;
+    width: 30px;
+    height: 30px;
+}
+
+.min {
+    float: right;
+    position: absolute;
+    right: -275px;
+    margin-top: 33px;
+}
+
+h2 {
+    color:#FFFFFF;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    white-space: nowrap;
+    float: left;
+    width: 45%;
+    text-indent: 76px;
+    vertical-align: middle;
+    margin-top: 22px;
+    top: -9px
+}
+
+.chat-label {
+    display: flex; /* Ativa o flexbox */
+    align-items: center; /* Centraliza verticalmente */
+    justify-content: center; /* Centraliza horizontalmente */
+    color: white;
+    width: 100%;
+    font-weight: bold;
+    font-style: normal;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #133101;
+    font-size: smaller;
+    opacity: 0; /* Começa totalmente transparente */
+    animation: fadeIn 2s ease-in-out forwards; /* Aplica a animação */
+    text-align: center; /* Centraliza horizontalmente o texto */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0; /* Inicia com opacidade 0 */
+    }
+    to {
+        opacity: 1; /* Termina com opacidade 1 */
+    }
+}
+
+.chat-label.fade-out {
+    animation: fadeOut 2s ease-in-out forwards; /* Aplica a animação de fade-out */
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1; /* Inicia com opacidade 1 */
+    }
+    to {
+        opacity: 0; /* Termina com opacidade 0 */
+    }
+}

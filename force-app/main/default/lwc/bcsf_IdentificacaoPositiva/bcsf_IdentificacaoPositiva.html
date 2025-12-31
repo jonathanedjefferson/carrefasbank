@@ -1,0 +1,214 @@
+<template>
+    <!--Use template if:true to display/hide popup based on isModalOpen value--> 
+    <template if:true={isModalOpen}>
+    <!-- Modal/Popup Box LWC starts here -->
+
+    <section aria-modal="true" class="slds-modal slds-fade-in-open">
+        <div id='MyModal' class="slds-modal__container">
+
+                <!-- Modal/Popup Box LWC header here -->
+                <header class="slds-modal__header">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{header}</h2>
+                    <div if:true={stepThree}>
+                        <div class="avisoCabecalho">
+                            {avisoCabecalho}
+                        </div>
+                    </div>
+                </header>
+
+                <div if:true={showloading}>
+                    <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+                </div>
+
+                <div if:true={ShowClienteBlindadoFull}>
+                    <div class="slds-modal__content slds-p-vertical_x-large" id="modal-content-id-0">
+                        <div class="c-container">
+                            <div class="boxCardPrincipal">
+                                <div class="avisoBlindagemFull">
+                                    <p class="avisoTextoBlindagemFull">
+                                        <lightning-icon
+                                            icon-name="utility:error"
+                                            size="small"
+                                            alternative-text="Indicates approval"
+                                            variant="inverse"
+                                        >
+                                        </lightning-icon> &#32; &#32; &#32;Cliente blindado full, você não tem premissão para atendê-lo
+                                    </p>
+                                </div>
+
+                                <div class="msgBlindagemFull">
+                                    Cliente protegido com Blindagem Full, informe que seu <b>atendimento</b> deverá ser realizado <b> somente via Aplicativo ou WhatsApp.</b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div if:true={stepOne}>
+                    <div class="slds-modal__content slds-p-vertical_x-large" id="modal-content-id-1">
+                        <div class="c-container">
+                            <template if:true={showCardPrincipal}>
+                                <div class="boxCardPrincipal">
+                                    <div class="aviso">
+                                        <p class="avisoTexto">
+                                            <lightning-icon
+                                                icon-name="utility:warning"
+                                                size="small"
+                                                alternative-text="Indicates approval"
+                                            >
+                                            </lightning-icon> &#32; &#32; &#32;Verifique no Front Único se a senha do cliente a ser atendido já foi validada.
+                                        </p>
+                                    </div>
+
+                                    <div class="informacoes">
+                                        <h1>A senha do cliente já foi validada na URA?</h1>
+                                        <p>Última validação da identificação positiva: {dataHoraUltVerificacao}.</p>
+                                    </div>
+                                    <lightning-radio-group name="RadioValidaUra"
+                                        options={optionsValidaUra}
+                                        value={valueValidaUra}
+                                        type="radio"
+                                        onchange={changRadioValidaUra}>
+                                    </lightning-radio-group>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+                <div if:true={stepTwo}>
+                    <div class="slds-modal__content slds-p-vertical_x-large" id="modal-content-id-2">
+                        <div class="c-container">
+                            <div class="boxCardPrincipalSteps">
+                                <div class="avisoBlindagem" lwc:if={showMsgBlindagemSimples}>
+                                    <p class="avisoTextoBlindagem">
+                                        <lightning-icon
+                                            icon-name="utility:warning"
+                                            size="small"
+                                            alternative-text="Indicates approval"
+                                        >
+                                        </lightning-icon> &#32; &#32; &#32;Conta possui Blindagem Simples, algumas funcionalidades não estão disponíveis para seu perfil. Caso necessário, abra um protocolo.
+                                    </p>
+                                </div>
+                                
+                                <div class="conteudoTitulo">
+                                    <div class="informacoesstepsOne">
+                                        <h2>Escolha uma titularidade</h2>
+                                        <p><b>Titular</b></p>
+                                    </div>
+                                    
+                                    <div class="informacoesTitularidade">
+                                        <lightning-radio-group 
+                                            class="myRadioGroup" 
+                                            name="RadioTitular"
+                                            options={optionsTitular}
+                                            value={valuetipoCliente}
+                                            type="radio"
+                                            onchange={changRadioTitular}>
+                                        </lightning-radio-group>
+                                    </div>
+
+                                </div>
+
+                                <div class="conteudoAdicional" lwc:if={mostarCondicional}>
+                                    <div class="informacoesstepsTwo">
+                                        <p><b>Adicional</b></p>
+                                        <br>
+                                        <p>Cliente adicional só pode ter acesso as seguintes funcionalidades:</p>
+                                        <p><b>Valor total e mínimo da fatura; Código de barras; Reimpressão de senha (Cartão Adicional); Bloqueio perda e roubo; Bloqueio por falecimento; Limite disponível.</b></p>
+                                    </div>
+                                    <div class="informacoesTitularidade">
+                                        <lightning-radio-group 
+                                            class="myRadioGroup" 
+                                            name="RadioAdicional"
+                                            options={optionsAdicional}
+                                            value={valuetipoCliente}
+                                            type="radio"
+                                            onchange={changRadioAdicional}>
+                                        </lightning-radio-group>
+                                    </div>
+                                </div>
+
+                                <div class="conteudoTerceiro">
+                                    <div class="informacoesstepsThree">
+                                        <p><b>Terceiro</b></p>
+                                        <br>
+                                        <p>Um Terceito tem acesso as seguintes funcionalidades: </p>
+                                        <p> <b> Valor total e mínimo da fatura; Código de barras;Bloqueio perda e roubo; Bloqueio por falecimento.</b></p>
+                                    </div>
+
+                                    <div class="informacoesTerceiros">
+                                        <lightning-radio-group class="myRadioGroup" name="RadioTerceiro"
+                                            options={optionsTerceiros}
+                                            value={valuetipoCliente}
+                                            type="radio"
+                                            onchange={changRadioTerceiro}>
+                                        </lightning-radio-group>
+                                    </div>
+
+                                    <br>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div if:true={stepThree}>
+                    <div class="slds-modal__content slds-p-vertical_x-large" id="modal-content-id-3">
+                        <div class="c-container">
+                            <div class="boxCardPrincipal">
+                                <div>
+                                    <template for:each={perguntas} for:item="ques" for:index="index">
+                                        <div key={ques.id} class="conteudoPergunta"> 
+
+                                            <div class="conteudoPerguntaTitulo">Perguntas {ques.item} de {perguntas.length}</div>
+                                            <p>{ques.descricao}</p>
+                                            <div class="informacoesPergunta">
+                                                <lightning-radio-group class="myRadioGroup" name={ques.id} 
+                                                options={ques.alternativas}
+                                                value={opcaoValue}
+                                                type="radio"
+                                                onchange={changRadioPergunta}>
+                                                </lightning-radio-group>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div if:true={stepFour}>
+                    <div class="slds-modal__content slds-p-vertical_xx-large" id="modal-content-id-4">
+                        <div class="c-containerresultado">
+                            <div class="avisoResultado">
+                                <img src={iconeAviso} />
+                                {avisoFinal}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal/Popup Box LWC footer starts here -->
+                <footer class="slds-modal__footer">
+                    <!--<button class="slds-button slds-button_brand" onclick={closeModal} title="Cancelar">Cancelar</button> -->
+
+                    <!-- <button class="slds-button slds-button_brand" onclick={showSpinner} title="OK">OK</button> -->
+              
+                    <button if:true={buttonIrPerfil} class="slds-button slds-button_brand" onclick={closeModal} title="Ir para perfil do cliente">Ir para perfil do cliente</button>
+                    <button if:true={buttonIniciarIdentificacao} class="slds-button slds-button_brand" onclick={handleButton} title="Iniciar Identificação Positiva">Iniciar Identificação Positiva</button>
+                    <button if:true={buttonProsseguirIdentificacao} class="slds-button slds-button_brand" onclick={handleButton} title="Prosseguir">Prosseguir</button>
+                    <button if:true={stepThree} disabled={desabilitaButtonProsseguir} class="slds-button slds-button_brand" onclick={handleButton} title="Prosseguir">Prosseguir</button>
+                    <button if:true={buttonTentarNovamente} class="slds-button slds-button_brand" onclick={handleTentarNovamente} title="Tentar novamente">Tentar novamente</button>
+                    <button if:true={buttonVoltarInicio} class="slds-button slds-button_brand" onclick={handleButton} title="Voltar para a página inicial">Voltar para a página inicial</button>
+                    <button if:true={ShowClienteBlindadoFull} class="slds-button slds-button_brand" onclick={redirecionarAccount} title="Finalizarl">Finalizar</button>
+                    
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+</template>

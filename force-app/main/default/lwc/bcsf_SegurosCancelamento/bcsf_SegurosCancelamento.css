@@ -1,0 +1,414 @@
+.titulo {
+    font-weight: bold;
+    font-size: 1rem;
+}
+.badge {
+    padding: 2px 8px;
+}
+
+.bd-accordion{
+    border: 1px solid #F3F2F2;
+}
+
+.bd-radius{
+    border-radius: 4px 4px 0px;
+}
+
+/* Tela inicial */
+.container-summary{
+    padding: 0px;
+    margin: 0px;
+    height: 80px;
+}
+.container-header{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.container-validade{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: auto;
+    padding-top: 0px;
+    width: 80%;
+}
+
+.container-validade div{
+    width: 160px;
+    flex-direction: column;
+    margin-bottom: 16px;
+    --slds-g-color-border-base-4: #d8dde6;
+}
+
+.validate-separador{
+    display: block;
+    height: 90px;
+    width: 1px !important;
+    margin-top: 8px;
+    background: #D9D9D9;
+}
+
+.name-Validade{
+    font-size: 0.875rem;
+}
+
+.value-Validade{
+    font-size: 0.875rem;
+    font-weight: 700;
+    margin-right: 8px;
+}
+
+.resumoLine{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-height: 18px;
+    border-bottom: 1px solid #ECEBEA;
+    margin-bottom: 6px;
+    padding-bottom: 0px;
+    margin-left: 16px;
+}
+/* .resumoLine .slds-button, .slds-button{
+    padding: 0px !important;
+    margin: 0px !important;
+    line-height: 0px;
+} */
+.nameLine{
+    font-size: 14px;
+    min-width: 40%;
+    color: #3E3E3C;
+    line-height: 0px;
+}
+
+.valueLine{
+    font-size: 14px;
+    color: #080707;
+    line-height: 20px;
+    padding-right: 20px;
+}
+
+.btn-contestacao{
+    width: calc(100% - 32px);
+    margin: auto;
+    --slds-g-color-border-base-4: #d8dde6;
+}
+
+.container-detalhes  h1{
+    font-size: 1.125rem;
+    margin-bottom: 10px;
+    color: #080707;
+}
+.container-detalhes ul{
+    display: flex;
+    justify-content: center;
+}
+
+.container-detalhes ul li{
+    min-width: 160px;
+    border-left: 2px solid #d8dde6;
+    padding-left: 10px;
+    padding-right: 4px;
+}
+
+.container-detalhes ul li:first-child{
+    border-left: none;
+}
+
+.nameDetalhes{
+    font-size: 0.875rem;
+    color: #3E3E3C;
+    line-height: 25px;
+}
+
+.valueDetalhes{
+    font-size: 0.875rem;
+    color: #080707;
+    font-weight: 700;
+}
+
+.valueDetalhes span{
+    font-weight: 400;
+}
+
+/* Tela modal detalhes de cobrança */
+.container-historico h2{
+    margin: 20px 0px 16px;
+    font-size: 14px;
+}
+
+.container-statusDetalhes{
+    display: flex;
+    align-items: start;
+    justify-content: stretch;
+    flex-direction: column;
+    width: 28%;
+    margin-bottom: 16px;
+}
+.field-statusDetalhes{
+    width: 100%;
+    padding-right: 20px;
+    line-height: 20px;
+    --lwc-spacingXSmall: 5px !important;
+}
+.container-historico label{
+    height: 20px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    color: #444444;
+}
+
+.custom-table-container {
+    border-radius: 4px;
+    border: 1px solid #DDDBDA;
+    height: 350px;
+    overflow: auto;
+}
+
+.custom-table {
+    width: 100%;
+}
+
+.custom-table thead {
+    width: 100%;
+    background-color: #FAFAF9;
+    border-radius: 4px;
+}
+
+.custom-table tr, .custom-table tbody{
+    width: 100%;
+}
+
+.custom-table td {
+    padding: 0px 10px;
+    text-align: left;
+}
+
+.custom-table th {
+    font-weight: bold;
+    padding: 0px 10px;
+    text-align: left;
+}
+
+.custom-table tr:not(:last-child) td {
+    border-bottom: 1px solid #ddd;
+}
+
+.custom-table tr:first-child td {
+    border-bottom: 1px solid #ddd;
+}
+.custom-table td + td,
+.custom-table th + th {
+    border-left: none; /* Remove bordas verticais entre colunas */
+}
+
+.custom-table-item{
+    min-width: 18%;
+}
+
+.custom-table-item:nth-of-type(2){
+    width: 32%;
+}
+
+.custom-table-item:nth-of-type(3){
+    width: 40%;
+}
+
+.custom-table-itemHeaderRight{
+    border-top-right-radius: 8px;
+}
+
+.custom-table-itemHeaderLeft{
+    border-top-left-radius: 8px;
+}
+
+.parcela-atraso{
+    color: #C23934;
+}
+
+.alert-Info{
+    height: 36px;
+    --slds-c-alert-color-background: #F9B765; 
+    --slds-c-alert-text-color: #000000;
+}
+.alert-Info h2{
+    font-size: 14px;
+    font-weight: 400;
+} 
+
+.container-motivos h1{
+    font-size: 18px;
+    margin: 12px 0px 0px;
+    color: #080707;
+    font-weight: 500;
+}
+
+.container-motivos h2{
+    font-size: 14px;
+    color: #080707;
+}
+
+.container-motivosLabel{
+    width: 100%;
+    line-height: 18px;
+}
+
+.small-picklist{
+    height: 30px;
+    line-height: 18px;
+    --lwc-spacingXSmall: 4px !important;
+}
+
+.container-motivosLabel label{
+    height: 20px;
+    font-size: 12px;
+    color: #444444;
+}
+
+.label-motivo{
+    height: 24px;
+    font-size: 12px !important;
+}
+
+.cancelamento-observacao{
+    min-height: 70px !important;
+}
+
+.container-caso ul{
+    display: flex;
+    flex-direction: row;
+    height: 50px;
+    margin-bottom: 14px;
+}
+
+.container-caso li{
+    margin-right: 32px;
+}
+
+.container-caso h1{
+    font-size: 18px;
+    font-weight: 400;
+    margin-top: 8px;
+}
+
+.container-caso span{
+    font-size: 16px;
+    font-weight: 600;
+}
+.container-caso p{
+    font-size: 12px;
+    font-weight: 400;
+    height: 18px;
+}
+
+.field-caso{
+    min-width: 25%;
+    --lwc-spacingXSmall: 2px !important;
+}
+
+
+/* tela final - caso Criado */
+.success-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    --slds-c-icon-color-background: #087C2B;
+    margin: 6px 10px 0px 15px;
+    padding: 5px;
+    height: 20px;
+    width: 20px;
+}
+
+.container-casoGerado{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.casoGerado{
+    width: 100%;
+}
+.casoGerado h1{
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.casoGerado h2{
+    font-size: 16px;
+    font-weight: 600;
+    padding-top: 20px;
+    padding-bottom: 12px;
+}
+
+.casoGerado ul{
+    display: flex;
+    flex-direction: row;
+}
+
+.casoGerado ul li{
+    min-width: 25%;
+}
+
+.casoGeradoName{
+    font-size: 0.875rem;
+    color: #3E3E3C;
+    line-height: 18px;
+}
+
+.casoGeradoValue{
+    font-size: 1rem;
+    color: #080707;
+    font-weight: 600;
+    line-height: 22px;
+}
+
+.dados-casoGerado{
+    margin-bottom: 20px;
+}
+
+.dados-casoGerado h2{
+    font-size: 16px;
+    font-weight: 400;
+    margin: 0px;
+    padding: 0px;
+}
+
+.dados-casoGerado span{
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.resumo-CasoContestar h1{
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 8px;
+}
+
+
+.resumo-CasoContestar ul{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 16px;
+}
+
+.resumo-CasoContestar li{
+    margin-right: 32px; 
+}
+
+.nameCasoContestar{
+    line-height: 12px;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.valueCasoContestar{
+    line-height: 16px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.container-casoContestar{
+    margin-top: 18px;
+    padding-top: 18px;
+}

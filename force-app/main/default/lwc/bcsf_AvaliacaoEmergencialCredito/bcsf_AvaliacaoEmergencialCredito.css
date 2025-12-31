@@ -1,0 +1,155 @@
+.first-screen{
+    width: 100%;
+    padding: 24px;
+
+}
+
+.titles{
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    font-family: 'Segoe UI';
+    margin-top: 20px;
+}
+
+.titles2{
+    font-size: 13px;
+    font-weight: 400;
+    font-family: 'Segoe UI';
+    color: #444444;
+}
+
+.conta-values{
+    font-size: 16px;
+    font-family: 'Segoe UI';
+    font-weight: 600;
+}
+
+
+.AtivarDesativar{
+    border-top: 2px solid #dddbda;
+}
+
+
+.logo-conta{
+    display: flex;
+    justify-items: center;
+    align-items: center;
+}
+
+.conta-tipo{
+    display: block;
+}
+
+.logo{
+    width: 48px;
+    height: 48px;
+}
+
+.mensagem{
+    background-color: #FFB75D;
+    width: 100%;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-right: 16px;
+    padding-left: 16px;
+}
+
+.mensagem-texto{
+    font-size: 14px;   
+    font-family: 'Segoe UI';
+    font-weight: 400;
+    line-height: 21px;
+    letter-spacing: 0px;
+}
+
+.back-values{
+    background-color: #F8F9FA;
+}
+.preenchimento-caso{
+    border-top: 2px solid #dddbda;
+}
+
+.taxa-rotativo{
+    padding: 16px;
+    height: 77px;
+    background-color: #F8F9FA;
+}
+
+.div-termo{
+    padding: 24px;
+}
+
+.texto-termo{
+    text-align: center;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+    font-family: 'Segoe UI';
+}
+
+
+.body-alteracao{
+    padding: 24px;
+    gap: 24px;
+}
+
+.retorno-api{
+
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 27px;
+}
+
+.texto-retorno{
+    font-size: 18px;
+    font-weight: 700;
+    font-family:'Segoe UI';
+}
+
+.alteracao-info{
+    padding-bottom:8px;
+    padding-left:40px;
+    gap: 40px;
+}
+
+
+.protocolo-info{
+    margin-bottom: 20px;
+}
+
+.caso-info{
+    border-top: 1px solid #DDDBDA;
+}
+
+.wrapperImpressao{
+    text-align: center;
+}
+
+.wrapperImpressao p{
+    text-align:center;
+    font-family: 'Segoe UI';
+}
+
+.opcaoOverlimitAdicionais{
+    display: none !important;
+    visibility: hidden !important;
+}
+
+.AssinaturaDigital{
+    margin-bottom: 20px;
+    margin-top: 15px;
+}
+
+.title-termo{
+    text-align:left !important;
+    font-weight:400;
+    font-size:18px;
+}
+
+hr{
+    display:none;
+}

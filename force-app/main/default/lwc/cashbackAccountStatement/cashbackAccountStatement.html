@@ -1,0 +1,93 @@
+<template>
+    <template if:true={showData}>
+        <lightning-accordion allow-multiple-sections-open active-section-name={openSection}>
+            <!-- Iteração por Mês -->
+            <template for:each={accountStatements} for:item="accountStatement">
+                <lightning-accordion-section label={accountStatement.month} key={accountStatement.monthYear} name={accountStatement.monthYear}>
+                     <!-- Iteração por Dia -->
+                     <template for:each={accountStatement.groupedDays} for:item="accountStatementDay">
+                         <div class="day-container" key={accountStatementDay.day}>
+                            <div class="header-container">
+                                <div class="weekday">
+                                    <p>{accountStatementDay.weekday}</p>
+                                    <p class="bold">{accountStatementDay.fullDate}</p>
+                                </div>
+                                <div class="balance">
+                                    <p>Saldo do dia:</p>
+                                    <p class="bold">{accountStatementDay.balance}</p>
+                                </div>
+                            </div>
+                             <!-- Tabela -->
+                             <table>
+                                 <thead>
+                                     <tr>
+                                         <th>Nome da operação</th>
+                                         <th>Compra</th>
+                                         <th>Cashback</th>
+                                         <th></th>
+                                     </tr>
+                                 </thead>
+                                 <tbody>
+                                     <template for:each={accountStatementDay.items} for:item="accountStatementData">
+                                         <tr key={accountStatementData.Id}>
+                                             <td>
+                                                 <span class="icon-container">
+                                                     <lightning-icon icon-name={accountStatementData.icon} alternative-text="Icon" title="Icon" size="x-small" class="icon"></lightning-icon>
+                                                     <span class={accountStatementData.lineClass}>{accountStatementData.rewardTransactionTypeDescription}</span>
+                                                 </span>
+                                             </td>
+                                             <td>
+                                                <p class="light-info">{accountStatementData.originDescription}</p>
+                                                <p>{accountStatementData.purchaseAmount}</p>
+                                                <p class="light-info">{accountStatementData.purchaseDateShort}</p>
+                                             </td>
+                                             <td>
+                                                 <p class={accountStatementData.cashbackClass}>{accountStatementData.rewardAmount}</p>
+                                                 <p class="light-info">{accountStatementData.transactionDateShort}</p>
+                                             </td>
+                                             <td>
+                                                 <span class="details-button">
+                                                     <lightning-button variant="base" label="Detalhes" onclick={handleExpand} data-id={accountStatementData.id}></lightning-button>
+                                                     <lightning-button-icon icon-name="utility:chevrondown" variant="container" alternative-text="Expand" title="Expand" onclick={handleExpand} data-id={accountStatementData.id}></lightning-button-icon>
+                                                 </span>
+                                             </td>
+                                         </tr>
+                                         <template if:true={accountStatementData.showDetails}>
+                                             <td colspan=4 key={accountStatementData.Id}>
+                                                 <div class="detail-container">
+                                                     <c-cashback-account-statement-detail detail={accountStatementData} cpf={cpf}></c-cashback-account-statement-detail>
+                                                 </div>
+                                             </td>
+                                         </template>
+                                     </template>
+                                 </tbody>
+                             </table>
+                         </div>
+                     </template>
+                </lightning-accordion-section>
+            </template>
+        </lightning-accordion>
+        <template if:true={isLoadingMore}>
+            <div class="spinner">
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </div>
+        </template>
+        <!-- Carregar mais -->
+        <span class="load-more-button">
+            <lightning-button-icon icon-name="utility:loop" variant="container" title="Expand" onclick={handleLoadMore} disabled={disableLoadMore}></lightning-button-icon>
+            <lightning-button variant="base" label="Carregar mais" onclick={handleLoadMore} disabled={disableLoadMore}></lightning-button>
+        </span>
+    </template>
+    <template if:true={isLoading}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </div>
+    </template>
+    <template if:true={showEmptyState}>
+        <div class="empty-state">
+            <img src={emptyStateImg} class="empty-image">
+            <p class="empty-message">{message}</p>
+            <p class="empty-submessage">{subMessage}</p>
+        </div>
+    </template>
+</template>

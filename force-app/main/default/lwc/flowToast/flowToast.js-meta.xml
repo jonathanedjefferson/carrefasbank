@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightning__FlowScreen</target>
+    </targets>
+   <targetConfigs>
+    <targetConfig targets="lightning__FlowScreen, lightning__RecordPage, lightning__AppPage, lightning__HomePage">
+        <property name="title" type="String" label="Toast Title" description="Título a ser exibido. Por exemplo, Registro Criado" />
+        <property name="message" type="String" label="Toast Message" description="Mensagem que você deseja exibir." />
+        <property name="variant" type="String" default="info" label="Toast Variant" description="Tipo de toast que você deseja exibir. Valores válidos são info, success, warning, error" />
+        <property name="mode" type="String" default="dismissible" label="Mode" description="dismissible (padrão), permanece visível até que você clique no botão de fechar ou 3 segundos se passem, o que ocorrer primeiro; pester, permanece visível por 3 segundos e desaparece automaticamente, sem botão de fechar; sticky, permanece visível até que você clique no botão de fechar." />
+    </targetConfig>
+</targetConfigs>
+</LightningComponentBundle>

@@ -1,0 +1,17 @@
+@IsTest
+public class JanisIdentificarReagendamentoTest {
+    @IsTest
+    public static void teste() {
+        Test.setMock(HttpCalloutMock.class, new JanisIdentificarReagendamentoMock());
+        JanisIdentificarReagendamento.makeAPIRequest('1234');
+    }
+    
+    public class JanisIdentificarReagendamentoMock implements HttpCalloutMock {
+        public HTTPResponse respond(HTTPRequest req) {
+            HTTPResponse response = new HTTPResponse();
+            response.setStatusCode(200);
+            response.setBody('[{"orderGroupId":"65312342d65889b9453b3ccd","commerceSequentialId":"500055147","commerceDateCreated":"2023-10-19T12:38:04.653Z","commerceSalesChannel":"2","totalAmount":198,"currency":"BRL","salesChannelPrefix":"FOOD2","salesChannelName":"carrefourbrqa-Food","skipPicking":false,"externalPaymentValidation":true,"salesChannelReferenceId":"carrefourbrqa-carrefourbrqa-2","salesChannelId":"64218fcb3666a5202496fb41","sellerSalesChannelId":"63727bc0d89460ce86c6b6a4","sellerSalesChannelReferenceId":"carrefourbrqa103-2","sellerSalesChannelName":"carrefourbrqa103-Food","addresses":[{"commerceId":"4989039221076","type":"residential","countryCode":"BRA","state":"SP","city":"São Paulo","neighborhood":"Vila Gertrudes","postalCode":"04794-000","streetName":"Avenida das Nações Unidas","streetNumber":"260","complement":"Fundos","reference":null,"receiverName":"Patrik","geolocation":[-46.70006561279297,-23.619836807250977],"receiverDocument":"35188231-5"}],"commerceId":"1369970055147-01","orderGroupCommerceId":"1369970055147-01","status":"delivered","originalAmount":198,"userCreated":null,"dateCreated":"2023-10-19T12:38:30.036Z","userModified":null,"dateModified":"2023-10-23T15:06:53.412Z","payments":[{"id":"1ABD33E94DFA41F0907649D39608ECA0","transactionId":"1147C7A16B954BEA8AB4C15AF822AF2D","merchantName":"CARREFOURBRQAFOOD","paymentGroup":"creditCard","paymentSystemCommerceId":"401","paymentSystemName":"Cartão Carrefour","amount":198,"amountWithoutInterests":198,"installments":1,"cardHolder":null,"cardNumber":null,"cardFirstDigits":"453285","cardLastDigits":"3271","cardCvv":null,"cardExpireMonth":null,"cardExpireYear":null,"tid":"8657f78a-066e-4ca0-8bd8-af09ed6cafb2","acquirer":"Simulado","authorizationId":"865935","status":"finished"}],"shippings":[{"items":[{"index":0,"id":"B73AAE9EC8C3448D832943F6BD0AE8D6","quantity":10},{"index":1,"id":"467332393E7D45759F0EDC0968FF8726","quantity":1}],"isPickup":false,"deliveryEstimateDate":"2023-10-21T21:00:00.000Z","price":15,"id":"216bd100-bfce-43df-bea1-f73775e88c0f","carrierId":"637e58d032afec20eb31cb92","companyName":"103_Normal_SPP","status":"finished","type":"delivery","slaName":"Normal","addressCommerceId":"4989039221076","deliveryId":"653123768385dd03b7c99c01","locationId":"637e58cce464a6f5abcd162c","warehouseId":"637e58cdcc9196c555f9a4d1","deliveryWindow":{"initialDate":"2023-10-21T21:00:00.000Z","finalDate":"2023-10-21T23:00:00.000Z","additionalPrice":0},"slaThreshold":{"finishStatus":"readyForDelivery","finished":false,"critical":"2023-10-21T21:00:00.000Z","warning":"2023-10-21T21:00:00.000Z","caution":"2023-10-21T21:00:00.000Z","exceeded":"2023-10-21T21:00:00.000Z","status":"critical"}}]}]');
+            return response;
+        }
+    }
+}

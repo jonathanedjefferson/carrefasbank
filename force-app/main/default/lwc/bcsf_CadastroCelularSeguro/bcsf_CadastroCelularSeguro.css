@@ -1,0 +1,240 @@
+.padding-telas{
+    padding: 0px 24px 24px;
+}
+
+.title-header{
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 400;
+    border-bottom: 1px solid #DDDBDA;
+    margin-bottom: 11px;
+    color: #080707;
+}
+
+.avisoAlert{
+    height: 36px;
+    background-color: #FFB75D;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0px 0px 12px;
+    font-size: 13px;
+    font-weight: 400;
+    --slds-c-icon-color-foreground-default: #3E3E3C;
+}
+
+.nameText{
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.valueText{
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+}
+
+.separador {
+    box-shadow: 0px 1px 0px #DDDBDA;
+}
+
+.dados-conta{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 32px 20px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.dados-itens{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 25px;
+}
+
+/* Página - selecionar cenários */
+.container-cenarios h2{
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    margin-bottom: 8px;
+}
+
+.cenarios-itens{
+    color: #3E3E3C;
+    --slds-c-radio-color-border: #DDDBDA;
+}
+
+/* Página - soliciar caso */
+.container-solicitar h2{
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 27px;
+    margin-bottom: 10px;
+}
+
+.container-logo{
+    display: grid;
+    grid-template-columns: auto 1fr;
+}
+
+.container-logo div:nth-last-child{
+    grid-column: 2;
+}
+
+.logo {
+    margin-right: 5px;
+}
+.logo > img {
+    max-width: 100%;
+    height: 45px;
+}
+
+.container-solicitar h3{
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    margin-bottom: 4px;
+}
+
+.field-ddd{
+    max-width: 60px;
+}
+
+.margin-separador{
+    padding-bottom: 25px;
+    margin-bottom: 18px !important;
+}
+
+.fields-caso{
+    display: flex;
+    flex-direction: row;
+}
+
+.field-caso{
+    width: 200px;
+    margin-right: 20px;
+}
+
+/* Página de confirmar informações do caso */
+.container-info h2{
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 27px;
+}
+
+.infomacoes{
+    background-color: #F8F9FA;
+    padding: 16px 16px 32px;
+}
+
+.infomacoes h2{
+    margin-bottom: 15px;
+}
+
+.infomacoes .dados-itens:last-child{
+    margin-bottom: 0px;
+}
+
+.infomacoes .margin-info{
+    margin-right: 90px;
+}
+
+.info-text{
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    margin-bottom: 20px;
+}
+
+/* Página caso gerado */
+.success-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    --slds-c-icon-color-background: #087C2B;
+    margin: 2px 10px 0px 15px;
+    padding: 5px;
+    height: 20px;
+    width: 20px;
+}
+
+.container-casoGerado{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.casoGerado{
+    width: 100%;
+    padding-bottom: 30px;
+    padding: 0px 30px 30px 00px;
+}
+.casoGerado h1{
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.casoGerado h2{
+    font-size: 16px;
+    font-weight: 600;
+    padding-top: 20px;
+    padding-bottom: 12px;
+}
+
+.casoGerado ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.casoGeradoName{
+    font-size: 0.875rem;
+    color: #3E3E3C;
+    line-height: 18px;
+}
+
+.casoGeradoValue{
+    font-size: 1rem;
+    color: #080707;
+    font-weight: 600;
+    line-height: 22px;
+}
+
+.dados-casoGerado{
+    margin-bottom: 20px;
+}
+
+.dados-casoGerado h2{
+    font-size: 16px;
+    font-weight: 400;
+    margin: 12px 0px 4px 0px;
+    padding: 0px;
+}
+
+.dados-casoGerado span{
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.resumo-CasoContestar h1{
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 8px;
+}
+
+
+
+
+footer{
+    height: 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #F3F2F2;
+    padding: 0px 24px;
+}

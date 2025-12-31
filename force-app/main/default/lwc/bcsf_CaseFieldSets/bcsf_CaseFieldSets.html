@@ -1,0 +1,11 @@
+<template>
+    <template if:true={showComponent}>
+        <lightning-card title="Informações Adicionais" icon-name="standard:change_request">
+            <div class="slds-p-around_small">
+                <lightning-record-form object-api-name={objectApiName} record-id={recordId} fields={fields} columns="2"
+                    onsuccess={handleSuccess}>
+                </lightning-record-form>
+            </div>
+        </lightning-card>
+    </template>
+</template>

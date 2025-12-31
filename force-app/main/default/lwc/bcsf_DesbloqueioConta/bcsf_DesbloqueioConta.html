@@ -1,0 +1,245 @@
+<template>
+    <div if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <template if:true={showCardPrincipal}>
+        <div class="title">Desbloquear Conta</div>
+        <div class="c-container">
+            <div class="boxCardPrincipal">
+                <div if:true={stepOne}>
+                    <div class="subTitle">Dados da conta</div>
+                    <div class="separator pb-15">
+                        <ul class="listInformacoes mt-10">
+                            <li>
+                                <div class="cmpLabel">Titular</div>
+                                <div class="cmpValue">{nome}</div>
+                            </li>
+                            <li class="tipoConta">
+                                <div class= "logo"><img src={logoTipo}></div>
+                                <div class="texts">
+                                    <div class="cmpName">Tipo de conta</div>
+                                    <div class="cmpValue">{unidadeDescricao}</div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="cmpLabel">CPF</div>
+                                <div class="cmpValue">{cpf}</div>
+                            </li>
+                        </ul>
+                        <ul class="listInformacoes">
+                            <li>
+                                <div class="cmpLabel">Produto</div>
+                                <div class="cmpValue">{tipoProduto}</div>
+                            </li>
+                            <li>
+                                <div class="cmpName">Conta</div>
+                                <div class="cmpValue">{numeroConta}</div>
+                            </li>
+                            <li>
+                                <div class="cmpLabel">Status Geral</div>
+                                <div class="cmpValue color-font-red">{statusConta}</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mt-20">
+                        <div class="alert mt-30">
+                            <lightning-icon icon-name="utility:warning" alternative-text="Warning!" title="Warning" class="pr-10 color-icon"></lightning-icon>
+                            <p>Caso seja necessário emitir uma nova via do cartão, ela poderá ser solicitada ao final do desbloqueio.</p>
+                        </div>
+                        <div class="mt-20">
+                            <div class="subTitle">Dados do cartão</div>
+                            <ul class="listDadosCartoes mt-10">
+                                <li>
+                                    <div class="cmpLabel">Validade</div>
+                                    <div class="cmpValue">{dataValidade}</div>
+                                    <div if:true={cartaoExpirado}>
+                                        <div class="label-text color-font-red">Validade expirada</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Número</div>
+                                    <div class="cmpValue">{numeroCartao}</div>
+                                    <lightning-input type="checkbox" checked={checked2via} label="Cliente não recorda o número do cartão ou perdeu o cartão" onchange={handleSegundavia}></lightning-input>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Nome impresso</div>
+                                    <div class="cmpValue">{nomeReduzido}</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div if:true={stepTwo}>
+                    <div class="separator pb-15">
+                        <div class="alert">
+                            <lightning-icon icon-name="utility:warning" alternative-text="Warning!" title="Warning" class="pr-10 color-icon"></lightning-icon>
+                            <p>Ao finalizar, conta será desbloqueada.</p>
+                        </div>
+                        <div class="subTitle mt-20">Confirme os dados</div>
+                        <p>Antes de finalizar, confirme com o cliente se os dados estão corretos</p>
+                        
+                        <div class="boxDadosConta mt-30">
+                            <div class="subTitle">Dados da conta</div>
+                            <ul class="listInformacoes mt-10">
+                                <li>
+                                    <div class="cmpLabel">Titular</div>
+                                    <div class="cmpValue">{nome}</div>
+                                </li>
+                                <li class="tipoConta">
+                                    <div class= "logo"><img src={logoTipo}></div>
+                                    <div class="texts">
+                                        <div class="cmpName">Tipo de conta</div>
+                                        <div class="cmpValue">{unidadeDescricao}</div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">CPF</div>
+                                    <div class="cmpValue">{cpf}</div>
+                                </li>
+                            </ul>
+                            <ul class="listInformacoes">
+                                <li>
+                                    <div class="cmpLabel">Produto</div>
+                                    <div class="cmpValue">{tipoProduto}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">Conta</div>
+                                    <div class="cmpValue">{numeroConta}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpLabel">Status Geral</div>
+                                    <div class="cmpValue color-font-red">{statusConta}</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-20">
+                        <label class="label-caso">Preenchimento de caso</label>
+                        <div class="mt-5 boxCaso">
+                            <lightning-record-edit-form object-api-name="Case">
+                                <ul>
+                                    <li>
+                                        <label>Origem</label>
+                                        <lightning-input-field 
+                                            language=""
+                                            value={origemValue}
+                                            field-name="Origin" 
+                                            class="lightningInput mt-5" 
+                                            placeholder="--Nenhuma--"
+                                            onchange={handleChangeOrigem} 
+                                            variant="label-hidden"> 
+                                        </lightning-input-field>
+                                    </li>
+                                    <li>
+                                        <label>Canal</label>
+                                        <lightning-input-field
+                                            value={canalValue}
+                                            field-name="CanalEntrada__c" 
+                                            class="lightningInput mt-5" 
+                                            placeholder="--Nenhuma--"
+                                            onchange={handleChangeCanal} 
+                                            variant="label-hidden"> 
+                                        </lightning-input-field>
+                                    </li>
+                                </ul>    
+                            </lightning-record-edit-form>   
+                        </div>
+                    </div>
+                </div>
+                <div if:true={stepThree}>
+                    
+                    <h1 class="subTitle-2"><lightning-icon icon-name="utility:success" alternative-text="Success!" variant="success" title="success variant" size="small"></lightning-icon> Desbloqueio de conta realizado!</h1> <br>
+                        
+                    <div class="pl-30">
+                        <h2>Protocolo: <b>{numeroCaso}</b></h2>
+                        <p class="mt-5">{dateToday}</p>
+                        <div if:true={cartaoExpirado}>
+                            <div class="alert-info mt-30">
+                                <lightning-icon icon-name="utility:info" alternative-text="Warning!" title="Warning" class="pr-10 color-icon"></lightning-icon>
+                                <p class="msgInfo">Cartão com validade expirada, <span class="font-bold">recomendamos solicitar uma nova via</span>, é possível fazer isso no botão ao lado.</p>
+                                <a class='ml-15' onclick={handleButtonSegundaViaCartao}>Solicitar 2ª via</a>
+                            </div>
+                        </div>
+                        <div if:false={cartaoExpirado}>
+                            <div if:true={checked2via}>
+                                <div class="alert-info mt-30">
+                                    <lightning-icon icon-name="utility:info" alternative-text="Warning!" title="Warning" class="pr-10 color-icon"></lightning-icon>
+                                    <p class="msgInfo">Como o cliente não confirmou o número do cartão, <span class="font-bold">recomendamos solicitar uma nova via</span>, é possível fazer isso no botão ao lado.</p>
+                                    <a class='ml-15' onclick={handleButtonSegundaViaCartao}>Solicitar 2ª via</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="separator pb-20"></div>
+                        <div>
+                            <h2 class="slds-text-heading_small slds-m-vertical_medium subTitle">Informações do caso:</h2>
+                            <ul class="listInformacoes">
+                                <li>
+                                    <div class="cmpName">Origem</div>
+                                    <div class="cmpValue">{origemValue}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">Canal</div>
+                                    <div class="cmpValue">{canalValue}</div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">Motivo</div>
+                                    <div class="cmpValue">Desbloqueio</span></div>
+                                </li>
+                                <li>
+                                    <div class="cmpName">Evento</div>
+                                    <div class="cmpValue">Desbloqueio de conta</span></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="boxFooter">
+                <div if:true={stepOne}>
+                    <ul>
+                        <li>
+                            <lightning-button label="Fechar" onclick={handleButtonCancelar}></lightning-button>
+                        </li>
+                        <li>
+                            <lightning-button label="Prosseguir" variant="brand" onclick={irParaConfirmacao}></lightning-button>
+                        </li>
+                    </ul>
+                </div>
+                <div if:true={stepTwo}>
+                    <ul>
+                        <li>
+                            <lightning-button label="Voltar" onclick={handleButtonVoltar}></lightning-button>
+                        </li>
+                        <li>
+                            <lightning-button label="Prosseguir" variant="brand" onclick={handleButtonSalvar} disabled={disableButtonSalvar}></lightning-button>
+                        </li>
+                    </ul>
+                </div>
+                <div if:true={stepThree}>
+                    <ul>
+                        <li>
+                            <lightning-button label="Fechar" onclick={handleButtonCancelar}></lightning-button>
+                        </li>
+                        <template if:true={showButton2Via}>
+                            <li>
+                                <lightning-button label="Segunda via de cartão" onclick={handleButtonSegundaViaCartao}></lightning-button>
+                            </li>
+                        </template>
+                        <li>
+                            <lightning-button label="Ir para o caso" variant="brand" onclick={handleButtonIrCaso}></lightning-button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </template>
+    <template if:true={abrirSegundaViaCartao}>
+        <c-bcsf_-segunda-via-cartao
+            record-id={recordId}
+            close-parent-component={closeModalComponent}
+            oncloseparentmodal={closeQuickAction}>
+        ></c-bcsf_-segunda-via-cartao>   
+    </template>
+</template>

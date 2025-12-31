@@ -1,0 +1,246 @@
+<template>
+    <lightning-modal-header label={headerTitle}></lightning-modal-header>
+     <template if:true={showData}>
+         <lightning-modal-body>
+            <!-- Página 1 -->
+             <template if:true={showPage1}>
+                 <!-- Dados da Conta -->
+                  <h1>Dados da Conta</h1>
+                  <lightning-layout multiple-rows="true">
+                      <lightning-layout-item size="4" class="layout-container">
+                         <p>Titular</p>
+                         <p class="values">{customerData.NomeCliente__r.Name}</p>
+                      </lightning-layout-item>
+                      <lightning-layout-item size="8">
+                          <p>CPF</p>
+                          <p class="values">{maskedCpf}</p>
+                      </lightning-layout-item>
+                      <lightning-layout-item size="4">
+                          <p>Produto</p>
+                          <p class="values">{customerData.Produto__c}</p>
+                      </lightning-layout-item>
+                      <lightning-layout-item size="4">
+                          <p>Status Geral</p>
+                          <p class="values">{customerData.StatusContrato__c}</p>
+                      </lightning-layout-item>
+                      <lightning-layout-item size="4">
+                          <p>Número do Contrato</p>
+                          <p class="values">{customerData.NumeroContrato__c}</p>
+                      </lightning-layout-item>
+                  </lightning-layout>
+                  <div class="separetion-line"></div>
+                  <div class="detail-message">
+                     <lightning-icon icon-name="utility:warning" title="Warning" size="small" class="icon"></lightning-icon>
+                     <p>{MsgAlert}</p>
+                 </div>
+                 <!-- Preenchimento -->
+                 <h1>{formTitle}</h1>
+                 <lightning-layout horizontal-align="space" multiple-rows="true">
+                     <lightning-layout-item size="6" padding="around-small">
+                         <lightning-combobox
+                            name="subject"
+                            label="Assunto"
+                            options={subjects}
+                            value={selectedPicklistValues.subject}
+                            disabled>
+                         </lightning-combobox>
+                     </lightning-layout-item>
+                     <lightning-layout-item size="6" padding="around-small">
+                         <lightning-combobox
+                            name="event"
+                            label="Evento"
+                            options={events}
+                            value={selectedPicklistValues.event}
+                            disabled>
+                         </lightning-combobox>
+                     </lightning-layout-item>
+                     <lightning-layout-item size="6" padding="around-small">
+                        <lightning-input 
+                            type="number" 
+                            name="amountValue" 
+                            label={amountLabel}
+                            formatter="currency" 
+                            step="0.01"
+                            placeholder="Valor estimado do reembolso"
+                            value={amountValue}
+                            onchange={handleAmountValue}
+                            disabled={disableAmoutInput}
+                            required>
+                        </lightning-input>
+                        <div class="slds-m-top_small">
+                            <lightning-button 
+                                variant="neutral" 
+                                label="Consultar Ofertas" 
+                                onclick={handleConsultarOfertas}>
+                            </lightning-button>
+                        </div>
+                    </lightning-layout-item>
+                     <lightning-layout-item size="6" padding="around-small">
+                         <lightning-textarea 
+                            name="description" 
+                            label="Descrição do problema" 
+                            placeholder="Descreva em poucas palavras o problema"
+                            onchange={handleDescription}
+                            required>
+                         </lightning-textarea>
+                     </lightning-layout-item>
+                 </lightning-layout>
+                 <div class="separetion-line"></div>
+                 <template if:true={showReversalAlert}>
+                    <div class="detail-message gray-banner">
+                        <lightning-icon icon-name="utility:user" title="Info" size="small" class="icon white-icon"></lightning-icon>
+                        <p>Solicite evidências que ajudem a análise, finalize a abertura do caso e anexe os arquivos no caso aberto.</p>
+                    </div>
+                </template>
+                 <!-- Preenchimento do caso -->
+                 <h1>Preenchimento do Caso</h1>
+                 <lightning-layout horizontal-align="space" multiple-rows="true">
+                     <lightning-layout-item size="6" padding="around-small">
+                         <lightning-combobox
+                            name="origin"
+                            label="Origem"
+                            options={origins}
+                            onchange={handleChangeOrigin}
+                            placeholder="Selecione uma opção"
+                            required>
+                         </lightning-combobox>
+                     </lightning-layout-item>
+                     <lightning-layout-item size="6" padding="around-small">
+                         <lightning-combobox
+                            name="channel"
+                            label="Canal"
+                            options={channelsOptions}
+                            onchange={handleChangeChannel}
+                            placeholder="Selecione uma opção"
+                            required>
+                         </lightning-combobox>
+                     </lightning-layout-item>
+                 </lightning-layout>
+             </template>
+            <!-- Fim Página 1 -->
+            <!-- Página 2 -->
+            <template if:true={showPage2}>
+                <div class="detail-message">
+                    <lightning-icon icon-name="utility:warning" title="Warning" size="small" class="icon"></lightning-icon>
+                    <p>{MsgAlert}</p>
+                </div>
+                <div>
+                    <p class="review-title">Confirme os dados</p>
+                    <p>Antes de finalizar, confirme com o cliente se os dados estão corretos</p>
+                </div>
+                <!-- Dados da Conta -->
+                 <div class="case-review">
+                     <h1>Dados da Conta</h1>
+                     <lightning-layout multiple-rows="true">
+                         <lightning-layout-item size="4" class="layout-container">
+                            <p>Titular</p>
+                            <p class="values">{customerData.NomeCliente__r.Name}</p>
+                         </lightning-layout-item>
+                         <lightning-layout-item size="8">
+                             <p>CPF</p>
+                             <p class="values">{maskedCpf}</p>
+                         </lightning-layout-item>
+                         <lightning-layout-item size="4">
+                             <p>Produto</p>
+                             <p class="values">{customerData.Produto__c}</p>
+                         </lightning-layout-item>
+                         <lightning-layout-item size="4">
+                             <p>Status Geral</p>
+                             <p class="values">{customerData.StatusContrato__c}</p>
+                         </lightning-layout-item>
+                         <lightning-layout-item size="4">
+                             <p>Número do Contrato</p>
+                             <p class="values">{customerData.NumeroContrato__c}</p>
+                         </lightning-layout-item>
+                     </lightning-layout>
+                 </div>
+
+                 <div class="case-review">
+                     <h1>{formTitle}</h1>
+                     <lightning-layout multiple-rows="true">
+                         <lightning-layout-item size="6" class="layout-container">
+                            <p>Assunto</p>
+                            <p class="values">{selectedPicklistValues.subject}</p>
+                            </lightning-layout-item>
+                         <lightning-layout-item size="6">
+                             <p>Evento</p>
+                             <p class="values">{selectedPicklistValues.event}</p>
+                         </lightning-layout-item>
+                         <lightning-layout-item size="6">
+                             <p>{amountLabel}</p>
+                             <p class="values">{amountValueFormated}</p>
+                         </lightning-layout-item>
+                         <lightning-layout-item size="6">
+                             <p>Descrição do problema</p>
+                             <p class="values">{description}</p>
+                         </lightning-layout-item>
+                     </lightning-layout>
+                 </div>
+
+                 <div class="case-review">
+                     <h1>Preenchimento do caso</h1>
+                     <lightning-layout multiple-rows="true">
+                         <lightning-layout-item size="6" class="layout-container">
+                            <p>Origem</p>
+                            <p class="values">{selectedPicklistValues.origin}</p>
+                            </lightning-layout-item>
+                         <lightning-layout-item size="6">
+                             <p>Canal</p>
+                             <p class="values">{selectedPicklistValues.channel}</p>
+                         </lightning-layout-item>
+                     </lightning-layout>
+                 </div>
+            </template>
+            <!-- Fim Página 2 -->
+            <!-- Página 3 -->
+            <template if:true={showPage3}>
+                <div class="confirmation-message">
+                    <lightning-icon icon-name="action:approval" title="Approval" size="small" class="icon"></lightning-icon>
+                    <h1>{createdCaseSuccessMessage}</h1>
+                </div>
+                <lightning-layout multiple-rows="true">
+                    <lightning-layout-item size="12" class="layout-container">
+                        <p>
+                            <span>Protocolo: </span>
+                            <span class="values">{createdCase.CaseNumber}</span>
+                        </p>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12">
+                        <p>{createdDate}</p>
+                    </lightning-layout-item>
+                </lightning-layout>
+                <div class="separetion-line"></div>
+                <h1>Informações do caso</h1>
+                <lightning-layout multiple-rows="true">
+                    <lightning-layout-item size="3">
+                        <p>Origem</p>
+                        <p class="values">{selectedPicklistValues.origin}</p>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="3">
+                        <p>Canal</p>
+                        <p class="values">{selectedPicklistValues.channel}</p>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="3">
+                        <p>Assunto</p>
+                        <p class="values">{selectedPicklistValues.subject}</p>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="3">
+                        <p>Evento</p>
+                        <p class="values">{selectedPicklistValues.event}</p>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+            <!-- Fim Página 3 -->
+         </lightning-modal-body>
+     </template>
+     <template if:true={isLoading}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </div>
+     </template>
+    <!-- Footer -->
+    <lightning-modal-footer>
+        <lightning-button label="Fechar" onclick={handleClose}></lightning-button>
+        <lightning-button label={buttonLabel} variant="brand" class="next-button" onclick={handleNext}></lightning-button>
+    </lightning-modal-footer>
+</template>

@@ -1,0 +1,34 @@
+<template>
+    <div class="navContent">
+        <lightning-tabset>
+            <lightning-tab label="Simular" value="simular" onactive={handleSimular}>
+            </lightning-tab>
+            <lightning-tab label="Ofertas pendentes" value="ofertas" onactive={handleOfertas}>
+            </lightning-tab>
+            <lightning-tab label="Contratados" value="contratados" onactive={handleContratados}>
+            </lightning-tab>
+        </lightning-tabset>
+        <lightning-button 
+            label="Acessar script" 
+            title="Acessar script" 
+            class="slds-m-left_xx-small"
+            icon-name="utility:chevronright"
+            icon-position="right"
+            onclick={handleGetScript}>
+        </lightning-button>
+    </div>
+
+    <div lwc:if={pageSimular}>
+        <c-bcsf_cmp_-parcele-simular  record-id={recordId}></c-bcsf_cmp_-parcele-simular>
+    </div>
+    
+    <div lwc:elseif={pageOfertas}>
+        <c-bcsf_cmp_-parcele-pendentes  record-id={recordId}></c-bcsf_cmp_-parcele-pendentes>
+    </div>
+    
+    <div lwc:elseif={pageContratados}>
+        <c-bcsf_cmp_-parcele-contratados record-id={recordId}></c-bcsf_cmp_-parcele-contratados>
+    </div>
+    
+    
+</template>

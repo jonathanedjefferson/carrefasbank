@@ -1,0 +1,656 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Carregando..." size="large" variant="brand"></lightning-spinner>
+    </div>
+    <template if:true={step01}>
+        <template lwc:if={clienteElegivel}>
+            <div if:false={operadorHabilitado} class="alert justify-space-between slds-m-top_medium">
+                <div class="align-center">
+                    <lightning-icon icon-name="utility:warning" size="small" alternative-text="Warning!" title="Warning" class="slds-p-right_small color-icon"></lightning-icon>
+                    <div>
+                        <p><strong>É obrigatório ter certificado Corban para seguir com a venda de Crédito Pessoal.</strong></p>
+                        <p>Caso você não possua o certificado, deve redirecionar o cliente para o time autorizado.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-grid slds-grid_align-center"> 
+                <div class="slds-col slds-shrink-none">
+                    <c-bcsf_cmp_illustration
+                        style="white-space: pre-line;"
+                        illustration-type='NO_DATA_OPEN_ROAD'
+                        style-class="slds-m-top_large slds-m-bottom_small"
+                    ></c-bcsf_cmp_illustration>
+                    <div class="slds-text-align_center slds-m-top_x-small">
+                        <div>
+                            <p class="subtitle">Cliente com Crédito Pessoal pré-analisado
+                                de <span class="color-valor-aprovado"> até {valorPreAprovado}</span></p>
+                            <p class="text slds-m-top_xx-small">Contratação sujeita a análise de crédito.</p>
+                        </div>
+                    </div>
+                    <div class="slds-m-top_large slds-m-bottom_medium">
+                        <ul class="list-flex">
+                            <li class="flex-item beneficio">
+                                <lightning-icon icon-name="utility:check" size="x-small" alternative-text="Benefícios" title="Benefícios" class="slds-p-right_x-small color-icon-check"></lightning-icon>
+                                <p>Dinheiro na conta em <strong>até 2 dias úteis</strong></p>
+                            </li>
+                            <li class="flex-item beneficio">
+                                <lightning-icon icon-name="utility:check" size="x-small" alternative-text="Benefícios" title="Benefícios" class="slds-p-right_x-small color-icon-check"></lightning-icon>
+                                <p>Pagamento direto pela fatura do cartão <strong>sem consumir limite</strong></p>
+                            </li>
+                            <li class="flex-item beneficio">
+                                <lightning-icon icon-name="utility:check" size="x-small" alternative-text="Benefícios" title="Benefícios" class="slds-p-right_x-small color-icon-check"></lightning-icon>
+                                <p><strong>Apenas o valor da parcela </strong>consome o limite</p>
+                            </li>
+                            <li if:true={showBotaoSimularCreditoPessoal} >
+                                <lightning-button variant="brand" class="slds-align_absolute-center slds-m-top_large" label="Simular Crédito Pessoal" onclick={handleIniciarSimulacao}></lightning-button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div> 
+        </template>
+        <template lwc:elseif={clienteInelegivel}>
+            <div class="slds-grid slds-grid_align-center"> 
+                <div class="slds-col slds-size_2-of-3 slds-shrink-none">
+                    <c-bcsf_cmp_illustration
+                        style="white-space: pre-line;"
+                        illustration-type='NO_DATA_DESERT'
+                        heading-message='Cliente não elegível ao crédito'
+                        body-message={mensagemOrientacao}
+                    ></c-bcsf_cmp_illustration>
+                </div>
+            </div>
+        </template>
+        <template lwc:elseif={clienteComBloqueio}>
+            <div class="slds-grid slds-grid_align-center"> 
+                <div class="slds-col slds-size_1-of-3 slds-shrink-none">
+                    <c-bcsf_cmp_illustration
+                        style="white-space: pre-line;"
+                        illustration-type='NO_ACCESS'
+                        heading-message='Cartão e/ou conta podem estar bloqueados ou com alguma pendência.'
+                        body-message=' '
+                        button-label='Ir para detalhes do cadastro'
+                        oneventotentarnovamente={handleTentarNovamente}
+                    ></c-bcsf_cmp_illustration>
+                </div>
+            </div>
+        </template>
+        <template lwc:else>
+            <div class="slds-grid slds-grid_align-center"> 
+                <div class="slds-col slds-size_2-of-3 slds-shrink-none">
+                    <c-bcsf_cmp_illustration
+                        style="white-space: pre-line;"
+                        illustration-type='NO_DATA_CAMPING'
+                        heading-message='Ops! Não foi possível carregar as informações.'
+                        body-message='Tente novamente mais tarde.'
+                    ></c-bcsf_cmp_illustration>
+                </div>
+            </div>
+        </template>
+    </template>
+    <template if:true={step02}>
+        <template lwc:if={creditoNegado}>
+            <div class="slds-grid slds-grid_align-center"> 
+                <div class="slds-col slds-size_2-of-3 slds-shrink-none">
+                    <c-bcsf_cmp_illustration
+                        style="white-space: pre-line;"
+                        illustration-type='NO_AVALIABLE_LIGHTNING'
+                        style-class="slds-m-top_large slds-m-bottom_small"
+                        heading-message='Neste momento não foi possível aprovar o crédito'
+                        body-message={mensagemOrientacao}>
+                    ></c-bcsf_cmp_illustration>
+                </div>
+            </div>
+        </template>
+        <template lwc:if={apresentarHeaderFooter}>
+            <template lwc:if={showErrorAlert}>
+                <div class="alert-erro slds-m-top_small">
+                    <lightning-icon icon-name="utility:error" size="small" alternative-text="Erro" title="Erro" class="slds-p-right_small color-icon-error"></lightning-icon>
+                    <div>
+                        <div class="title">{errorTitle}</div>
+                        <p>{errorMsg}</p>
+                    </div>
+                </div>
+            </template>
+            <template lwc:if={showErrorSalvar}>
+                <div class="alert-erro slds-m-top_small">
+                    <lightning-icon icon-name="utility:error" size="small" alternative-text="Erro" title="Erro" class="slds-p-right_small color-icon-error"></lightning-icon>
+                    <div> 
+                        <p>Não foi possível concluir a operação. Por favor, faça a <a class="tentar-novamente" onclick={reiniciar}>simulação novamente.</a></p>
+                    </div>
+                </div>
+            </template>
+            <template lwc:if={showErrorContratar}>
+                <div class="alert-erro slds-m-top_small">
+                    <lightning-icon icon-name="utility:error" size="small" alternative-text="Erro" title="Erro" class="slds-p-right_small color-icon-error"></lightning-icon>
+                    <div>
+                        <div class="title">No momento não foi possível finalizar a contratação.</div>
+                        <p>Por favor, tente novamente mais tarde. <a class="tentar-novamente" onclick={reiniciar}>Ir para tela inicial</a></p>
+                    </div>
+                </div>
+            </template>
+            <div>
+                <div class="slds-p-vertical_medium">
+                    <p class="title">Adesão de Crédito Pessoal</p>
+                </div>
+                <div class="progressBar slds-p-horizontal_medium slds-p-vertical_large">
+                    <lightning-progress-indicator current-step={currentStep} class="customProgress" type="base" has-error={hasErrorSteps} variant="base">
+                        <lightning-progress-step value="1"></lightning-progress-step>
+                        <lightning-progress-step value="2"></lightning-progress-step>
+                        <lightning-progress-step  value="3"></lightning-progress-step>
+                    </lightning-progress-indicator>
+                </div>
+            </div>
+        </template>
+        <template lwc:if={apresentarSimulacao}>
+            <div class="slds-p-left_medium">
+                <div class="">
+                    <p class="subtitle">Escolher o valor e o parcelamento desejado para o empréstimo</p>
+                    <div class="alert">
+                        <lightning-icon icon-name="utility:warning" size="x-small" alternative-text="Warning!" title="Warning" class="slds-p-right_medium color-icon"></lightning-icon>
+                        <div>
+                            <p>{msgLimitesValorParcelas}</p>
+                        </div>
+                    </div>
+                    <div class="slds-grid">
+                        <div class="slds-col slds-size_1-of-3">
+                            <div class="subtitle-3 slds-m-top_large">Valor do Crédito Pessoal</div>
+                            <lightning-input 
+                            type="number" 
+                            name="valorSimulacao" 
+                            placeholder={valorPreAprovado}
+                            variant="label-hidden"
+                            formatter="currency" 
+                            value={valorSimulacao}
+                            onblur={handleValorSimulacao}
+                            step="0.01">
+                            </lightning-input>
+                        </div>
+                    </div>
+                    <div class={classValidateValor}>{msgLimitesValor}</div>
+                    <div class="slds-m-top_large">
+                        <lightning-button variant="brand" label="Simular" onclick={handleSimular} disabled={disableBtnSimular} class="slds-m-top_large"></lightning-button>
+                    </div>
+                </div>
+                <template lwc:if={possuiOpcaoComSeguro}>
+                    <div class="tipos-planos slds-m-top_large">
+                        <ul class="flex-item">
+                            <li class="slds-m-right_large">
+                                <lightning-input 
+                                    class="text-radio slds-m-right_x-small" 
+                                    type="radio" 
+                                    label="Plano com Seguro"
+                                    name="PlanoComSeguro"
+                                    checked={checkPlanoComSeguro}
+                                    onchange={selectPlanosComSeguro}>
+                                </lightning-input>
+                            </li>
+                            <li class="slds-m-right_large">
+                                <lightning-input 
+                                    class="text-radio slds-m-right_x-small"
+                                    type="radio" 
+                                    label="Plano sem Seguro"
+                                    name="PlanoSemSeguro"
+                                    checked={checkPlanoSemSeguro}
+                                    onchange={selectPlanosSemSeguro}>
+                                </lightning-input>
+                            </li>
+                            <li>
+                                <a class="slds-p-left_medium" onclick={saibaMaisSeguro} data-value="saibaMais" data-tab="1" href="#">Saiba mais sobre Seguro Crédito Pessoal</a>
+                            </li>
+                            <template if:true={modalDadosSeguro}>
+                                <c-bcsf_cmp_-credito-pessoal-seguro
+                                    onclosemodal={closeQuickAction}>
+                                </c-bcsf_cmp_-credito-pessoal-seguro>  
+                            </template>
+                        </ul>
+                    </div>
+                </template>
+                <div class="opcoes-parcelamento slds-m-top_large">
+                    <div class="subtitle-3">Escolher um plano de parcelamento</div>
+                    <div class="container-table slds-m-top_medium">
+                        <table class="slds-table slds-table_cell-buffer tabela-parcelamento ">
+                            <thead class="tabela-parcelamento">
+                                <tr>
+                                    <th class="custom-header"></th>
+                                    <th class="custom-header">Parcelas</th>
+                                    <th class="custom-header">Valor parcela</th>
+                                    <th class="custom-header">Taxa</th>
+                                    <th class="custom-header">CET anual</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={listaParcelamentos} for:item="item">
+                                    <tr key={item.id}>
+                                        <td class="select-column">
+                                            <template lwc:if={possuiOpcaoComSeguro}>
+                                                <input class="radioBtn" type="radio" checked={item.isSelected} id={item.id} name="itemTransaction" data-value={item.codPlano}  onclick={handleRadioParcelamento}>
+                                            </template>
+                                            <template lwc:else>
+                                                <input class="radioBtn" type="radio" checked={item.isSelected} id={item.id} name="itemTransaction" data-value={item.codPlano}  onclick={handleRadioParcelamento}>
+                                            </template>
+                                            </td>
+                                        <td class="custom-table-data">{item.quantidadeParcelas}</td>
+                                        <td class="custom-table-data">{item.valorParcelaFormatado}</td>
+                                        <td class="custom-table-data">{item.jurosFormatado}</td>
+                                        <td class="custom-table-data">{item.cetAnualFormatado}% ao ano</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template lwc:if={apresentarDadosBancarios}>
+            <div class="slds-p-left_medium">
+                <div class="">
+                    <p class="subtitle">Inserir os dados para depósito do valor contratado</p>
+                    <div class="alert">
+                        <lightning-icon icon-name="utility:warning" size="x-small" alternative-text="Warning!" title="Warning" class="slds-p-right_medium color-icon"></lightning-icon>
+                        <div>
+                            <p><strong>Conta Corrente ou Poupança (somente de Pessoa Física).</strong> A titularidade deve ser a mesma da pessoa contratante do empréstimo. </p>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-wrap slds-gutters align-end flex-item slds-m-top_large">
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                            <lightning-combobox
+                                label="Banco"
+                                name="banco"
+                                placeholder="Selecione o banco"
+                                value={dadosBancarios.codBanco}
+                                onchange={handleBancoAlterado}
+                                options={bancos}>
+                            </lightning-combobox>
+                        </div>
+                
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                            <lightning-combobox
+                                label="Tipo de conta"
+                                name="tipoConta"
+                                placeholder="Selecione"
+                                value={dadosBancarios.tipoConta}
+                                onchange={handleTipoContaAlterado}
+                                options={opcoesTipoConta}>
+                            </lightning-combobox>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-wrap slds-gutters align-end flex-item slds-m-top_medium">
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                            <lightning-input
+                                type="text"
+                                label="Agência (sem o dígito)"
+                                pattern="^\d{1,5}$"
+                                message-when-pattern-mismatch="Dados inválidos"
+                                value={dadosBancarios.agencia}
+                                onchange={handleAgenciaAlterado}
+                                placeholder="Apenas números">
+                            </lightning-input>
+                        </div>
+                
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4">
+                            <lightning-input
+                                type="text"
+                                label="Conta"
+                                pattern="^\d{1,13}$"
+                                message-when-pattern-mismatch="Dados inválidos"
+                                value={dadosBancarios.numeroConta}
+                                onchange={handleNumeroContaAlterado}
+                                placeholder="Ex: 000000">
+                            </lightning-input>
+                        </div>
+                
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12">
+                            <lightning-input
+                                type="text"
+                                label="Dígito"
+                                pattern="^[0-9Xx]{1}$"
+                                message-when-pattern-mismatch="Dados inválidos" 
+                                value={dadosBancarios.digitoConta}
+                                onchange={handleDigitoContaAlterado}
+                                placeholder="Ex: 0">
+                            </lightning-input>
+                        </div>
+                
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 info-digito">
+                            <p>Preencher com 0 em caso de dígito inexistente ou letra.</p>
+                        </div>
+                    </div>
+                    <lightning-input class="slds-m-top_medium confirma-titularidade" type="checkbox" checked={confirmaTitularConta} onchange={handleConfirmaTitular} label="Cliente confirma que é titular da conta"> </lightning-input>   
+                </div>   
+            </div>
+        </template>
+        <template lwc:if={apresentarResumoContratacao}>
+            <div class="slds-p-left_medium">
+                <div class="">
+                    <p class="subtitle">Resumo da contratação</p>
+                    <div class="alert">
+                        <lightning-icon icon-name="utility:warning" size="x-small" alternative-text="Warning!" title="Warning" class="slds-p-right_medium color-icon"></lightning-icon>
+                        <div>
+                            <p>Ler de forma clara as informações do resumo, tirar possíveis dúvidas e pedir para a pessoa cliente confirmar a contratação antes de clicar em confirmar.</p>
+                        </div>
+                    </div>
+                    <div class="container-destaque-contratacao slds-m-top_large">
+                        <p class="subtitle slds-m-top_medium slds-m-left_medium">Destaques da contratação</p>
+                        <ul class="flex-item slds-m-horizontal_medium slds-m-top_medium slds-grid">
+                             <li class="slds-col slds-size_1-of-4">
+                                <div class="box-destaque-contratacao-label">Valor total a pagar</div>
+                                <div class="box-destaque-contratacao-valeu">{detalhesProposta.valorTotal}</div>
+                             </li>
+                             <li class="slds-col slds-size_1-of-4">
+                                <div class="box-destaque-contratacao-label">Valor total a receber</div>
+                                <div class="box-destaque-contratacao-valeu">{detalhesProposta.valorSolicitado}</div>
+                             </li>
+                             <li class="slds-col slds-size_1-of-4">
+                                <div class="box-destaque-contratacao-label">CET ao ano</div>
+                                <div class="box-destaque-contratacao-valeu">{detalhesProposta.cetAnual} ao ano</div>
+                             </li>
+                             <li class="slds-col slds-size_1-of-4">
+                                <div class="box-destaque-contratacao-label">Despesas Vinculadas</div>
+                                <div class="box-destaque-contratacao-valeu">{detalhesProposta.valorTotalDespesas}</div>
+                             </li>
+                        </ul>
+                        <ul class="flex-item slds-m-around_medium slds-grid">
+                            <li class="slds-col slds-size_1-of-4">
+                               <div class="box-destaque-contratacao-label">Número de parcelas</div>
+                               <div class="box-destaque-contratacao-valeu">{detalhesProposta.quantidadeParcelas}</div>
+                            </li>
+                            <li class="slds-col slds-size_1-of-4">
+                               <div class="box-destaque-contratacao-label">Valor da parcela</div>
+                               <div class="box-destaque-contratacao-valeu">{detalhesProposta.valorParcela}</div>
+                            </li>
+                            <li class="slds-col slds-size_1-of-4">
+                               <div class="box-destaque-contratacao-label">Taxa de juros ao mês</div>
+                               <div class="box-destaque-contratacao-valeu">{detalhesProposta.juros}</div>
+                            </li>
+                            <li class="slds-col slds-size_1-of-4">
+                               <div class="box-destaque-contratacao-label">Primeira parcela em</div>
+                               <div class="box-destaque-contratacao-valeu">{detalhesProposta.dataPrimeiraParcela}</div>
+                            </li>
+                       </ul>
+                    </div>
+                    <div class="container-contao-destino slds-m-top_large">
+                        <p class="subtitle-3">Conta de destino</p>
+                        <ul>
+                             <li class="slds-m-top_small flex-item">
+                                <div class="dados-label">Banco</div>
+                                <div class="dados-value">{dadosBancarios.codBanco} - {dadosBancarios.nomeBanco}</div>
+                             </li>
+                             <li class="slds-m-top_small flex-item">
+                                <div class="dados-label">Agência</div>
+                                <div class="dados-value">{dadosBancarios.agencia}</div>
+                             </li>
+                             <li class="slds-m-top_small flex-item">
+                                <div class="dados-label">Conta</div>
+                                <div class="dados-value">{dadosBancarios.numeroConta}-{dadosBancarios.digitoConta}</div>
+                             </li>
+                             <li class="slds-m-top_small slds-m-bottom_medium flex-item">
+                                <div class="dados-label">Tipo de conta</div>
+                                <div class="dados-value">{tipoContaLabel}</div>
+                             </li>
+                        </ul>
+                    </div>
+                    <div class="slds-p-bottom_large separator">
+                        <lightning-accordion allow-multiple-sections-open class="accordion-detalhes slds-m-top_large">
+                            <lightning-accordion-section name="sobre" label="Sobre o empréstimo">
+                                <div class="detalhes-contrato">
+                                    <div class="linha linha-border-bottom">
+                                        <span class="label-linha">Nome</span>
+                                        <span class="valor-linha">{dadosCliente.nomeCliente}</span>
+                                    </div>
+                                    <div class="linha linha-border-bottom">
+                                        <span class="label-linha">CPF</span>
+                                        <span class="valor-linha">{dadosCliente.cpfFormatado}</span>
+                                    </div>
+                                    <div class="linha linha-border-bottom">
+                                        <span class="label-linha">Final do cartão</span>
+                                        <span class="valor-linha">{numeroFinalCartao}</span>
+                                    </div>
+                                    <div class="linha">
+                                        <span class="label-linha">Data de vencimento da parcela</span>
+                                        <span class="valor-linha">{diaVencimentoParcela}</span>
+                                    </div>
+                                </div>
+                            </lightning-accordion-section>
+                        </lightning-accordion>
+                        <lightning-accordion allow-multiple-sections-open class="accordion-detalhes slds-m-top_large">
+                            <lightning-accordion-section name="valores" label="Conferir valores do empréstimo">
+                                <div class="detalhes-contrato">
+                                    <div class="linha linha-border-bottom">
+                                        <span class="label-linha">Valor total a pagar</span>
+                                        <span class="valor-linha">{detalhesProposta.valorTotal}</span>
+                                    </div>
+                                    <div class="linha linha-border-bottom">
+                                        <span class="label-linha">Valor total a receber</span>
+                                        <span class="valor-linha">{detalhesProposta.valorSolicitado}</span>
+                                    </div>
+                                    <div class="linha linha-border-bottom">
+                                        <span class="label-linha">Custo Efetivo Total (CET) ao ano</span>
+                                        <span class="valor-linha">{detalhesProposta.cetAnual} ao ano</span>
+                                    </div>
+                                    <div class="linha">
+                                        <span class="label-linha">Despesas Vinculadas</span>
+                                        <span class="valor-linha">{detalhesProposta.valorTotalDespesas}</span>
+                                    </div>
+                                </div>
+                            </lightning-accordion-section>
+                        </lightning-accordion>
+                        <lightning-accordion allow-multiple-sections-open class="accordion-detalhes slds-m-top_large">
+                            <lightning-accordion-section name="calculo" label="Cálculo das despesas vinculadas">
+                                <div class="detalhes-contrato">
+                                    <div class="linha linha-border-bottom">
+                                        <span class="label-linha">Tarifas</span>
+                                        <span class="valor-linha">R$ 0,00</span>
+                                    </div>
+                                    <div class="linha linha-border-bottom">
+                                        <span class="label-linha">IOF diário</span>
+                                        <span class="valor-linha">{detalhesProposta.iofDiario}</span>
+                                    </div>
+                                    <div class="linha linha-border-bottom">
+                                        <span class="label-linha">IOF adicional</span>
+                                        <span class="valor-linha">{detalhesProposta.iofAdicional}</span>
+                                    </div>
+                                    <div class="linha linha-border-bottom">
+                                        <span class="label-linha">Juros total</span>
+                                        <span class="valor-linha">{detalhesProposta.valorTotalJuros}</span>
+                                    </div>
+                                    <div class="linha linha-border-bottom">
+                                        <span class="label-linha">Seguro</span>
+                                        <span class="valor-linha">{possuiSeguro}</span>
+                                    </div>
+                                    <div class="linha">
+                                        <span class="label-linha">Valor do Seguro</span>
+                                        <span class="valor-linha">{detalhesProposta.valorSeguroFormatado}</span>
+                                    </div>
+                                </div>
+                            </lightning-accordion-section>
+                        </lightning-accordion>
+                        <lightning-accordion allow-multiple-sections-open class="accordion-detalhes slds-m-top_large">
+                            <lightning-accordion-section name="informacoes" label="Informações do parcelamento">
+                                <div class="detalhes-contrato">
+                                    <div class="linha linha-border-bottom">
+                                        <span class="label-linha">Número de parcelas</span>
+                                        <span class="valor-linha">{detalhesProposta.quantidadeParcelas}</span>
+                                    </div>
+                                    <div class="linha linha-border-bottom">
+                                        <span class="label-linha">Valor da parcela</span>
+                                        <span class="valor-linha">{detalhesProposta.valorParcela}</span>
+                                    </div>
+                                    <div class="linha">
+                                        <span class="label-linha">Taxa de juros ao mês</span>
+                                        <span class="valor-linha">{detalhesProposta.juros}</span>
+                                    </div>
+                                </div> 
+                            </lightning-accordion-section>
+                        </lightning-accordion>
+                    </div>
+                    <div class="slds-m-top_large">
+                        <label class="label-caso">Preenchimento de caso</label>
+                        <div class="slds-m-top_large slds-m-top_x-small boxCaso">
+                            <lightning-record-edit-form object-api-name="Case">
+                                <ul>
+                                    <li>
+                                        <label>Origem</label>
+                                        <lightning-input-field 
+                                        language=""
+                                        value={origemValue}
+                                        field-name="Origin" 
+                                        class="lightningInput" 
+                                        placeholder="--Nenhuma--"
+                                        onchange={handleChangeOrigem} 
+                                            variant="label-hidden"> 
+                                        </lightning-input-field>
+                                    </li>
+                                    <li>
+                                        <label>Canal</label>
+                                        <lightning-input-field
+                                            value={canalValue}
+                                            field-name="CanalEntrada__c" 
+                                            class="lightningInput" 
+                                            placeholder="--Nenhuma--"
+                                            onchange={handleChangeCanal} 
+                                            variant="label-hidden"> 
+                                        </lightning-input-field>
+                                    </li>
+                                </ul>
+                            </lightning-record-edit-form>
+                        </div>
+                    </div>
+                </div>   
+            </div>
+        </template>
+        <template lwc:if={apresentarHeaderFooter}>
+            <div class="slds-m-vertical_large slds-m-horizontal_medium">
+                <ul class="slds-grid slds-p-around_small justify-content-rigth">
+                    <li lwc:if={showButtonVoltar} class="slds-m-right_medium">
+                        <lightning-button variant="neutral" label="Voltar" onclick={handleButtonVoltar} disabled={disableButtonVoltar}></lightning-button>
+                    </li>
+                    <li lwc:if={showButtonContratar}>
+                        <lightning-button variant="brand" label="Contratar" onclick={handleButtonContratar} disabled={disableButtonProsseguir}></lightning-button>
+                    </li>
+                    <li lwc:elseif={showButtonProsseguir}>
+                        <lightning-button variant="brand" label="Prosseguir" onclick={handleButtonContratar} disabled={disableButtonProsseguir}></lightning-button>
+                    </li>
+                </ul>
+            </div>
+        </template>
+    </template>
+    <template if:true={step03}>
+        <div class="slds-p-vertical_medium">
+            <p class="title">Adesão de Crédito Pessoal</p>
+        </div>
+        <div class="slds-p-horizontal_medium slds-p-top_medium slds-p-bottom_small">
+            
+            <div class="flex-item">
+                <lightning-icon icon-name="utility:success" class="slds-m-right_medium" alternative-text="Success!" variant="success" title="success" size="small"></lightning-icon>
+                <p class="title">Adesão de Crédito Pessoal realizada!</p>
+            </div>
+            <div class="termo-adesao-resumo slds-m-top_large separator slds-p-bottom_x-large">
+                <div class="flex-item box-termo-adesao slds-p-vertical_small slds-p-horizontal_medium">
+                    <div class="logo slds-m-right_small"><img src={logoTipo}></div>
+                    <div>
+                        <div class="box-termo-adesao-titulo">Termo de Adesão Crédito Pessoal</div>
+                        <div class="box-termo-adesao-nome">{dadosCliente.nomeCliente}</div>
+                    </div>
+                </div>
+                <div class="box-dados-adesao">
+                    <ul class="flex-item slds-m-horizontal_medium slds-p-top_medium slds-grid">
+                        <li class="slds-col slds-size_1-of-4">
+                            <div class="box-destaque-contratacao-label">Valor total a pagar</div>
+                            <div class="box-destaque-contratacao-valeu">{detalhesProposta.valorTotal}</div>
+                        </li>
+                        <li class="slds-col slds-size_1-of-4">
+                            <div class="box-destaque-contratacao-label">Valor total a receber</div>
+                            <div class="box-destaque-contratacao-valeu">{detalhesProposta.valorSolicitado}</div>
+                        </li>
+                        <li class="slds-col slds-size_1-of-4">
+                            <div class="box-destaque-contratacao-label">CET ao ano</div>
+                            <div class="box-destaque-contratacao-valeu">{detalhesProposta.cetAnual} ao ano</div>
+                        </li>
+                        <li class="slds-col slds-size_1-of-4">
+                            <div class="box-destaque-contratacao-label">Despesas Vinculadas</div>
+                            <div class="box-destaque-contratacao-valeu">{detalhesProposta.valorTotalDespesas}</div>
+                        </li>
+                    </ul>
+                    <ul class="flex-item slds-m-around_medium slds-grid">
+                        <li class="slds-col slds-size_1-of-4">
+                        <div class="box-destaque-contratacao-label">Número de parcelas</div>
+                        <div class="box-destaque-contratacao-valeu">{detalhesProposta.quantidadeParcelas}</div>
+                        </li>
+                        <li class="slds-col slds-size_1-of-4">
+                        <div class="box-destaque-contratacao-label">Valor da parcela</div>
+                        <div class="box-destaque-contratacao-valeu">{detalhesProposta.valorParcela}</div>
+                        </li>
+                        <li class="slds-col slds-size_1-of-4">
+                        <div class="box-destaque-contratacao-label">Taxa de juros ao mês</div>
+                        <div class="box-destaque-contratacao-valeu">{detalhesProposta.percentualJuros}</div>
+                        </li>
+                        <li class="slds-col slds-size_1-of-4">
+                        <div class="box-destaque-contratacao-label">Primeira parcela em</div>
+                        <div class="box-destaque-contratacao-valeu">{detalhesProposta.dataPrimeiraParcela}</div>
+                        </li>
+                </ul>
+                </div>
+                <div class="slds-m-top_x-large">
+                    <p class="subtitle">O Termo de Adesão foi enviado via e-mail</p>
+                    <div class="flex-item slds-m-vertical_medium">
+                        <div class="slds-p-right_x-large">
+                            <p class="label-dados-caso">Modo de envio</p>
+                            <p class="value-dados-caso">E-mail</p>
+                        </div>
+                        <div>
+                            <p class="label-dados-caso">Endereço de e-mail</p>
+                            <p class="value-dados-caso">{dadosCliente.email}</p>
+                        </div>
+                    </div>
+                    <lightning-button variant="Neutral" label="Reenviar Termo de Adesão" onclick={handleButtonReenviarTermo}></lightning-button>
+                    <template if:true={modalReenviarTermo}>
+                        <c-bcsf_cmp_-credito-pessoal-reenviar-termo
+                            id-proposta={idProposta}
+                            dados-cliente={dadosCliente} 
+                            origem-caso={origemValue}
+                            canal-caso={canalValue}
+                            onclosemodal={closeQuickAction}>
+                        </c-bcsf_cmp_-credito-pessoal-reenviar-termo>  
+                    </template>
+                </div>
+            </div>
+            <div class="boxCaso slds-m-top_x-large slds-p-bottom_medium separator">
+                <div class="subtitle">Informações do caso:</div>
+                <ul class="flex-item slds-m-top_medium">
+                    <li>
+                        <div class="texts">
+                            <div class="label-dados-caso">Origem</div>
+                            <div class="value-dados-caso">{origemValue}</div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="texts">
+                            <div class="label-dados-caso">Canal</div>
+                            <div class="value-dados-caso">{canalValue}</div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="texts">
+                            <div class="label-dados-caso">Assunto</div>
+                            <div class="value-dados-caso">Crédito Pessoal</div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="texts">
+                            <div class="label-dados-caso">Evento</div>
+                            <div class="value-dados-caso">Adesão</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="slds-m-top_x-small">
+                <ul class="text-right">
+                    <li class="slds-p-vertical_small">
+                        <lightning-button variant="brand" label="Ir pro caso" onclick={handleButtonIrCaso}></lightning-button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </template>
+</template>

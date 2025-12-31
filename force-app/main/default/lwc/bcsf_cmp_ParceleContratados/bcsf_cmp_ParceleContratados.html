@@ -1,0 +1,128 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <div lwc:if={pageOne}>
+        <div lwc:if={alertBloqueio} class="pageTreeAlert" role="alert">
+            <lightning-icon class="iconAlert slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="Atenção"></lightning-icon>
+            <p><span>Atenção:</span> cartão está bloqueado. {alertMessageBloqueio}</p>
+        </div>
+        <p class="textInfoData">Parceles contratados antes da data Junho de 2023 não temos 2º via do contrato disponível.</p>
+        <div class="containerTable">
+            <table class="slds-table slds-table_cell-buffer tableLancamentos ">
+                <thead class="tableLancamentos">
+                    <tr>
+                        <th></th>
+                        <th class="customHeader">Data criação</th>
+                        <th class="customHeader">Valor parcela</th>
+                        <th class="customHeader">Total</th>
+                        <th class="customHeader">Pagas</th>
+                        <th class="customHeader">A vencer</th>
+                        <th class="customHeader">
+                            <span>
+                                Desbloqueio
+                                <lightning-helptext class="customTooltip" content="Quantidade de parcelas que faltam para o desbloqueio"></lightning-helptext>
+                            </span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={listContratos} for:item="item">
+                        <tr key={item.id}>
+                            <td class="selectColumn">
+                                <input lwc:if={item.disable} class="radioBtn" type="radio" id={item.id} name="itemTransaction" data-value={item.parceleId}  onclick={handleRadioParcelamento} disabled>
+                                <input lwc:else class="radioBtn" type="radio" id={item.id} name="itemTransaction" data-value={item.parceleId}  onclick={handleRadioParcelamento}>
+                            </td>
+                            <td class="columnDefault">{item.dataCriacao}</td>
+                            <td class="columnDefault">{item.valorParcela}</td>
+                            <td class="columnDefault">{item.parcelaTotal}</td>
+                            <td class="columnDefault">{item.parcelaPagas}</td>
+                            <td class="columnDefault">{item.parcelaVencer}</td>
+                            <td class={item.style}>{item.desbloqueio}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div lwc:elseif={pageTwo} class="pageFive">
+        <div class="caseNumber">
+            <div class="success-message slds-m-vertical_x-small">
+                <lightning-icon icon-name="action:approval" size="xx-small" class="success-icon"></lightning-icon>
+                <span class="success-text">Operação realizada!</span>
+            </div>
+            <h1 class="slds-m-vertical_xx-small">Protocolo: <span>{numProtocolo}</span></h1>
+            <p>{dataAtual}</p>
+        </div>
+        <div class="containerDadosContrato">
+            <h1>A segunda via do contrato será enviada via e-mail</h1>
+            <ul>
+                <li>
+                    <p class="infoName">Modo de envio</p>
+                    <p class="infoValue">E-mail</p>
+                </li>
+                <li class="slds-m-left_x-large">
+                    <p class="infoName">Endereço de e-mail</p>
+                    <p class="infoValue">{email}</p>
+                </li>
+            </ul>
+            <lightning-input 
+                type="checkbox" 
+                class="emailAlternativo" 
+                checked={checkEmailAlternativo}
+                disabled={disableCheckEmailAlternativo}
+                onchange={handleCheckEmailAlternativo}
+                label="Encaminhar a segunda via para um endereço de e-mail alternativo" 
+                name="emailAlternativo">
+            </lightning-input>
+            <div lwc:if={checkEmailAlternativo}>
+                <lightning-input class="emailAlternativoField" type="email" label="E-mail" placeholder="Digite o e-mail aqui" onchange={handleFieldEmailAlternativo}></lightning-input>
+            </div>
+        </div>
+
+        <div class="buttonGroupContrato">
+            <lightning-button-group>
+                <lightning-button label="Reenviar 2ª via do contrato" onclick={handleBtnEnviarEmail}></lightning-button>
+            </lightning-button-group>
+        </div>
+
+        <div class="dadosCaso" >
+            <h1>Informações do caso:</h1>
+            <ul>
+                <li>
+                    <p class="infoName">Origem</p>
+                    <p class="infoValue">{origemCaso}</p>
+                </li>
+                <li>
+                    <p class="infoName">Canal</p>
+                    <p class="infoValue">{canalCaso}</p>
+                </li>
+                <li>
+                    <p class="infoName">Motivo</p>
+                    <p class="infoValue">Parcelamento</p>
+                </li>
+                <li>
+                    <p class="infoName">Evento</p>
+                    <p class="infoValue">Adesão Parcele Fácil</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div lwc:if={pageEmpty}>
+        <div class= "listaEmpty">
+            <img src={imgEmpty}>
+            <h1>Não existem parcelamentos contratados</h1>
+            <p>Quando tiver um Parcele Fácil ativo, ele aparecerá aqui!</p>
+        </div>
+    </div>
+
+    <div if:true={footerView}  class="slds-modal__footer">
+        <lightning-button lwc:if={pageOne} variant="brand" label="2ª via do contrato" onclick={handleBtnContinuar} disabled={disableBtnContinuar}></lightning-button>
+        <div class="buttonFooter" lwc:else>
+            <lightning-button label="Voltar para o início" onclick={handleBtnVoltar} disabled={disableBtnVoltar}></lightning-button>
+            <lightning-button variant="brand" label="Ver caso" onclick={handleBtnContinuar} disabled={disableBtnContinuar}></lightning-button>
+        </div>
+    </div>
+</template>

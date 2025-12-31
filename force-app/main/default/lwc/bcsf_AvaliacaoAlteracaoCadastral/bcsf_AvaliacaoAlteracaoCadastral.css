@@ -1,0 +1,145 @@
+.container{
+    background-color: #ffffff;
+    padding-bottom: 15px;
+}
+
+.header{
+    font-size: 14px;
+    background-color: #F3F2F2;
+    color: black;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px;
+    border-color: transparent transparent #DDDBDA transparent;
+    border-style: solid;
+    
+}
+.header h1{
+    margin-left: 10px;
+}
+
+
+.recordEditForm{
+    display: flex;
+    width: 100%;
+}
+.columEditForm{
+    width: 48%;
+    margin: auto;
+}
+.saveEditForm{
+    float: right;
+}
+
+
+.informacoes{
+    display: flex;
+    width: 100%;
+}
+.columInformacoes{
+    width: 48%;
+    margin: 1%;
+}
+.columInformacoes ul{
+    border-bottom: 1px;
+    border-color: transparent transparent #E5E5E5 transparent;
+    border-style: solid;
+    padding-bottom: 2px;
+    margin-top: 5px;
+
+    display: flex;
+    width: 100%;
+}
+.columInformacoes ul li{
+    width: 50%;
+}
+.columInformacoes ul li:first-child{
+    width: 45%;
+}
+.columInformacoes ul li:last-child{
+    width: 5%;
+}
+.btnEdit{
+    cursor: pointer;
+}
+
+.body h1{
+    font-size: 18px;
+    font-weight: 400;
+}
+.listInfo{
+    display: flex;
+    justify-content: space-between;
+}
+.listInfo ul {
+    margin: 0px 5px;
+}
+.listInfo ul:first-child{
+    margin-left: 0px;
+}
+.listInfo ul:last-child{
+    margin-right: 0px;
+}
+.listInfo ul li{
+    margin: 15px auto;
+}
+
+.cmpLabel{
+    font-size: 14px;
+}
+.cmpValue{
+    font-size: 16px;
+    font-weight: 600;
+}
+.infoModal{
+    border-bottom: 1px;
+    border-style: solid;
+    border-color: transparent transparent #DDDBDA transparent;
+    padding-bottom: 10px;
+    margin-bottom: 5px;
+}
+.avisoTexto{
+    background-color: #f89807;
+    opacity: 1;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 400;
+    font-size: 12px;
+    background: repeating-linear-gradient( 45deg, #FFB75D, #FFB75D 50px, #f8aa4b 50px, #f8aa4b 100px );
+}
+.avisoTexto p{
+    margin-left: 10px;
+}
+
+.listInput{
+    margin-top: 20px;
+}
+.listInput ul{
+    display: flex;
+}
+.listInput li{
+    width: 19%;
+    margin: 1%;
+}
+.req {
+    color: red;
+}
+
+
+.boxFooter  {
+    box-shadow:  0px -1px 0px #DDDBDA;
+    margin-top: 30px;
+    padding:20px;
+    display: flex;
+    justify-content: center;
+}
+.boxFooter div{
+    margin: 0 2%;
+}

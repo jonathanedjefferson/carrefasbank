@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="text" label="Mensagem" type="String" description="A mensagem que será exibida" />
+            <property name="height" label="Altura" type="String" description="Altura que será aplicada ao container do card" />
+            <property name="width" label="Largura" type="String" description="Largura que será aplicada ao container do card" />
+            <property name="backgroundColor" label="Cor de Fundo" type="String" description="Cor de fundo do container do card" />
+            <property name="fontColor" label="Cor da Fonte" type="String" description="Cor da fonte da mensagem" />
+            <property name="fontStyle" label="Estilo da Fonte" type="String" description="Estilo da Fonte da mensagem" />
+            <property name="fontSize" label="Tamanho da Fonte" type="String" description="Tamanho da Fonte da mensagem" />
+            <property name="iconName" label="Icone" type="String" description="Icone que será utilizado. Ex: utility:warning" />
+            <property name="iconColor" label="Cor do Icone" type="String" description="Cor que será aplicada ao icone" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

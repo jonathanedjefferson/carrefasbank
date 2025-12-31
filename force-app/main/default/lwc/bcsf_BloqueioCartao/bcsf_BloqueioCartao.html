@@ -1,0 +1,267 @@
+<template>
+    <div if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <div class="title">Bloquear Cartão de Crédito</div>
+    <div class="c-container">
+        <template lwc:if={alertStatusFalecido}>
+            <div class="aviso">
+                <p class="avisoTexto">
+                    <lightning-icon
+                        icon-name="utility:warning"
+                        size="small"
+                        alternative-text="Indicates approval">
+                    </lightning-icon> &#32; &#32; &#32;Para bloqueio de cartão com status DCED é necessário ir para a funcionalidade Falecimento.
+                </p>
+            </div>
+        </template>
+        <template if:true={showCardPrincipal}>
+            <div class="boxCardPrincipal">
+                <div if:true={stepTwo}>
+                    <h1>Confirmação de Bloqueio de Cartão</h1>
+                    <div class="cmpValue">Dados do cliente</div>
+                    <br>
+                </div>
+                <div if:true={stepThree}>
+                    <h1>Confirmação de Bloqueio de Cartão</h1>
+                    <div class="cmpValue">Dados do cliente</div>
+                    <br>
+                </div>
+                <div if:false={stepTwo}>
+                    <h1>Dados do cliente</h1>
+                </div>
+
+                <div class="cmpName">Nome</div>
+                <div class="cmpValue">{nome}</div>
+                <ul class="firstUl">
+                    <li>
+                        <div class= "logo"><img src={logoTipo}></div>
+                        <div class="texts">
+                            <div class="cmpName">Tipo de conta</div>
+                            <div class="cmpValue">{tipoConta}</div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Conta</div>
+                        <div class="cmpValue">{numeroConta}</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Status da conta</div>
+                        <div class="cmpValue">{statusConta}<span style="position:relative; top:-3px;"><lightning-helptext content={statusContaInfo} class="slds-m-left_xx-small"></lightning-helptext></span></div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Data de nascimento</div>
+                        <div class="cmpValue">{dataNascimento}</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">CPF</div>
+                        <div class="cmpValue">{cpf}</div>
+                    </li>
+                </ul>
+            </div>
+        </template>
+        
+            
+        <div class="boxSteps">
+            <!-- Primeiro bloco -->
+            <template if:true={stepOne}>           
+                <h1>Preenchimento de caso</h1>
+                <div class="txtInfos txtInfosBoxTwo">Selecione a seguir o cartão desejado, motivo de bloqueio e o canal do caso a ser criado.</div>
+                <div class="boxInputs">
+                    <lightning-record-edit-form object-api-name="Case">
+                        <ul>
+                            <li>
+                                <lightning-combobox
+                                    label="Cartão"
+                                    name="progress"
+                                    placeholder="--Nenhuma--"
+                                    value={valueCartoes}
+                                    disabled={cmpFalecimento}
+                                    options={optionsCartoes}
+                                    onchange={handleChangeStatusBloqueio} >
+                                </lightning-combobox>
+                            </li>
+                            <li>
+                                <lightning-combobox
+                                    label="Motivo de bloqueio"
+                                    name="progress"
+                                    placeholder="--Nenhuma--"
+                                    value={valueMotivo}
+                                    options={optionsMotivo}
+                                    onchange={handleChangeMotivoCancelamento} 
+                                    disabled={disabledMotivo}>
+                                </lightning-combobox>
+                            </li>
+                            <li>
+                                <label>Origem</label>
+                                <lightning-input-field 
+                                    language=""
+                                    value={valueOrigem}
+                                    field-name="Origin" 
+                                    class="lightningInput" 
+                                    placeholder="--Nenhuma--"
+                                    onchange={handleChangeOrigem} 
+                                    variant="label-hidden"> 
+                                </lightning-input-field>
+                            </li>
+                            <li>
+                                <label>Canal</label>
+                                <lightning-input-field
+                                    value={valueCanal}
+                                    field-name="CanalEntrada__c" 
+                                    class="lightningInput" 
+                                    placeholder="--Nenhuma--"
+                                    onchange={handleChangeCanal} 
+                                    variant="label-hidden"> 
+                                </lightning-input-field>
+                            </li>
+                        </ul>    
+                    </lightning-record-edit-form>   
+                </div>
+            </template>
+            <!-- Final do Primeiro bloco -->
+
+            <!-- Inicio do Segundo bloco -->
+            <template if:true={stepTwo}>
+                <h1>Informações do caso</h1>
+
+                <div class="boxCardPrincipal boxPrincipalCardTwo">
+                    <ul>
+                        <li>
+                            <div class="texts">
+                                <div class="cmpName">Nome no cartão</div>
+                                <div class="cmpValue">{nomeNoCartao}</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="texts">
+                                <div class="cmpName">Número do cartão</div>
+                                <div class="cmpValue">{numeroCartao}</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="texts">
+                                <div class="cmpName">Status do cartão</div>
+                                <div class="cmpValue">{valueStatusCartoes}<span style="position:relative; top:-3px;"><lightning-helptext content={statusCartaoInfo} class="slds-m-left_xx-small"></lightning-helptext></span></div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="texts">
+                                <div class="cmpName">Motivo de bloqueio</div>
+                                <div class="cmpValue">{valueMotivo}</div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <ul>
+                        <li>
+                            <div class="texts">
+                                <div class="cmpName">Origem</div>
+                                <div class="cmpValue">{valueOrigem}</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="texts">
+                                <div class="cmpName">Canal</div>
+                                <div class="cmpValue">{valueCanal}</div>
+                            </div>
+                        </li>
+                    </ul>
+                    <template if:true={cmpFalecimento}>
+                        <div class="avisoAlternativo">
+                            <p class="avisoTexto">
+                                <lightning-icon
+                                    icon-name="utility:warning"
+                                    size="small"
+                                    alternative-text="Indicates approval">
+                                </lightning-icon> &#32; &#32; &#32;O cartão será bloqueado e as atualizações do caso serão feitas por SMS para o celular de retorno.
+                            </p>
+                        </div>
+                        <h2 class="slds-text-heading_medium slds-m-vertical_x-small">Digite o Telefone da pessoa responsável</h2>
+                        <lightning-input
+                            class="telefoneContato"
+                            label="Número de Telefone"
+                            placeholder="Digite o celular"
+                            type="tel" 
+                            value={telefoneContato} 
+                            onchange={handleTelefoneChange}>
+                        </lightning-input>
+                        <span class="erroCelular" if:true={mostrarErro}>Por favor, insira um número de Celular válido(DDD + Número).</span>
+                    </template>
+                    
+                
+                </div>
+
+            </template>
+            <!-- Final do Segundo bloco -->
+
+            <!-- Inicio do Terceiro bloco -->
+            <template if:true={stepThree}>
+                <h1>Bloqueio de cartão de crédito realizado com sucesso!</h1>
+                <div class="txtInfos">Protocolo: {numProtocolo}</div>       
+            </template>
+            <!-- Final do Terceiro bloco -->
+
+            <!-- Inicio do Terceiro bloco alternativo -->
+            <template if:true={stepThreeFalecimento}>
+                <div class="avisoAlternativo">
+                    <p class="avisoTexto">
+                        <lightning-icon
+                            icon-name="utility:warning"
+                            size="small"
+                            alternative-text="Indicates approval">
+                        </lightning-icon> &#32; &#32; &#32;O cartão será bloqueado e as atualizações do caso serão feitas por SMS para o celular de retorno.
+                    </p>
+                </div>
+                <h1 class="slds-m-vertical_x-small">Cartão bloqueado com sucesso!</h1>
+                <div class="txtInfos">Protocolo: {numProtocolo}</div>       
+            </template>
+            <!-- Final do Terceiro bloco alternativo -->
+            
+        </div>
+        
+        
+    </div>
+
+    <footer>   
+        <div class="boxFooter">
+            <ul>
+                <Template if:false={stepThreeFalecimento}>
+                    <li class="btnVoltar">
+                        <lightning-button variant="neutral" label="Voltar" onclick={handleButtonVoltar} disabled={disableButton} class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                    <li class="progressBar">
+                        <lightning-progress-indicator current-step={currentStep} class="customProgress" type="base" has-error={hasErrorSteps} variant="base">
+                            <lightning-progress-step label="Preenchimento do Caso" value="1"></lightning-progress-step>
+                            <lightning-progress-step label="Confirmação de Bloqueio" value="2"></lightning-progress-step>
+                            <lightning-progress-step label="Informações do Caso" value="3"></lightning-progress-step>
+                            <template if:true={stepFour}>
+                                <lightning-progress-step label="Sucesso" value="4" class="slds-hide"></lightning-progress-step>
+                            </template>
+                        </lightning-progress-indicator>
+                    </li>
+                </Template>
+                <template if:true={showButtonProsseguir}>
+                    <li>
+                        <lightning-button variant="brand" label="Prosseguir"  onclick={handleProsseguir} disabled={buttonPross} class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                </template>
+                <template if:true={stepTwo}>
+                    <li class="liBtnConfirmar">
+                        <lightning-button variant="destructive" label="Confirmar Bloqueio" disabled={buttonConfirmaBloqueio} onclick={handleConfirmaBloqueio} class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                </template>
+                <template if:true={stepThree}>
+                    <li class="liBtnCaso">
+                        <lightning-button variant="brand" label="Ir para o caso"  onclick={irCase} class="slds-m-left_x-small"></lightning-button>
+                    </li>
+                </template>
+            </ul>
+            <template if:true={stepThreeFalecimento}>
+                <div class="slds-grid slds-grid_align-end">
+                    <lightning-button variant="brand" label="Ir para o caso"  onclick={irCase} class="slds-m-left_x-small"></lightning-button>
+                </div>
+            </template>
+        </div>
+    </footer>
+</template>

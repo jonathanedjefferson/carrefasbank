@@ -1,0 +1,88 @@
+<template>
+    <lightning-modal-header label="Detalhes da Compra"></lightning-modal-header>
+    <!-- Body -->
+     <template if:true={showData}>
+         <lightning-modal-body>
+             <h1>Dados da compra</h1>
+             <lightning-layout multiple-rows="true">
+                 <lightning-layout-item size="6" class="layout-container">
+                     <div class="icon-container">
+                         <div class="icon">
+                            <img src={logoImg} class="logo">
+                         </div>
+                         <div class="store">
+                             <p>Loja</p>
+                             <p class="values">{purchaseDetail.originDescription}</p>
+                         </div>
+                     </div>
+                 </lightning-layout-item>
+                 <lightning-layout-item size="6">
+                     <p>Valor da Compra</p>
+                     <p class="values">{purchaseDetail.purchaseAmount}</p>
+                 </lightning-layout-item>
+                 <lightning-layout-item size="6">
+                     <p>Itens do cashback</p>
+                     <p class="values">{purchaseDetail.purchaseRewardNumberItems}</p>
+                 </lightning-layout-item>
+                 <lightning-layout-item size="6">
+                     <p>Data da compra</p>
+                     <p class="values">{purchaseDetail.purchaseDateReplaced}</p>
+                 </lightning-layout-item>
+             </lightning-layout>
+             <lightning-input name="enter-search" placeholder="Pesquisar Produtos" type="search" onchange={handleSearch}></lightning-input>
+             <!-- Tabela -->
+              <div class="table-container">
+                  <table>
+                      <thead>
+                          <tr>
+                              <th>
+                                 <span class="details-button">
+                                     <button class="slds-button" onclick={handleSort}>Produto</button>
+                                     <lightning-button-icon icon-name="utility:arrowdown" variant="container" title="Sort A-Z" onclick={handleSort}></lightning-button-icon>
+                                 </span>
+                              </th>
+                              <th>Qtd</th>
+                              <th>Promoção</th>
+                              <th>Preço</th>
+                              <th>Cashback</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                         <template if:true={hasProducts}>
+                             <template for:each={products} for:item="item">                    
+                                 <tr key={item.itemDescription}>
+                                     <td class="itemDescription">{item.itemDescription}</td>
+                                     <td>{item.quantity}</td>
+                                     <td>{item.promotion}</td>
+                                     <td>{item.purchaseAmount}</td>
+                                     <td class="cashback">{item.rewardAmount}</td>
+                                 </tr>
+                             </template>
+                         </template>
+                     </tbody>
+                 </table>
+              </div>
+            <template if:false={hasProducts}>
+                <div class="empty-state">
+                    <img src={emptyStateImg} class="empty-image">
+                    <p class="empty-message">{message}</p>
+                    <p class="empty-submessage">{subMessage}</p>
+                </div>
+            </template>
+         </lightning-modal-body>
+     </template>
+     <template if:true={isLoading}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </div>
+     </template>
+    <!-- Footer -->
+    <lightning-modal-footer>
+        <div class="slds-grid slds-grid_align-spread slds-p-horizontal_small" style="width: 100%;">
+            <lightning-button label="Fechar" onclick={handleOkay}></lightning-button>
+            <lightning-button variant="brand" label="Consultar Ofertas" onclick={handleConsultarOfertas}></lightning-button>
+        </div>
+    </lightning-modal-footer>
+    
+    
+</template>

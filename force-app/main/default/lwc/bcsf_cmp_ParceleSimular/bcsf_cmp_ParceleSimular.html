@@ -1,0 +1,360 @@
+<template>
+    <lightning-progress-indicator if:false={pageFive} class="progressBar" current-step={currentStep} type="base" variant="base">
+        <lightning-progress-step label="Step 1" value="1"></lightning-progress-step>
+        <lightning-progress-step label="Step 2" value="2"></lightning-progress-step>
+        <lightning-progress-step label="Step 3" value="3"></lightning-progress-step>
+        <lightning-progress-step label="Step 4" value="4"></lightning-progress-step>
+    </lightning-progress-indicator>
+
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+
+    <div lwc:if={pageOne} class="pageOne">
+        <h1>Taxa de juros</h1>
+        <lightning-combobox
+            name="Taxa"
+            placeholder="Selecione a taxa"
+            options={perfisParcelamento}
+            class="comboBoxTaxa"
+            variant="hidden-label"
+            onchange={handleChangeTaxa} >
+        </lightning-combobox>
+        
+    </div>
+
+    <div lwc:elseif={pageTwo} class="pageTwo">
+        <lightning-combobox
+            name="Taxa"
+            placeholder="Selecione o perfil"
+            options={perfilElegibilidade}
+            class="comboBoxTaxa"
+            label="Perfil de elegibilidade "
+            value={perfilELegivelValue}
+            onchange={handlePerfilElegibilidade} >
+        </lightning-combobox>
+
+        <div class="containerTable">
+            <table class="slds-table slds-table_cell-buffer tableLancamentos">
+                <thead>
+                    <tr>
+                        <th>
+                            <lightning-input class="smallColumn" type="checkbox" checked={checkAllTranscation} onchange={handleCheckAllTransactions} disabled={disabledCheckAllTransaction}></lightning-input>
+                        </th>
+                        <th class="customHeader">Lançamentos</th>
+                        <th class="customHeader">Parcelas restantes</th>
+                        <th class="customHeader">Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={listTransactions} for:item="item">
+                        <tr key={item.id}>
+                            <td class="smallColumn">
+                                <lightning-input type="checkbox" checked={item.checked} onchange={handleCheckTransaction} data-id={item.id} disabled={item.disabled}></lightning-input>
+                            </td>
+                            <td>{item.lancamentos}</td>
+                            <td>{item.parcelaLabel}</td>
+                            <td>{item.moeda}{item.valor}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+
+        <p>Valor selecionado: <span>R$ {saldoTotal}</span></p>
+        
+    </div>
+
+    <div lwc:elseif={pageTree} class="pageTree">
+        <div if:true={possuiEntrada}>
+            <div class="pageTreeAlert" role="alert">
+                <lightning-icon class="iconAlert slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="Atenção"></lightning-icon>
+                <p><span>Atenção:</span> esse plano exige pagamento de entrada. Reforce para o cliente que ao <span>não pagar o valor exato até a data limite, a operação será cancelada.</span></p>
+            </div>
+            <div class="containerFields">
+                <div class="pageTreeField">
+                    <h1>Data de entrada</h1>
+                    <div>
+                        <p>Data mínima <span>{dataMin}</span></p>
+                        <p class="divisorBar">|</p>
+                        <p>Data máxima <span>{dataMax}</span></p>
+                    </div>
+                    <lightning-input 
+                        type="date" 
+                        class="date-format-hide"
+                        placeholder={dataMin}
+                        variant="label-hidden"
+                        date-style="short"
+                        value={dataSelecionada} 
+                        onchange={handleDateChange}>
+                    </lightning-input>
+    
+                    <p lwc:if={classValidateData}>Até a data <span>{dataJuros}</span> não terá juros da fatura</p>
+                    <p lwc:elseif={dataVencidaExpiradaLabel}></p>
+                    <p lwc:else class="errorValidate">A data escolhida não é válida.</p>
+                </div>
+                <div class="pageTreeField">
+                    <h1>Valor de entrada</h1>
+                    <p>Escolha o valor da entrada</p>
+                    <lightning-input 
+                        type="number" 
+                        name="entrada" 
+                        placeholder={entradaMinLabel}
+                        variant="label-hidden"
+                        formatter="currency" 
+                        value={valorInformado}
+                        onchange={handleValorEntrada}
+                        step="0.01">
+                </lightning-input>
+                <div class={classValidateValor}>
+                    <p>Valor mínimo <span>{entradaMinLabel}</span></p>
+                    <p class="divisorBar">|</p>
+                    <p>Valor máximo <span>{entradaMaxLabel}</span></p>
+                </div>
+                </div>
+            </div>
+            <div lwc:if={passouDataJuros} class="jurosAlert" role="alert">
+                <lightning-icon class="slds-m-right_small" icon-name="utility:info" size="small" alternative-text="Atenção"></lightning-icon>
+                <p>A simulação terá inclusão de juros de atraso de {jurosEncargos} pois a data {dataSelecionadaLabel} é posterior ao vencimento da fatura. Caso seja pago após essa data, o valor dos juros pode sofrer alteração.</p>
+            </div>
+            <div lwc:if={dataVencidaExpiradaAlert} class="jurosAlert" role="alert">
+                <lightning-icon class="slds-m-right_small" icon-name="utility:info" size="small" alternative-text="Atenção"></lightning-icon>
+                <p>Atenção! Por a pessoa ter saldo em aberto (aquele que não foi pago até o vencimento) 
+                    será incluído ao parcelamento juros de atraso no valor de R$ 100. 
+                    Caso seja pago após a data, o valor do juros pode sofrer alteração.
+                </p>
+            </div>
+            <div class="btnSimular" >
+                <lightning-button 
+                    label="Simular" 
+                    title="Simular" 
+                    disabled={disableBtnSimular}
+                    onclick={handleBtnSimular}>
+                </lightning-button>
+            </div>
+        </div>
+        
+        <div if:true={possuiEntradaAlert} class="jurosAlert" role="alert">
+            <lightning-icon class="slds-m-right_small" icon-name="utility:info" size="small" alternative-text="Atenção"></lightning-icon>
+            <p><strong>Atenção:</strong> este é um perfil sem entrada</p>
+        </div>
+        <div if:true={perfilFuncionario} class="jurosAlert" role="alert">
+            <lightning-icon class="slds-m-right_small" icon-name="utility:info" size="small" alternative-text="Atenção"></lightning-icon>
+            <p><strong>Atenção:</strong> o perfil do funcionário não tem entrada, é ilegível ao seguro e pula ciclo</p>
+        </div>
+
+        <div class="textPlanos">
+            <h1>Escolha um plano de parcelamento</h1>
+            <p lwc:if={duasTaxas}>Escolha a taxa que se encaixa melhor no perfil do cliente: menor taxa, parcelas maiores; maior taxa, parcelas menores!</p>
+            <p lwc:else>Escolha a quantidade de parcelas</p>
+            <div class="planoCheckButtons">
+                <lightning-input 
+                    class="customCheckPLano" 
+                    type="checkbox" 
+                    label="Plano com Seguro " 
+                    name="PlanoSeguro"
+                    checked={checkPlanoSeguro}
+                    disabled={disableCheckPlanoSeguro}
+                    onchange={handleCheckPlanoSeguro}>
+                </lightning-input>
+                <lightning-input 
+                    class="customCheckPLano" 
+                    type="checkbox" 
+                    label="Plano com Pula Ciclo" 
+                    name="PlanoPulaCiclo" 
+                    checked={checkPulaCiclo}
+                    disabled={disableCheckPulaCiclo}
+                    onchange={handleCheckPulaCiclo}>
+                </lightning-input>
+            </div>
+        </div>
+        <div class="containerTable">
+            <table class="slds-table slds-table_cell-buffer tabelaParcelamento ">
+                <thead class="tabelaParcelamento">
+                    <tr>
+                        <th></th>
+                        <th class="customHeader">Parcelas</th>
+                        <th class="customHeader">Parc.liberação</th>
+                        <th class="customHeader">Valor parcela</th>
+                        <th class="customHeader">Valor entrada</th>
+                        <th class="customHeader">Taxa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={listParcelas} for:item="item">
+                        <tr key={item.id}>
+                            <td class="selectColumn">
+                                <input class="radioBtn" type="radio" id={item.id} name="itemTransaction" data-value={item.codigo}  onclick={handleRadioParcelamento} disabled={disableRadio}>
+                            </td>
+                            <td>{item.quantidadeParcelas}</td>
+                            <td>{item.numeroParcelasLiberacaoLimite}</td>
+                            <td>{item.moedaParcela}{item.valorParcela}</td>
+                            <td>{item.moedaEntrada}{item.valorEntrada}</td>
+                            <td class={item.style}>
+                                <lightning-icon lwc:if={item.icon} class="iconTaxa slds-m-right_x-small" icon-name="utility:favorite" size="xx-small"></lightning-icon>
+                                {item.taxaJuros}%
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        <lightning-button 
+            label="Simular com outra taxa" 
+            class="simularOutraTaxa slds-m-top_small"
+            onclick={handleBtnSimularOutraTaxa}>
+        </lightning-button>
+
+    </div>
+
+    <div lwc:elseif={pageFour} class="pageFour">
+        <div class="pageTreeAlert" role="alert">
+            <lightning-icon class="iconAlert slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="Atenção"></lightning-icon>
+            <p><span>Atenção:</span> {messageParcelaSelected}</p>
+        </div>
+        <div class="titleResumoContrato">
+            <h1>Resumo da contratação</h1>
+            <lightning-button variant="brand-outline" label="Copiar resumo" title="Copiar resumo"  onclick={copyResumoObject}></lightning-button>
+        </div>
+
+        <div class="containerResumo">
+            <template for:each={resumoObject} for:item="item">
+                <div key={item.name} class="resumoLine">
+                    <p class="nameLine">{item.name}</p>
+                    <p class="valueLine">{item.value}</p>
+                </div>
+            </template>
+        </div>
+
+        <div class="containerCaso">
+            <h1 lwc:if={possuiEntrada} >Escolha a forma de pagamento</h1>
+            <div lwc:if={possuiEntrada} class="formasPagamento">
+                <label>
+                    <input type="radio" name="options" data-value="1" onchange={handleRadioPagamento} />
+                    Pagamento com Pix 
+                </label>
+                <label>
+                    <input type="radio" name="options" data-value="0" onchange={handleRadioPagamento} />
+                    Pagamento com boleto
+                </label>
+            </div>
+            <div lwc:else class="separador"><br></div>
+            <div class="containerCase">
+                <h1>Preenchimento de caso</h1>
+                <lightning-record-edit-form object-api-name="Case">
+                    <ul>
+                        <li>
+                            <label>Origem</label>
+                            <lightning-input-field 
+                                language=""
+                                value={valueOrigem}
+                                field-name="Origin" 
+                                class="lightningInput" 
+                                placeholder="--Nenhuma--"
+                                onchange={handleFieldOrigemCaso} 
+                                variant="label-hidden"> 
+                            </lightning-input-field>
+                        </li>
+                        <li>
+                            <label>Canal</label>
+                            <lightning-input-field
+                                value={valueCanal}
+                                field-name="CanalEntrada__c" 
+                                class="lightningInput" 
+                                placeholder="--Nenhuma--"
+                                onchange={handleFieldCanalCaso} 
+                                variant="label-hidden"> 
+                            </lightning-input-field>
+                        </li>
+                    </ul>    
+                </lightning-record-edit-form>   
+            </div>
+        </div>
+
+    </div>
+
+    <div lwc:elseif={pageFive} class="pageFive">
+        <div lwc:if={erroPagamento} class="errorAlert" role="alert">
+            <lightning-icon class="iconErrorAlert slds-m-right_small" icon-name="utility:error" size="small" alternative-text="Atenção"></lightning-icon>
+            <p><span>Atenção:</span> o parcelamento foi contratado, mas houve erro ao gerar o {labelTitlePagamento}.</p>
+        </div>
+        <div class="caseNumber">
+            <div class="success-message slds-m-vertical_x-small">
+                <lightning-icon icon-name="action:approval" size="xx-small" class="success-icon"></lightning-icon>
+                <span class="success-text">Operação realizada!</span>
+            </div>
+            <h1 class="slds-m-vertical_xx-small">Protocolo: <span>{numProtocolo}</span></h1>
+            <p>{dataMin}</p>
+        </div>
+        <div class="containerDadosContrato">
+            <h1 lwc:if={erroPagamento}>O contrato será enviado via e-mail</h1>
+            <h1 lwc:elseif={possuiEntrada}>O contrato e o {labelTitlePagamento} de entrada serão enviados via e-mail</h1>
+            <h1 lwc:else>O contrato será enviado via e-mail</h1>
+            <ul>
+                <li>
+                    <p class="infoName">Modo de envio</p>
+                    <p class="infoValue">E-mail</p>
+                </li>
+                <li class="slds-m-left_x-large">
+                    <p class="infoName">Endereço de e-mail</p>
+                    <p class="infoValue">{email}</p>
+                </li>
+            </ul>
+            <lightning-input 
+                type="checkbox" 
+                class="emailAlternativo" 
+                checked={checkEmailAlternativo}
+                disabled={disableCheckEmailAlternativo}
+                onchange={handleCheckEmailAlternativo}
+                label="Encaminhar a segunda via para um endereço de e-mail alternativo" 
+                name="emailAlternativo">
+            </lightning-input>
+            <div lwc:if={checkEmailAlternativo}>
+                <lightning-input class="emailAlternativoField" type="email" label="E-mail" placeholder="Digite o e-mail aqui" onchange={handleFieldEmailAlternativo}></lightning-input>
+            </div>
+        </div>
+
+        <div class="buttonGroupContrato">
+            <lightning-button-group lwc:if={erroPagamento}>
+                <lightning-button label={labelBtnGerarPagamento} onclick={handleBtnGerarPagamento}></lightning-button>
+                <lightning-button label={labelBtnAlterarPagamento} onclick={handleBtnAlterarPagamento}></lightning-button>
+            </lightning-button-group>
+
+            <lightning-button-group lwc:else>
+                <lightning-button lwc:if={possuiEntrada} label={labelBtnCopiarPagamento} onclick={copyCodePagamento}></lightning-button>
+                <lightning-button label="Reenviar 2ª via do contrato" onclick={handleBtnEnviarEmail}></lightning-button>
+            </lightning-button-group>
+        </div>
+
+        <div class="dadosCaso" >
+            <h1>Informações do caso:</h1>
+            <ul>
+                <li>
+                    <p class="infoName">Origem</p>
+                    <p class="infoValue">{origemCaso}</p>
+                </li>
+                <li>
+                    <p class="infoName">Canal</p>
+                    <p class="infoValue">{canalCaso}</p>
+                </li>
+                <li>
+                    <p class="infoName">Motivo</p>
+                    <p class="infoValue">Parcelamento</p>
+                </li>
+                <li>
+                    <p class="infoName">Evento</p>
+                    <p class="infoValue">Adesão Parcele Fácil</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div lwc:if={footerPage} class="slds-modal__footer">
+        <lightning-button lwc:if={pageOne} variant="brand" label="Continuar" onclick={handleBtnContinuar} disabled={disableBtnContinuar}></lightning-button>
+        <div class="buttonFooter" lwc:else>
+            <lightning-button label={labelBtnVoltar} onclick={handleBtnVoltar} disabled={disableBtnVoltar}></lightning-button>
+            <lightning-button variant="brand" label={labelBtnContinuar} onclick={handleBtnContinuar} disabled={disableBtnContinuar}></lightning-button>
+        </div>
+    </div>
+
+</template>

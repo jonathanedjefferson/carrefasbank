@@ -1,0 +1,364 @@
+<template>
+    <div lwc:if={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <div class="title">
+        <h1>Antecipar pagamento</h1>
+        <h2 lwc:if={showSubTitle} class="subTitle">Boletos em aberto</h2>
+    </div>
+    <div class="c-container">
+        <template lwc:if={step01}>
+            <div class="boxCardPrincipal"> 
+                <div class="redAlert" if:true={saldoDevedorInsuficiente}>
+                    <lightning-icon class="slds-m-right_small" icon-name="utility:error" size="small" alternative-text="Atenção"></lightning-icon>
+                    <p>Cliente possui saldo devedor insuficiente para emissão de um novo boleto.</p>
+                </div>
+                <div class="infoAlert" if:true={possuiBoletoAvulso}>
+                    <lightning-icon icon-name="utility:info" size="small" alternative-text="Informação"></lightning-icon>
+                    <div>
+                        <p>O cliente possui boletos em aberto.</p>
+                        <p>Mas caso queira seguir com uma nova solicitação, prossiga normalmente.</p>
+                    </div>
+                    <lightning-button class="btnBoletosAvulsos" variant="base" label="Ver boletos" onclick={handleBtnVerBoletosGerados}></lightning-button>
+                </div>
+                <ul class="aling-items-start">
+                    <li>
+                        <p class="infoName">Titular da conta</p>
+                        <p class="infoValue">{nomeTitular}</p>
+                    </li>
+                    <li class="tipoConta">
+                        <div class= "logo"><img src={logoTipo}></div>
+                        <div>
+                            <div class="infoName">Tipo de conta</div>
+                            <div class="infoValue">{tipoConta}</div>
+                        </div>
+                    </li>
+                </ul>   
+            </div>
+        </template>
+        <template lwc:if={step02}>
+            <div lwc:if={emailNaoInformado} class="avisoAlertAlternative">
+                <lightning-icon class="slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="Atenção"></lightning-icon>
+                <div>
+                    <p>O cliente não informou um e-mail, mas a geração do boleto poderá ser feita,.</p>
+                    <p>Ao finalizar, informe o código de barras e demais informações do boleto a ele.</p>
+                </div>
+            </div>
+            <div class="solicitacaoTitle">
+                <h2>Confirme a solicitação</h2>
+            </div>
+        </template>
+        <div class="alertaPagmento" if:true={showTextInfo}>
+            <lightning-icon class="slds-m-right_small" icon-name="utility:info" size="x-small" alternative-text="Atenção"></lightning-icon>
+            <p>A geração deste código de pagamento não exime o pagamento da fatura normal.</p>
+        </div>
+        <template lwc:if={step01}>
+            <div class="boxCardPrincipal"> 
+                <ul if:false={stepBoletosAbertos} class="gap-between-items">
+                    <li>
+                        <p class="infoName">Valor mínimo</p>
+                        <p class="infoValue">{valorMinimoFormatado}</p>
+                    </li>
+                    <li>
+                        <p class="infoName">Valor máximo</p>
+                        <p class="infoValue">{valorMaximoFormatado}</p>
+                    </li>
+                    <li>
+                        <p class="infoName">Valor a ser antecipado</p>
+                        <lightning-input class="lightningInput" disabled={disableValorField} type="number" placeholder="Digite o valor aqui" value={valorNovoBoleto} id="valorAntecipado" data-id="valorAntecipado" onchange={changeValueHandler} formatter="currency" step="0.01"></lightning-input>
+                        <lightning-input class="checkBoxSetValor" disabled={disableSetValorMaximo} type="checkbox" label="Valor máximo" id="setValorMaximo" data-id="setValorMaximo" onchange={setValorMaximo} checked={isValorMaximo}></lightning-input>
+                    </li>
+                    <li>
+                        <p class="infoName">Tipo de pagamento</p>
+                        <p class="infoValue">{tipoPagamento}</p>
+                    </li>
+                </ul>   
+                <div if:true={stepBoletosAbertos}>
+                    <p class="slds-m-bottom_large">Boletos em aberto</p>
+                    <div class="containerTable">
+                        <table class="slds-table slds-table_cell-buffer tableBoletos ">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th class="customHeader"  onclick={handleAlternarOrdenacao}>
+                                        Data de emissão
+                                        <lightning-icon icon-name={iconeOrdenacao} size="xx-small" class="slds-m-left_xx-small"></lightning-icon>
+                                    </th>
+                                    <th class="customHeader">Data de vencimento</th>
+                                    <th class="customHeader">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={listBoletoAvulso} for:item="item">
+                                    <tr key={item.id}>
+                                        <td class="selectColumn">
+                                            <lightning-input type="checkbox" data-id={item.id} checked={item.checked} onchange={handleCheckTransaction} variant="label-hidden" name="boleto"></lightning-input>
+                                        </td>
+                                        <td class="columnDefault">{item.dataEmissao}</td>
+                                        <td class="columnDefault">{item.dataVencimento}</td>
+                                        <td class="columnDefault">{item.valor}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="boxCardPrincipal" if:false={saldoDevedorInsuficiente}> 
+                <div class="infoTitle">
+                    <h2>O código de pagamento será enviado para o endereço de e-mail de cadastro:</h2>
+                </div>
+                
+                <ul class="gap-between-items">
+                    <li>
+                        <p class="infoName">Modo de envio</p>
+                        <p class="infoValue">{modoEnvio}</p>
+                    </li>
+                    <li>
+                        <p class="infoName">Prazo de envio</p>
+                        <p class="infoValue">{prazoEnvio}</p>
+                    </li>
+                    <li>
+                        <p class="infoName">Endereço de e-mail</p>
+                        <p class="infoValue">{email}</p>
+                    </li>
+                </ul>
+                <ul class="aling-items-start">
+                    <li>
+                        <div class="checkEmailAlternativo">
+                            <lightning-input type="checkbox" label="Encaminhar o código de pagamento para um endereço de email alternativo" id="emailAlternativo" data-id="emailAlternativo" onchange={emailAlternativoHandler} checked={enviarEmailAlternativo}></lightning-input>
+                        </div>                 
+                    </li>
+                </ul> 
+                <template lwc:if={enviarEmailAlternativo}>
+                    <div class="infoTitle">
+                        <h2>Se o cliente preferir encaminhar a um endereço de e-mail alternativo:</h2>
+                    </div>
+                    <div class="emailbox">
+                        <div class="emailInput">
+                            <p class="infoName">E-mail</p>
+                            <lightning-input class="lightningInput" type="email" placeholder="Digite o e-mail" onchange={changeEmailHandler} value={emailAlternativo}> </lightning-input>
+                        </div>
+                        <div lwc:if={podeAtualizarEmail} class="checkAtualizarEmail">
+                            <lightning-input  type="checkbox" label="Atualizar o e-mail no cadastro" id="atualizarEmail" data-id="atualizarEmail" value={checkAtualizarEmail} onchange={atualizarEmailHandler}></lightning-input>
+                        </div>
+                    </div>
+                    <div lwc:if={podeAtualizarEmail} class="alertaEmail">
+                        <lightning-icon class="slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="Atenção"></lightning-icon>
+                        <p>Se o cliente optar por atualizar o email no cadastro, é essencial informar durante o atendimento que seu e-mail será atualizado.</p>
+                    </div>
+                </template>
+            </div>
+        </template>
+        <template lwc:if={step02}>
+            <div if:true={stepBoletosAbertos} class="lineBottom">
+                <p class="slds-m-vertical_large">Os boletos abaixo serão enviados ao cliente</p>
+                <div class="containerTable">
+                    <table class="slds-table slds-table_cell-buffer tableBoletos ">
+                        <thead>
+                            <tr>
+                                <th class="customHeader"  onclick={handleAlternarOrdenacao}>
+                                    Data de emissão
+                                    <lightning-icon icon-name={iconeOrdenacaoSelected} size="xx-small" class="slds-m-left_xx-small"></lightning-icon>
+                                </th>
+                                <th class="customHeader">Data de vencimento</th>
+                                <th class="customHeader">Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={listBoletoAvulsoSelected} for:item="item">
+                                <tr key={item.id}>
+                                    <td class="columnDefault">{item.dataEmissao}</td>
+                                    <td class="columnDefault">{item.dataVencimento}</td>
+                                    <td class="columnDefault">{item.valor}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+                <ul class="aling-items-start-alternative">
+                    <li lwc:if={emailNaoInformado}>
+                        <p class="infoName">Modo de envio</p>
+                        <p class="infoValueBoletos">--</p>
+                    </li>
+                    <li lwc:else>
+                        <p class="infoName">Modo de envio</p>
+                        <p class="infoValue">{modoEnvio}</p>
+                    </li>
+                    <li>
+                        <p class="infoName">E-mail</p>
+                        <p class="infoValue">{emailLabel}</p>
+                    </li>
+                </ul>
+            </div>
+            <div if:false={stepBoletosAbertos} class="boxCardPrincipal boxcardConfirmacao">  
+                <ul class="aling-items-start">
+                    <li>
+                        <p class="infoName">Valor a ser antecipado</p>
+                        <p class="infoValue valorBoleto">{valorNovoBoletoFormatado}</p>
+                    </li>
+                    <li lwc:if={emailNaoInformado}>
+                        <p class="infoName">Modo de envio</p>
+                        <p class="infoValue">--</p>
+                    </li>
+                    <li lwc:else>
+                        <p class="infoName">Modo de envio</p>
+                        <p class="infoValue">{modoEnvio}</p>
+                    </li>
+                    <li>
+                        <p class="infoName">E-mail</p>
+                        <p class="infoValue">{emailLabel}</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="boxcardCaso">
+                <h1>Preenchimento de Caso</h1>
+                <lightning-record-edit-form object-api-name="Case">
+                    <ul>
+                        <li>
+                            <label>Origem</label>
+                            <lightning-input-field 
+                                language=""
+                                value={valueOrigem}
+                                field-name="Origin" 
+                                class="lightningInput" 
+                                placeholder="--Nenhuma--"
+                                onchange={changeOrigemHandler} 
+                                variant="label-hidden"> 
+                            </lightning-input-field>
+                        </li>
+                        <li>
+                            <label>Canal</label>
+                            <lightning-input-field
+                                value={valueCanal}
+                                field-name="CanalEntrada__c" 
+                                class="lightningInput" 
+                                placeholder="--Nenhuma--"
+                                onchange={changeCanalHandler} 
+                                variant="label-hidden"> 
+                            </lightning-input-field>
+                        </li>
+                    </ul>    
+                </lightning-record-edit-form>   
+            </div>
+        </template>
+        <template lwc:if={step03}>
+            <div class="avisoAlert" if:false={stepBoletosAbertos}>
+                <lightning-icon class="slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="Atenção"></lightning-icon>
+                <p>Boleto gerado e enviado ao cliente, possui validade de {diasAteVencimento} dias. Caso o cliente queira, ele pode antecipar mais pagamentos.</p>
+            </div>
+            <div class="contentSuccess boxCardPrincipal">
+                <div><lightning-icon class="success-icon" icon-name="utility:success" alternative-text="Success!" variant="success" title="success variant" size="small"></lightning-icon></div>
+                <div class="detalheSolicitacao" >
+                    <h1>Solicitação realizada!</h1>
+                    <h3>Protocolo: <strong>{numProtocolo}</strong></h3>
+                    <p class="textData">{dataAtual}</p>
+                    <div class="detalheCasoOpenFile">
+                        <h2>Detalhes do boleto</h2>
+                        <lightning-button 
+                            if:false={stepBoletosAbertos}
+                            variant="base" 
+                            label="Ver boleto" 
+                            title="Ver boleto avulso" 
+                            icon-name="utility:new_window"
+                            onclick={handleOpenPdf}>
+                        </lightning-button>
+                    </div>
+                    <div lwc:if={stepBoletosAbertos} class="lineBottom">
+                        <div  class="containerTable">
+                            <table class="slds-table slds-table_cell-buffer tableBoletos ">
+                                <thead>
+                                    <tr>
+                                        <th class="customHeader">Código de barras</th>
+                                        <th class="customHeader">Valor</th>
+                                        <th class="customHeader">Vencimento</th>
+                                        <th class="customHeader">Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={listBoletoAvulsoSelected} for:item="item">
+                                        <tr key={item.id}>
+                                            <td class="columnDefault">{item.linhaDigitavel}</td>
+                                            <td class="columnDefault">{item.valor}</td>
+                                            <td class="columnDefault">{item.dataVencimentoLabel}</td>
+                                            <td class="columnDetalhes">
+                                                <lightning-button
+                                                    data-text={item.id} 
+                                                    variant="base" 
+                                                    label="Copiar detalhes" 
+                                                    title="Copiar detalhes" 
+                                                    icon-name="utility:copy"
+                                                    onclick={handleCopiarBoletoGerado}>
+                                                </lightning-button>
+                                                
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div lwc:else class="dadosBoleto" >
+                        <ul>
+                            <li>
+                                <p class="detailsName">Código de barras</p>
+                                <p class="detailsValue">{codigoBoleto}</p>
+                            </li>
+                            <li>
+                                <p class="detailsName">Valor</p>
+                                <p class="detailsValue">{valorNovoBoletoFormatado}</p>
+                            </li>
+                            <li>
+                                <p class="detailsName">Vencimento</p>
+                                <p class="detailsValue">{dataVenciBoleto}</p>
+                            </li>
+                            <li>
+                                <lightning-button 
+                                    data-text="gerado"
+                                    variant="base" 
+                                    label="Copiar detalhes" 
+                                    title="Copiar detalhes" 
+                                    icon-name="utility:copy"
+                                    onclick={handleCopiarBoletoGerado}>
+                                </lightning-button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="dadosCaso" >
+                        <h1>Informações do caso:</h1>
+                        <ul>
+                            <li>
+                                <p class="detailsName">Origem</p>
+                                <p class="detailsValue">{valueOrigem}</p>
+                            </li>
+                            <li>
+                                <p class="detailsName">Canal</p>
+                                <p class="detailsValue">{valueCanal}</p>
+                            </li>
+                            <li>
+                                <p class="detailsName">Motivo</p>
+                                <p class="detailsValue">Fatura</p>
+                            </li>
+                            <li>
+                                <p class="detailsName">Evento</p>
+                                <p class="detailsValue">{valueEvento}</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </div>
+    <footer>
+    <div class="boxFooter">
+        <ul>
+            <li>
+                <lightning-button variant="Neutral" label={buttonVoltar} onclick={handleButtonVoltar} disabled={disableButtonVoltar} class="slds-m-left_x-small"></lightning-button>
+            </li>
+            <li>
+                <lightning-button variant="brand" label={buttonAvancar}  onclick={handleProsseguir} disabled={disableButtonAvancar}  class="slds-m-left_x-small"></lightning-button>
+            </li>
+        </ul>
+    </div>
+    </footer>
+</template>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Flow Open New Tab Button</masterLabel>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="url" type="String" label="URL para abrir" description="/lightning/n/Ofertas_ComprouVoltou" />
+            <property name="label" type="String" label="Rótulo do botão" default="Consultar Ofertas" />
+            <property name="variant" type="String" label="Variante" datasource="neutral,brand,brand-outline,success,destructive" default="neutral"/>
+            <property name="openIn" type="String" label="Abrir em" datasource="_blank,_self" default="_blank"/>
+            <property name="autoOpen" type="Boolean" label="Abrir automaticamente ao carregar a tela?" default="false"/>
+            <property name="advanceOnClick" type="Boolean" label="Avançar o Flow ao clicar?" default="true"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

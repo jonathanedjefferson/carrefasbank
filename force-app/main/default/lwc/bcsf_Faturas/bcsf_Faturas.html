@@ -1,0 +1,193 @@
+<template>
+    <template if:false={loaded}>
+        <lightning-spinner alternative-text="Loading" class="spins"> </lightning-spinner>
+    </template>
+    <div if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+
+    <template if:true={modalSegundaVia}>
+        <!-- Modal/Popup Box LWC starts here -->
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open  slds-modal_small">
+            <div id='MyModal' class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={fecharModal}>
+                    <!-- Ícone inline com classe de cor branca -->
+                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        <path class="slds-icon-text-white" fill="white" d="M17 6.4L15.6 5 12 8.6 8.4 5 7 6.4 10.6 10l-3.6 3.6L7 15.6 8.4 17l3.6-3.6 3.6 3.6 1.4-1.4L13.4 10 17 6.4z"></path>
+                    </svg>
+                    <span class="slds-assistive-text">Cancelar e fechar</span>
+                </button>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <c-bcsf_-segunda-via-fatura record-id={recordId} oncloseparentmodal={closeQuickAction}></c-bcsf_-segunda-via-fatura>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+    <template if:true={modalBoletoAvulso}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open  slds-modal_small">
+            <div id='myModalBeletoAvulso' class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" onclick={fecharModalBoletoAvulso}>
+                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        <path class="slds-icon-text-white" fill="white" d="M17 6.4L15.6 5 12 8.6 8.4 5 7 6.4 10.6 10l-3.6 3.6L7 15.6 8.4 17l3.6-3.6 3.6 3.6 1.4-1.4L13.4 10 17 6.4z"></path>
+                    </svg>
+                    <span class="slds-assistive-text">Cancelar e fechar</span>
+                </button>
+                <div class="slds-modal__content slds-p-around_medium modalboleto" id="modal-content-id-2">
+                    <c-bcsf_-boleto-avulso record-id={recordId} oncloseparentmodal={closeQuickAction}></c-bcsf_-boleto-avulso>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>  
+
+    <template if:true={loaded}>
+
+        <template if:true={faturaAbertaTable}>
+            <h1 class="slds-text-heading_medium slds-text-weight_bold slds-m-bottom_x-small spacingContainerTop">Limites</h1>
+            <div class="containerLimites spacingContainer">
+                <div>
+                    <p class="infoName">Limite Total do Cartão</p>
+                    <p class="infoValue">{moeda}{valorLimiteTotal}</p>
+                </div>
+                <div>
+                    <p class="infoName">Limite Disponível para Compras</p>
+                    <p class="infoValue">{moeda}{valorLimiteDisponivel}</p>
+                </div>
+
+                
+            </div>
+            <div class="slds-m-vertical_small slds-p-left_medium slds-p-vertical_medium" style="border:0.5px #E8E8E8 solid; border-spacing: 5px;border-radius: 5px;border-collapse: separate;">
+                <h2 class="slds-m-bottom_small slds-text-heading_small">atalhos</h2>
+                <lightning-button-group>
+                    <lightning-button style="height:32px;" label="Avaliação Emergencial de crédito" onclick={avaliacaoEmergencialHandler}></lightning-button>
+                    
+                    <!-- 
+                    <lightning-button-menu alternative-text="Mais opções" disabled="true">
+                        <lightning-menu-item label="Menu Item One" value="item1"></lightning-menu-item>
+                    </lightning-button-menu>
+                    -->
+                </lightning-button-group>
+            </div>
+            <div class="spacingContainer">
+                <h1 class="slds-text-heading_medium slds-text-weight_bold">Faturas</h1>
+                <div class="slds-m-vertical_small slds-p-left_medium slds-p-vertical_medium" style="border:0.5px #E8E8E8 solid; border-spacing: 5px;border-radius: 5px;border-collapse: separate;">
+                    <h2 class="slds-m-bottom_small slds-text-heading_small">Principais atalhos</h2>
+                    <lightning-button-group>
+                        <lightning-button label="2ª via da fatura" onclick={segundaViaFaturaHandler}></lightning-button>
+                        <lightning-button label="Autorização On-us e Off-us" onclick={AutorizacaoHandler}></lightning-button>
+                        <lightning-button label="Pagamento antecipado" onclick={boletoAvulsoHandler}></lightning-button>
+                        <lightning-button if:true={isLigadoButtonContestacao} label="Contestação de compras" onclick={contestacaoComprasHandler}></lightning-button>
+                        <lightning-button-menu alternative-text="Mais opções" disabled="true">
+                            <lightning-menu-item label="Menu Item One" value="item1"></lightning-menu-item>
+                        </lightning-button-menu>
+                    </lightning-button-group>
+                </div>
+            </div>
+            <div class="spacingContainer">
+                <h1 class="subTitleAlternative">Última fatura fechada</h1>
+                <div class="slds-m-vertical_small slds-p-left_medium slds-p-vertical_medium" style="border:0.5px #E8E8E8 solid; border-spacing: 5px;border-radius: 5px;border-collapse: separate;">
+                    <h2 class="slds-m-bottom_xx-small slds-text-heading_small">Códigos de Pagamento</h2>
+                    <h3 class="slds-m-bottom_xx-small">Código de Barras</h3>
+                    <h3>{codigoBarras}</h3>
+                    <lightning-button 
+                        variant="base" 
+                        label="Copiar" 
+                        title="Copiar" 
+                        onclick={copyText} 
+                        data-text={codigoBarras}>
+                    </lightning-button>
+                </div>
+            </div>
+        </template>
+
+        <!--RESUMO-->
+        <template if:false={bloq_limparTudo}>
+            <lightning-accordion-section name="resumo_faturas" label="Resumo de Lançamentos Selecionados"
+                class="resumo-faturas">
+                <div slot="actions">
+                    <lightning-button style="margin-right: 1px;" variant="neutral" label="Limpar tudo"
+                        class="slds-theme_brand" disabled={bloq_limparTudo} onclick={limparTodasAsFaturas}>
+                    </lightning-button>
+                    <lightning-button style="margin-left: 1px;" variant="brand" label="Estornar"
+                        class="slds-theme_brand" disabled={bloq_limparTudo} onclick={showDecision}>
+                    </lightning-button>
+
+                    <c-bcsf_cmp_modal-estorno-fatura cpf={cpfCliente} open={showEstornoModal}
+                        onnovocaso={handleCriarNovo} onvinculo={handleVincular} onclose={handleCloseEstornoModal}>
+                    </c-bcsf_cmp_modal-estorno-fatura>
+                </div>
+
+                <div style="margin-top:5px; border:0.5px #E8E8E8 solid; border-spacing: 5px;border-radius: 5px;border-collapse: separate;">
+                    <lightning-datatable onrowselection={onSelectFaturaResumo} selected-rows={setSelectedRows}
+                        data={faturasSelecionadas} columns={columns} key-field="idTransacao"></lightning-datatable>
+                </div>
+            </lightning-accordion-section>
+        </template>
+
+        <lightning-accordion allow-multiple-sections-open active-section-name={section} onsectiontoggle={handleSectionToggle} class="accordion_faturas">
+            <template for:each={listaFaturas} for:item="fatura" for:index="index">
+                <lightning-accordion-section key={fatura.mesAnoFatura} label={fatura.mesAnoFatura} name={fatura.idFatura} class="slds-m-bottom_medium">
+                    <div slot="actions">
+                        <lightning-button variant="neutral"  label="Limpar seleção" class="slds-m-right_large" 
+                            disabled={fatura.botao_limpar_bloq} onclick={limparSelecao}></lightning-button>
+                        <lightning-button variant="brand" label="Detalhar" onclick={fetchDetalhes}></lightning-button>
+                    </div>
+                    <template lwc:if={fatura.isFaturaCarregada}>
+                        <div class={fatura.tipoFaturaClass}>{fatura.tipoFatura}</div>
+
+                        <table class="tabela_infos">
+                            <template lwc:if={fatura.isFaturaAberta}>
+                                <tr>
+                                    <td>Valor parcial da fatura</td>
+                                    <td>Data de Vencimento</td>
+                                </tr>
+                                <tr>
+                                    <td class="tdValues">{moeda} {fatura.valorFaturaFormatado}</td>
+                                    <td class="tdValues">{fatura.dataVencimentoFormatada}</td>
+                                </tr>
+                            </template>
+                            <template lwc:else>
+                                <tr>
+                                    <td>Valor total da fatura</td>
+                                    <td>Valor mínimo</td> 
+                                    <td>Valor pago/crédito</td>
+                                    <td>Fecha em</td>
+                                    <td>Vencimento</td>
+                                </tr>
+                                <tr>
+                                    <td class="tdValues">{fatura.valorFatura.moeda} {fatura.valorFaturaFormatado}</td>
+                                    <td class="tdValues">{fatura.valorMinimo.moeda} {fatura.valorMinimo.valor}</td>
+                                    <td class="tdValues">{fatura.valorPago.moeda} {fatura.valorPago.valor}</td>
+                                    <td class="tdValues">{fatura.dataFechamentoFormatada}</td>
+                                    <td class="tdValues">{fatura.dataVencimentoFormatada}</td>
+                                </tr>
+                            </template>
+                        </table>
+                        <template if:true={detalhes}>
+                            <div class="tabela_detalhes">
+                                <lightning-tree-grid
+                                key-field="idTransacao"
+                                data={detalhes}
+                                columns={columns}
+                                selected-rows={setSelectedRows}
+                                resize-column-disabled="true"
+                                onrowselection={onRowSelection}
+                                data-childrens={_childrens}
+                                ></lightning-tree-grid>
+                            </div>
+                        </template>
+                    </template>
+                </lightning-accordion-section>
+            </template>
+        </lightning-accordion>
+        <template lwc:if={loadMore}>
+            <div class="carregarMais">
+                <lightning-button variant="brand" label="Carregar mais" onclick={loadMoreFaturas}></lightning-button>
+            </div>
+        </template>
+    </template>
+</template>

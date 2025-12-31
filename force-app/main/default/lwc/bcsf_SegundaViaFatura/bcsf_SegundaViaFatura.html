@@ -1,0 +1,277 @@
+<template>
+    <div if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+    </div>
+    <template if:true={cmpModoEnvioFatura}>
+        <c-bcsf_-modo-envio-fatura record-id={recordId} oncloseparentmodal={closeQuickAction} cmp-2viafatura={cmp2viafatura}></c-bcsf_-modo-envio-fatura>
+    </template>
+    
+    <template if:true={cmpSegundaViaFatura}>
+        <div class="title">Segunda Via de Fatura</div>
+        <template if:true={pageOne}>
+            <h2 class="slds-text-heading_small slds-m-vertical_medium"><strong>Na tabela abaixo, selecione as faturas que você gostaria de pedir uma segunda via:</strong></h2>
+            <table class="tabela slds-m-bottom_large">
+                <thead>
+                    <tr>
+                        <th>
+                            <lightning-input type="checkbox" checked={todosSelecionados} onchange={handleSelecionarTodos}></lightning-input>
+                        </th>
+                        <th>
+                            <div class="ordenacao" onclick={handleAlternarOrdenacao}>
+                                Data
+                                <lightning-icon icon-name={iconeOrdenacao} size="xx-small" class="slds-m-left_x-small"></lightning-icon>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={itens} for:item="item" key={item.id}>
+                        <tr class="linha" key={item.id}>
+                            <td>
+                                <lightning-input type="checkbox" checked={item.checked} onchange={handleListCheckboxChange} data-id={item.id}></lightning-input>
+                            </td>
+                            <td>{item.data}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </template>
+        <template if:true={pageTwo}>
+            <div class="slds-border_bottom">
+                <h2 class="slds-text-heading_small slds-m-vertical_medium"><strong>Resumo das faturas selecionadas</strong></h2>
+                <div class="slds-m-bottom_medium">
+                    <h3 class="slds-text-body_regular slds-m-bottom_xx-small"><strong>Últimos 12 meses:</strong></h3>
+                    <span class="slds-text-body_regular">Verifique a data das faturas selecionadas:</span>
+                </div>
+                <table class="tabela slds-m-bottom_large">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="ordenacao" onclick={handleAlternarOrdenacao}>
+                                    Data
+                                    <lightning-icon icon-name={iconeOrdenacao} size="xx-small" class="slds-m-left_x-small"></lightning-icon>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={itensSelecionados} for:item="item" key={item.id}>
+                            <tr class="linha" key={item.id}>
+                                <td>{item.data}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+            <div class="customAlert info-only" role="alert" style="margin-top: 1rem;">
+                <lightning-icon 
+                    class="slds-m-right_small" 
+                    icon-name="utility:user" 
+                    size="small" 
+                    alternative-text="Informativo">
+                </lightning-icon>
+                <span>O envio da segunda via é feito apenas por e-mail.</span>
+            </div>
+            <div>
+                <h2 class="slds-text-heading_small slds-m-vertical_medium"><strong>A segunda via de fatura será enviada para o endereço de e-mail de cadastro:</strong></h2>
+                <ul class="listaDados">
+                    <li>
+                        <div class="cmpName">Modo de envio</div>
+                        <div class="cmpValue">{tipoEnvio}</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Prazo de envio</div>
+                        <div class="cmpValue">Imediato</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Endereço de e-mail</div>
+                        <div class="cmpValue">{email}</span></div>
+                    </li>
+                </ul>
+            </div>
+            <div class="slds-m-top_large">
+                <div class="corFundo"></div>
+                <lightning-input type="checkbox" checked={checkedEmailAlternativo} label="Encaminhar a segunda via para um endereço de email alternativo" onchange={handleEmailAlternativo}></lightning-input>
+                <div class="containerEmail" if:true={checkedEmailAlternativo}>
+                    <h2 class="slds-text-heading_small slds-m-vertical_medium"><strong>Se o cliente preferir encaminhar a segunda via para um endereço de email alternativo:</strong></h2>
+                    <lightning-input
+                    label="Email"
+                    type="text"
+                    value={emailAlternativo}
+                    onchange={handleEmailChange}
+                    onblur={handleFocusedEmail} 
+                    class="inputEmail"
+                    pattern=".*">
+                </lightning-input>
+                <div class="slds-m-left_small" style={errorStyle}>{errorText}</div>
+                    <div if:true={showSuggestions} class="suggestions">
+                        <ul>
+                            <template for:each={domainSuggestions} for:item="domain">
+                                <li key={domain} onclick={selectSuggestion}>{domain}</li>
+                            </template>
+                        </ul>
+                    </div>
+                    <lightning-input class="slds-m-vertical_medium" type="checkbox" checked={checkedAlterarEmail} label="Alterar o método de envio de fatura permanentemente para este e-mail" onchange={handleAlterarEmail}></lightning-input>
+                    <div class="customAlert" role="alert">
+                        <lightning-icon class="slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="Atenção"></lightning-icon>
+                        <p>Se o cliente optar por alterar o método de envio das faturas para o e-mail, é essencial informar durante o atendimento que as próximas faturas não serão mais enviadas via correio. A partir do próximo mês, elas serão exclusivamente enviadas por e-mail!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-m-top_medium">
+                
+                    <lightning-record-edit-form object-api-name="Case">
+                        <div class="slds-grid slds-gutters slds-wrap">
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                <div class="input-box">
+                                    <div class="info-name">Origem</div>
+                                    <lightning-input-field
+                                        field-name="Origin"
+                                        variant="label-hidden"
+                                        value={selectedOrigin}
+                                        placeholder="Selecione a origem"
+                                        onchange={handleOriginChange}>
+                                    </lightning-input-field>
+                                </div>
+                            </div>
+                        
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                <div class="input-box">
+                                    <div class="info-name">Canal</div>
+                                    <lightning-input-field
+                                        field-name="CanalEntrada__c"
+                                        variant="label-hidden"
+                                        value={selectedCanalEntrada}
+                                        placeholder="Selecione o canal"
+                                        onchange={handleCanalEntradaChange}>
+                                    </lightning-input-field>
+                                </div>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                <div class="input-box">
+                                    <div class="info-name">Motivo</div>
+                                    <lightning-combobox
+                                        name="motivoFatura"
+                                        variant="label-hidden"
+                                        value={selectedMotivoFatura}
+                                        options={motivoFaturaOptions}
+                                        placeholder="Selecione o motivo"
+                                        onchange={handleMotivoFaturaChange}>
+                                    </lightning-combobox>
+                                </div>
+                            </div>
+                            <template if:true={showMotivoOutro}>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-1" style="margin-top:10px;">
+                                    <div class="input-box">
+                                        <div class="info-name">Informe o motivo</div>
+                                        <lightning-input
+                                            type="text"
+                                            value={motivoOutroTexto}
+                                            onchange={handleMotivoOutroChange}
+                                            placeholder="Digite o motivo aqui">
+                                        </lightning-input>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </lightning-record-edit-form>
+               
+            </div>
+        </template>
+    
+        <template if:true={pageTree}>
+            <div class="success-message slds-m-vertical_small">
+                <lightning-icon icon-name="action:approval" size="xx-small" class="success-icon"></lightning-icon>
+                <span class="success-text">Operação realizada com sucesso!</span>
+            </div>
+            <h2 class="slds-text-heading_small slds-m-bottom_xx-small">Protocolo: <strong>{numProtocolo}</strong></h2>
+            <h3 class="slds-m-bottom_large">{dataAtual}</h3>
+    
+    
+            <div class="slds-border_bottom slds-p-bottom_large">
+                <h2 class="slds-text-heading_small slds-m-vertical_medium subTitle">A segunda via de fatura foi enviada</h2>
+                <ul class="listaDados slds-m-bottom_large">
+                    <li>
+                        <div class="cmpName">Modo de envio</div>
+                        <div class="cmpValue">E-mail</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Prazo de envio</div>
+                        <div class="cmpValue">Imediato</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Endereço de e-mail</div>
+                        <div class="cmpValue">{emailSelecionado}</span></div>
+                    </li>
+                </ul>
+                <div if:true={alertAlterarEmail} class="customAlert" role="alert">
+                    <lightning-icon class="slds-m-right_small" icon-name="utility:warning" size="small" alternative-text="Atenção"></lightning-icon>
+                    <p>O método de envio de fatura foi alterado permanentemente, é essencial informar durante o atendimento que a partir do próximo mês, elas serão exclusivamente enviadas para o novo endereço de e-mail</p>
+                </div>
+            </div>
+    
+            <div>
+                <h2 class="slds-text-heading_small slds-m-vertical_medium subTitle">Informações do caso:</h2>
+                <ul class="listaDados">
+                    <li>
+                        <div class="cmpName">Origem</div>
+                        <div class="cmpValue">{selectedOrigin}</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Canal</div>
+                        <div class="cmpValue">{selectedCanalEntrada}</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Motivo</div>
+                        <div class="cmpValue">{motivoDisplay}</div>
+                    </li>
+                    <li>
+                        <div class="cmpName">Evento</div>
+                        <div class="cmpValue">Segunda via de Fatura</span></div>
+                    </li>
+                </ul>
+            </div>
+
+        </template>
+        
+        <footer>   
+            <div class="boxFooter">
+                <ul>
+                    <template if:false={pageTree}>
+                        <li>
+                            <lightning-button label="Voltar" onclick={handleButtonVoltar} disabled={disableBtnVoltar}></lightning-button>
+                        </li>
+                    </template>   
+                    <template  if:true={pageTree}>
+                        <li class="liBtnAlterar">
+                            <lightning-button label="Alterar Modo de Envio" onclick={handleBtnAlterarModoEnvio}></lightning-button>
+                        </li>
+                    </template>
+                    <li class="liBtnProgress">
+                        <lightning-progress-indicator current-step={currentStep} class="customProgress" type="base" variant="base">
+                            <lightning-progress-step value="1"></lightning-progress-step>
+                            <lightning-progress-step value="2"></lightning-progress-step>
+                            <lightning-progress-step value="3"></lightning-progress-step>
+                        </lightning-progress-indicator>
+                    </li>
+                    <template if:true={pageOne}>
+                        <li>
+                            <lightning-button variant="brand" label="Prosseguir"  onclick={handleProsseguir} disabled={disableBtnPross}></lightning-button>
+                        </li>
+                    </template>
+                    <template if:true={pageTwo}>
+                        <li>
+                            <lightning-button variant="brand" label="Finalizar"  onclick={handleFinalizar} disabled={disableBtnFinalizar}></lightning-button>
+                        </li>
+                    </template>
+                    <template if:true={pageTree}>
+                        <li>
+                            <lightning-button variant="brand" label="Ir para o caso"  onclick={irCase} ></lightning-button>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </footer>
+    </template>
+</template>

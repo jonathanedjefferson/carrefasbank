@@ -1,0 +1,19 @@
+@isTest
+global with sharing class ConsultarJanelaEntregaTest {
+    @isTest
+    public static void test() {
+        Test.setMock(HttpCalloutMock.class, new ConsultarJanelaEntregaMock());
+        ConsultarJanelaEntrega.makeAPIRequest('123445', Datetime.now(), 3);
+    }
+
+    global with sharing class ConsultarJanelaEntregaMock implements HttpCalloutMock {
+        global HTTPResponse respond(HTTPRequest request) {
+            String body = '[{"carrierId":"641ccb6ca3739e2cf815a574","dateStart":"2023-12-11T03:00:00.000Z","dateEnd":"2023-12-12T02:59:00.000Z","closingTime":"2023-12-12T02:59:00.000Z","lock":{"isLocked":false},"capacity":{"maxPackageQuantity":{"default":500,"value":null,"effectiveValue":500},"maxProductQuantity":{"default":500,"value":null,"effectiveValue":500},"maxShippingQuantity":{"default":10,"value":null,"effectiveValue":10}},"deliveryCost":0,"shippings":{},"routes":{},"status":"inProgress","totals":{"shippingsCount":0,"shippingsPending":0,"shippingsInProgress":0,"shippingsDelivered":0,"shippingsNotDelivered":0,"shippingsCanceled":0,"shippingsWithError":0,"routesCount":0,"routesPending":0,"routesInProgress":0,"routesFinished":0,"packagesCount":0,"productsCount":0}},{"carrierId":"641ccb6ca3739e2cf815a574","dateStart":"2023-12-12T03:00:00.000Z","dateEnd":"2023-12-13T02:59:00.000Z","closingTime":"2023-12-13T02:59:00.000Z","lock":{"isLocked":false},"capacity":{"maxPackageQuantity":{"default":500,"value":null,"effectiveValue":500},"maxProductQuantity":{"default":500,"value":null,"effectiveValue":500},"maxShippingQuantity":{"default":10,"value":null,"effectiveValue":10}},"deliveryCost":0,"shippings":{},"routes":{},"status":"pending","totals":{"shippingsCount":0,"shippingsPending":0,"shippingsInProgress":0,"shippingsDelivered":0,"shippingsNotDelivered":0,"shippingsCanceled":0,"shippingsWithError":0,"routesCount":0,"routesPending":0,"routesInProgress":0,"routesFinished":0,"packagesCount":0,"productsCount":0}},{"carrierId":"641ccb6ca3739e2cf815a574","dateStart":"2023-12-13T03:00:00.000Z","dateEnd":"2023-12-14T02:59:00.000Z","closingTime":"2023-12-14T02:59:00.000Z","lock":{"isLocked":false},"capacity":{"maxPackageQuantity":{"default":500,"value":null,"effectiveValue":500},"maxProductQuantity":{"default":500,"value":null,"effectiveValue":500},"maxShippingQuantity":{"default":10,"value":null,"effectiveValue":10}},"deliveryCost":0,"shippings":{},"routes":{},"status":"pending","totals":{"shippingsCount":0,"shippingsPending":0,"shippingsInProgress":0,"shippingsDelivered":0,"shippingsNotDelivered":0,"shippingsCanceled":0,"shippingsWithError":0,"routesCount":0,"routesPending":0,"routesInProgress":0,"routesFinished":0,"packagesCount":0,"productsCount":0}},{"carrierId":"641ccb6ca3739e2cf815a574","dateStart":"2023-12-14T03:00:00.000Z","dateEnd":"2023-12-15T02:59:00.000Z","closingTime":"2023-12-15T02:59:00.000Z","lock":{"isLocked":false},"capacity":{"maxPackageQuantity":{"default":500,"value":null,"effectiveValue":500},"maxProductQuantity":{"default":500,"value":null,"effectiveValue":500},"maxShippingQuantity":{"default":10,"value":null,"effectiveValue":10}},"deliveryCost":0,"shippings":{},"routes":{},"status":"pending","totals":{"shippingsCount":0,"shippingsPending":0,"shippingsInProgress":0,"shippingsDelivered":0,"shippingsNotDelivered":0,"shippingsCanceled":0,"shippingsWithError":0,"routesCount":0,"routesPending":0,"routesInProgress":0,"routesFinished":0,"packagesCount":0,"productsCount":0}}]';
+        
+            HttpResponse response = new HttpResponse();
+            response.setBody(body);
+            response.setStatusCode(200);
+            return response;
+        }
+    }
+}

@@ -1,0 +1,25 @@
+<template>
+    <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+        <div class="page-section page-header">
+            <div class="slds-global-header slds-grid slds-grid_align-spread" style="height: 50px; background-color: #0D5392;">
+                <div class="slds-global-header__item" style="height: 100%; display: flex;justify-content: center;">
+                        <h2>Chat Ouvidoria</h2>
+                        <article style="margin-top: 25px; width: 10%;">
+                            <div>
+                                <img src={min} style="height: 4px;" onclick={minimize} />
+                            </div>
+                        </article>
+                        <article style="width: 10%; margin: 10px 10px 0px 10px;">
+                            <div>
+                                <img src={fechar} style="width: 28px;" onclick={close}/>
+                            </div>
+                        </article>
+                </div>
+            </div>
+            <!-- Display the idle timeout warning div -->
+            <div class={chatLabelClass} if:true={showIdleTimeoutWarning}>
+                <span>{textLabel}</span>
+            </div>
+        </div>
+    </lightning-layout-item>
+</template>
