@@ -195,7 +195,6 @@ export default class CashbackAccountStatementDetail extends NavigationMixin(Ligh
     }
 
     get isCashbackRefunded() {
-        console.log('AQUI É O TIPO DE TRANSAÇÃO:: ', this.detail.rewardTransactionType);
         return this.detail.rewardTransactionType == 8;
     }
 
