@@ -37,7 +37,7 @@ const MAP_CASHBACK_CLASS = {
     4 : "received-cashback",
     5 : "standard-cashback",
     7 : "received-cashback",
-    8 : "canceled-cashback"
+    8 : "received-cashback"
 }
 
 export default class CashbackAccountStatement extends LightningElement {
