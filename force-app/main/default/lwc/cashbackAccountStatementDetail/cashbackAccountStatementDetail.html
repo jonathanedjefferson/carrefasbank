@@ -41,7 +41,7 @@
             <lightning-button class="reversal-button" label="Contestar resgate" title="Contestar resgate" onclick={handleReversal}></lightning-button>
         </div>
     </template>
-    <template if:false={isCashbackRefunded}>
+    <template if:true={isCashbackRefunded}>
         <div class="external-container">
             <h1 class="detail-title">Dados da Transação:</h1>
             <lightning-layout multiple-rows="true">
