@@ -192,6 +192,7 @@ export default class CashbackAccountStatement extends LightningElement {
                 transaction.icon = ACCOUNT_STATMENT_ICON[transaction.rewardTransactionType];
                 transaction.cashbackClass = MAP_CASHBACK_CLASS[transaction.rewardTransactionType];
                 transaction.lineClass = transaction.rewardTransactionType == 3 ? 'canceled-line' : '';
+                transaction.isRefundType = transaction.rewardTransactionType === 8;
                 
                 dayGroup.items.push(transaction);
             })
