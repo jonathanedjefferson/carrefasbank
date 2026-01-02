@@ -27,7 +27,7 @@
             <lightning-button class="refund-button" label="Ajuste de cashback" title="Ajuste de cashback" onclick={handleRefund}></lightning-button>
         </div>
     </template>
-    <template if:false={isCashbackReceived}>
+    <template if:true={isRedeem}>
         <div class="external-container">
             <h1 class="detail-title">Dados da Transação:</h1>
             <lightning-layout multiple-rows="true">
