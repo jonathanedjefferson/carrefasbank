@@ -26,7 +26,8 @@ const ACCOUNT_STATMENT_ICON = {
     3 : "utility:close", 
     4 : "utility:skip_forward",
     5 : "utility:warning",
-    7 : "utility:skip_back"
+    7 : "utility:skip_back",
+    8 : "utility:skip_back"
 }
 
 const MAP_CASHBACK_CLASS = {
@@ -35,7 +36,8 @@ const MAP_CASHBACK_CLASS = {
     3 : "canceled-cashback", 
     4 : "received-cashback",
     5 : "standard-cashback",
-    7 : "received-cashback"
+    7 : "received-cashback",
+    8 : "canceled-cashback"
 }
 
 export default class CashbackAccountStatement extends LightningElement {
