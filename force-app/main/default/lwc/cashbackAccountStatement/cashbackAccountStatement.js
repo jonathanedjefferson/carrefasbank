@@ -131,6 +131,13 @@ export default class CashbackAccountStatement extends LightningElement {
             this.showEmptyCard(false);
             return;
         }
+        console.log('=== DADOS ANTES DO PROCESSAMENTO ===');
+        console.log(accountStatmentData);
+
+        if (accountStatmentData[0] && accountStatmentData[0].transactions) {
+        console.log('=== PRIMEIRA TRANSAÇÃO ===');
+        console.log(accountStatmentData[0].transactions[0]);
+    }
 
         const groupedData = [];
 

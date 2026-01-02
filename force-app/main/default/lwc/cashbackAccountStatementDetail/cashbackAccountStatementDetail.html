@@ -23,8 +23,10 @@
             </lightning-layout>
         </div>
         <div class="external-container">
-            <lightning-button label="Detalhes da Compra" title="Detalhes da Compra" onclick={handlePurchaseDetails}></lightning-button>
-            <lightning-button class="refund-button" label="Ajuste de cashback" title="Ajuste de cashback" onclick={handleRefund}></lightning-button>
+            <lightning-button label="Detalhes da Compra" title="Detalhes da Compra"
+                onclick={handlePurchaseDetails}></lightning-button>
+            <lightning-button class="refund-button" label="Ajuste de cashback" title="Ajuste de cashback"
+                onclick={handleRefund}></lightning-button>
         </div>
     </template>
     <template if:false={isCashbackReceived}>
@@ -33,31 +35,35 @@
             <lightning-layout multiple-rows="true">
                 <template for:each={customCard} for:item="customField">
                     <lightning-layout-item size="4" key={customField.field}>{customField.label}</lightning-layout-item>
-                    <lightning-layout-item size="8" class="detail-value" key={customField.field}>{customField.value}</lightning-layout-item>
+                    <lightning-layout-item size="8" class="detail-value"
+                        key={customField.field}>{customField.value}</lightning-layout-item>
                 </template>
             </lightning-layout>
         </div>
         <div class="external-container" if:true={isRedeem}>
-            <lightning-button class="reversal-button" label="Contestar resgate" title="Contestar resgate" onclick={handleReversal}></lightning-button>
+            <lightning-button class="reversal-button" label="Contestar resgate" title="Contestar resgate"
+                onclick={handleReversal}></lightning-button>
         </div>
     </template>
-    <template if:true={isCashbackRefunded}>
+    <template if:false={isCashbackReceived}>
         <div class="external-container">
             <h1 class="detail-title">Dados da Transação:</h1>
             <lightning-layout multiple-rows="true">
-                <lightning-layout-item size="4">Tipo da Transação</lightning-layout-item>
-                <lightning-layout-item size="8" class="detail-value">Cashback Estornado</lightning-layout-item>
-                <lightning-layout-item size="4">Cashback Estornado</lightning-layout-item>
-                <lightning-layout-item size="8" class="detail-value">{detail.rewardAmount}</lightning-layout-item>
-                <lightning-layout-item size="4">Data da Execução</lightning-layout-item>
-                <lightning-layout-item size="8" class="detail-value">{detail.transactionDate}</lightning-layout-item>
-                <lightning-layout-item size="4">Loja</lightning-layout-item>
-                <lightning-layout-item size="8" class="detail-value">{detail.originDescription}</lightning-layout-item>
+                <template for:each={customCard} for:item="customField">
+                    <lightning-layout-item size="4" key={customField.field}>{customField.label}</lightning-layout-item>
+                    <lightning-layout-item size="8" class="detail-value"
+                        key={customField.field}>{customField.value}</lightning-layout-item>
+                </template>
             </lightning-layout>
+        </div>
+        <div class="external-container" if:true={isRedeem}>
+            <lightning-button class="reversal-button" label="Contestar resgate" title="Contestar resgate"
+                onclick={handleReversal}></lightning-button>
         </div>
     </template>
     <div class="detail-message" if:true={showMessage}>
-        <lightning-icon icon-name="utility:info" alternative-text="Info" title="Info" size="small" class="icon"></lightning-icon>
+        <lightning-icon icon-name="utility:info" alternative-text="Info" title="Info" size="small"
+            class="icon"></lightning-icon>
         {message}
     </div>
 </template>

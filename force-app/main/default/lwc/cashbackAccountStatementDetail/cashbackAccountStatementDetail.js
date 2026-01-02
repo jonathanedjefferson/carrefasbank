@@ -101,7 +101,12 @@ const DETAIL_FIELD = {
         {
             "label" : "Data da Execução",
             "field" : 'transactionDate'
+        },
+    {
+            "label" : "Loja",
+            "field" : 'originDescription'
         }
+
     ]
 }
 
