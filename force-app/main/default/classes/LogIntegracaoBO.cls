@@ -25,6 +25,18 @@ public class LogIntegracaoBO {
         Database.SaveResult sr = EventBus.publish(logEvent);
     }
 
+    public static void InsertLog(HttpRequest resquest, HttpResponse response, String nomeServico){
+        LogIntegracaoEvent__e logEvent = new LogIntegracaoEvent__e(
+            NomeServico__c = nomeServico,
+            URL__c = resquest.getEndpoint(),
+            Metodo__c = resquest.getMethod(),
+            RequestBody__c = resquest.getBody(),
+            Status__c = String.valueOf(response.getStatusCode()),
+            ResponseBody__c = response.getBody(),
+            RequestHeaders__c = JSON.serializePretty(resquest.getHeaders()),
+            ResponseHeaders__c = JSON.serializePretty(response.getHeaders())
+        );
+    }
 
     public static void InsertLog(String nomeServico, String endpoint, String metodo, String body, String cpf, String status, String responseBody, String unidadeNegocio, String canal) {
         if (unidadeNegocio == 'CSF' || unidadeNegocio == 'CRF' || unidadeNegocio == '1') {
