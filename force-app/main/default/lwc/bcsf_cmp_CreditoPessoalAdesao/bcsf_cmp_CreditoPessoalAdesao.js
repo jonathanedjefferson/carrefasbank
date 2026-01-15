@@ -132,6 +132,15 @@ export default class BCSF_cmp_CreditoPessoalAdesao extends LightningElement {
         return this.clienteValidado && this.subAreaPrincipal !== null && this.subAreaPrincipal.includes('Crédito Pessoal');
     }
 
+    connectedCallback() {
+    console.log('=== Debug showBotaoSimularCreditoPessoal ===');
+    console.log('clienteValidado:', this.clienteValidado);
+    console.log('subAreaPrincipal:', this.subAreaPrincipal);
+    console.log('subAreaPrincipal type:', typeof this.subAreaPrincipal);
+    console.log('Resultado final:', this.showBotaoSimularCreditoPessoal);
+    }
+
+
     get valorPreAprovado() {
         return formatarValor(this.status.valorPreAprovado);
     }
